@@ -1,0 +1,69 @@
+type_name = "Transition"
+sent_by = []
+description = '''
+TODO
+'''
+
+[fields.abnormal_condition_only]
+field_name = "abnormal_condition_only"
+field_type = "boolean"
+optional = false
+description = '''
+Indicates if this Transition may only be used during an abnormal condition (see Clause )
+'''
+
+[fields.blocking_timers]
+field_name = "blocking_timers"
+field_type = "ID[]"
+optional = false
+description = '''
+List of IDs of Timers that block this Transition from initiating while at least one of these Timers is not yet finished
+'''
+
+[fields.from]
+field_name = "from"
+field_type = "ID"
+optional = false
+description = '''
+ID of the OperationMode (exact type differs per ControlType) that should be switched from.
+'''
+
+[fields.id]
+field_name = "id"
+field_type = "ID"
+optional = false
+description = '''
+ID of the Transition. Must be unique in the scope of the `OMBC.SystemDescription`, `FRBC.ActuatorDescription` or `DDBC.ActuatorDescription` in which it is used.
+'''
+
+[fields.start_timers]
+field_name = "start_timers"
+field_type = "ID[]"
+optional = false
+description = '''
+List of IDs of Timers that will be (re)started when this transition is initiated
+'''
+
+[fields.to]
+field_name = "to"
+field_type = "ID"
+optional = false
+description = '''
+ID of the OperationMode (exact type differs per ControlType) that will be switched to.
+'''
+
+[fields.transition_costs]
+field_name = "transition_costs"
+field_type = "float"
+optional = true
+description = '''
+Absolute costs for going through this Transition in the currency as described in the ResourceManagerDetails.
+'''
+
+[fields.transition_duration]
+field_name = "transition_duration"
+field_type = "Duration"
+optional = true
+description = '''
+Indicates the time between the initiation of this Transition, and the time at which the device behaves according to the Operation Mode which is defined in the ‘to’ data element. When no value is provided it is assumed the transition duration is negligible.
+'''

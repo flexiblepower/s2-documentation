@@ -1,0 +1,22 @@
+type_name = "RoleType"
+description = '''
+
+'''
+
+[variants.ENERGY_PRODUCER]
+variant_name = "ENERGY_PRODUCER"
+description = '''
+Identifier for RoleType Producer
+'''
+
+[variants.ENERGY_CONSUMER]
+variant_name = "ENERGY_CONSUMER"
+description = '''
+Identifier for RoleType Consumer
+'''
+
+[variants.ENERGY_STORAGE]
+variant_name = "ENERGY_STORAGE"
+description = '''
+Identifier for RoleType Storage
+'''

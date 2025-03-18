@@ -1,0 +1,37 @@
+type_name = "DDBC.AverageDemandRateForecast"
+sent_by = []
+description = '''
+TODO
+'''
+
+[fields.elements]
+field_name = "elements"
+field_type = "DDBC.AverageDemandRateForecastElement[]"
+optional = false
+description = '''
+Elements of the profile. Elements must be placed in chronological order.
+'''
+
+[fields.message_id]
+field_name = "message_id"
+field_type = "ID"
+optional = false
+description = '''
+ID of this message
+'''
+
+[fields.message_type]
+field_name = "message_type"
+field_type = "string"
+optional = false
+description = '''
+TODO
+'''
+
+[fields.start_time]
+field_name = "start_time"
+field_type = "string"
+optional = false
+description = '''
+Start time of the profile.
+'''

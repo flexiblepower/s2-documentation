@@ -1,0 +1,46 @@
+type_name = "InstructionStatus"
+description = '''
+
+'''
+
+[variants.NEW]
+variant_name = "NEW"
+description = '''
+Instruction was newly created
+'''
+
+[variants.ACCEPTED]
+variant_name = "ACCEPTED"
+description = '''
+Instruction has been accepted
+'''
+
+[variants.REJECTED]
+variant_name = "REJECTED"
+description = '''
+Instruction was rejected
+'''
+
+[variants.REVOKED]
+variant_name = "REVOKED"
+description = '''
+Instruction was revoked
+'''
+
+[variants.STARTED]
+variant_name = "STARTED"
+description = '''
+Instruction was executed
+'''
+
+[variants.SUCCEEDED]
+variant_name = "SUCCEEDED"
+description = '''
+Instruction finished successfully
+'''
+
+[variants.ABORTED]
+variant_name = "ABORTED"
+description = '''
+Instruction was aborted.
+'''

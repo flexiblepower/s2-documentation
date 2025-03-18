@@ -1,0 +1,29 @@
+type_name = "PEBC.PowerEnvelopeElement"
+sent_by = []
+description = '''
+TODO
+'''
+
+[fields.duration]
+field_name = "duration"
+field_type = "Duration"
+optional = false
+description = '''
+The duration of the element
+'''
+
+[fields.lower_limit]
+field_name = "lower_limit"
+field_type = "float"
+optional = false
+description = '''
+Lower power limit according to the commodity_quantity of the containing `PEBC.PowerEnvelope`. The lower_limit must be smaller or equal to the upper_limit. The Resource Manager is requested to keep the power values for the given commodity quantity equal to or above the lower_limit. The lower_limit shall be in accordance with the constraints provided by the Resource Manager through any `PEBC.AllowedLimitRange` with limit_type LOWER_LIMIT.
+'''
+
+[fields.upper_limit]
+field_name = "upper_limit"
+field_type = "float"
+optional = false
+description = '''
+Upper power limit according to the commodity_quantity of the containing `PEBC.PowerEnvelope`. The lower_limit must be smaller or equal to the upper_limit. The Resource Manager is requested to keep the power values for the given commodity quantity equal to or below the upper_limit. The upper_limit shall be in accordance with the constraints provided by the Resource Manager through any `PEBC.AllowedLimitRange` with limit_type UPPER_LIMIT.
+'''

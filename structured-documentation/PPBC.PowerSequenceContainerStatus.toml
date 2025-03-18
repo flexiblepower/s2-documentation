@@ -1,0 +1,45 @@
+type_name = "PPBC.PowerSequenceContainerStatus"
+sent_by = []
+description = '''
+TODO
+'''
+
+[fields.power_profile_id]
+field_name = "power_profile_id"
+field_type = "ID"
+optional = false
+description = '''
+ID of the `PPBC.PowerProfileDefinition` of which the data element ‘sequence_container_id’ refers to. 
+'''
+
+[fields.progress]
+field_name = "progress"
+field_type = "Duration"
+optional = true
+description = '''
+Time that has passed since the selected sequence has started. A value must be provided, unless no sequence has been selected or the selected sequence hasn’t started yet.
+'''
+
+[fields.selected_sequence_id]
+field_name = "selected_sequence_id"
+field_type = "ID"
+optional = true
+description = '''
+ID of selected `PPBC.PowerSequence`. When no ID is given, no sequence was selected yet.
+'''
+
+[fields.sequence_container_id]
+field_name = "sequence_container_id"
+field_type = "ID"
+optional = false
+description = '''
+ID of the `PPBC.PowerSequenceContainer` this `PPBC.PowerSequenceContainerStatus` provides information about.
+'''
+
+[fields.status]
+field_name = "status"
+field_type = "PPBC.PowerSequenceStatus"
+optional = false
+description = '''
+Status of the selected `PPBC.PowerSequence`
+'''

@@ -1,0 +1,82 @@
+type_name = "RevokableObjects"
+description = '''
+
+'''
+
+[variants."PEBC.PowerConstraints"]
+variant_name = "PEBC.PowerConstraints"
+description = '''
+Object type `PEBC.PowerConstraints`
+'''
+
+[variants."PEBC.EnergyConstraint"]
+variant_name = "PEBC.EnergyConstraint"
+description = '''
+Object type `PEBC.EnergyConstraint`
+'''
+
+[variants."PEBC.Instruction"]
+variant_name = "PEBC.Instruction"
+description = '''
+Object type `PEBC.Instruction`
+'''
+
+[variants."PPBC.PowerProfileDefinition"]
+variant_name = "PPBC.PowerProfileDefinition"
+description = '''
+Object type `PPBC.PowerProfileDefinition`
+'''
+
+[variants."PPBC.ScheduleInstruction"]
+variant_name = "PPBC.ScheduleInstruction"
+description = '''
+Object type `PPBC.ScheduleInstruction`
+'''
+
+[variants."PPBC.StartInterruptionInstruction"]
+variant_name = "PPBC.StartInterruptionInstruction"
+description = '''
+Object type `PPBC.StartInterruptionInstruction`
+'''
+
+[variants."PPBC.EndInterruptionInstruction"]
+variant_name = "PPBC.EndInterruptionInstruction"
+description = '''
+Object type `PPBC.EndInterruptionInstruction`
+'''
+
+[variants."OMBC.SystemDescription"]
+variant_name = "OMBC.SystemDescription"
+description = '''
+Object type `OMBC.SystemDescription`
+'''
+
+[variants."OMBC.Instruction"]
+variant_name = "OMBC.Instruction"
+description = '''
+Object type `OMBC.Instruction`
+'''
+
+[variants."FRBC.SystemDescription"]
+variant_name = "FRBC.SystemDescription"
+description = '''
+Object type `FRBC.SystemDescription`
+'''
+
+[variants."FRBC.Instruction"]
+variant_name = "FRBC.Instruction"
+description = '''
+Object type `FRBC.Instruction`
+'''
+
+[variants."DDBC.SystemDescription"]
+variant_name = "DDBC.SystemDescription"
+description = '''
+Object type `DDBC.SystemDescription`
+'''
+
+[variants."DDBC.Instruction"]
+variant_name = "DDBC.Instruction"
+description = '''
+Object type `DDBC.Instruction`
+'''

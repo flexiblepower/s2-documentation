@@ -1,0 +1,143 @@
+/* You can override the default Infima variables here. */
+:root {
+  --ifm-color-primary: #123EB7;
+  --ifm-color-primary-dark: #002484;
+  --ifm-color-primary-darker: #277148;
+  --ifm-color-primary-darkest: #205d3b;
+  --ifm-color-primary-light: #4778FF;
+  --ifm-color-primary-lighter: #359962;
+  --ifm-color-primary-lightest: #3cad6e;
+  --ifm-color-success: #2EA339;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+
+  --ifm-code-font-size: 95%;
+  --ifm-leading: 0.75rem;
+}
+
+/* For readability concerns, you should choose a lighter palette in dark mode. */
+[data-theme='dark'] {
+  --ifm-color-primary: #25c2a0;
+  --ifm-color-primary-dark: #21af90;
+  --ifm-color-primary-darker: #1fa588;
+  --ifm-color-primary-darkest: #1a8870;
+  --ifm-color-primary-light: #29d5b0;
+  --ifm-color-primary-lighter: #32d8b4;
+  --ifm-color-primary-lightest: #4fddbf;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  --ifm-heading-font-family: "Hanken Grotesk", "Helvetica Neue", "Helvetica", sans-serif;
+}
+
+@media (max-width: 1920px) {
+  h1 {
+    font-size: 24pt;
+  }
+
+  h2 {
+    font-size: 16pt;
+  }
+}
+
+.field-card p {
+  margin: 0;
+}
+
+.markdown {
+  --ifm-heading-vertical-rhythm-bottom: 0.5;
+}
+
+.markdown h1:first-child {
+  --ifm-h1-font-size: 2.5rem;
+}
+
+.markdown > h2 {
+  --ifm-h2-font-size: 2rem;
+}
+
+.markdown > h3 {
+  --ifm-h3-font-size: 1.5rem;
+}
+
+
+body {
+  font-family: "Hanken Grotesk", "Helvetica Neueu", "Helvetica", sans-serif;
+}
+
+code {
+  font-family: "Cascadia Code", sans-serif;
+  font-weight: bold;
+  border: none;
+  background-color: transparent;
+  vertical-align: baseline;
+}
+
+.menu.thin-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.menu.thin-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@font-face {
+  font-family: "Cascadia Code";
+  src: url("/font/CascadiaCode-Regular.ttf") format("truetype");
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: "Cascadia Code";
+  src: url("/font/CascadiaCode-Bold.ttf") format("truetype");
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: "Cascadia Code";
+  src: url("/font/CascadiaCode-Light.ttf") format("truetype");
+  font-weight: light;
+}
+
+@font-face {
+  font-family: "Hanken Grotesk";
+  src: url("/font/HankenGrotesk-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Hanken Grotesk";
+  src: url("/font/HankenGrotesk-Italic.ttf") format("truetype");
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Hanken Grotesk";
+  src: url("/font/HankenGrotesk-SemiBold.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Hanken Grotesk";
+  src: url("/font/HankenGrotesk-SemiBoldItalic.ttf") format("truetype");
+  font-weight: 500;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Hanken Grotesk";
+  src: url("/font/HankenGrotesk-Bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Hanken Grotesk";
+  src: url("/font/HankenGrotesk-BoldItalic.ttf") format("truetype");
+  font-weight: bold;
+  font-style: italic;
+}

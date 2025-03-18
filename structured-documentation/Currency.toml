@@ -1,0 +1,604 @@
+type_name = "Currency"
+description = '''
+Currency used when this resource gives cost information
+'''
+
+[variants.AED]
+variant_name = "AED"
+description = '''
+TODO
+'''
+
+[variants.ANG]
+variant_name = "ANG"
+description = '''
+TODO
+'''
+
+[variants.AUD]
+variant_name = "AUD"
+description = '''
+TODO
+'''
+
+[variants.CHE]
+variant_name = "CHE"
+description = '''
+TODO
+'''
+
+[variants.CHF]
+variant_name = "CHF"
+description = '''
+TODO
+'''
+
+[variants.CHW]
+variant_name = "CHW"
+description = '''
+TODO
+'''
+
+[variants.EUR]
+variant_name = "EUR"
+description = '''
+TODO
+'''
+
+[variants.GBP]
+variant_name = "GBP"
+description = '''
+TODO
+'''
+
+[variants.LBP]
+variant_name = "LBP"
+description = '''
+TODO
+'''
+
+[variants.LKR]
+variant_name = "LKR"
+description = '''
+TODO
+'''
+
+[variants.LRD]
+variant_name = "LRD"
+description = '''
+TODO
+'''
+
+[variants.LSL]
+variant_name = "LSL"
+description = '''
+TODO
+'''
+
+[variants.LYD]
+variant_name = "LYD"
+description = '''
+TODO
+'''
+
+[variants.MAD]
+variant_name = "MAD"
+description = '''
+TODO
+'''
+
+[variants.MDL]
+variant_name = "MDL"
+description = '''
+TODO
+'''
+
+[variants.MGA]
+variant_name = "MGA"
+description = '''
+TODO
+'''
+
+[variants.MKD]
+variant_name = "MKD"
+description = '''
+TODO
+'''
+
+[variants.MMK]
+variant_name = "MMK"
+description = '''
+TODO
+'''
+
+[variants.MNT]
+variant_name = "MNT"
+description = '''
+TODO
+'''
+
+[variants.MOP]
+variant_name = "MOP"
+description = '''
+TODO
+'''
+
+[variants.MRO]
+variant_name = "MRO"
+description = '''
+TODO
+'''
+
+[variants.MUR]
+variant_name = "MUR"
+description = '''
+TODO
+'''
+
+[variants.MVR]
+variant_name = "MVR"
+description = '''
+TODO
+'''
+
+[variants.MWK]
+variant_name = "MWK"
+description = '''
+TODO
+'''
+
+[variants.MXN]
+variant_name = "MXN"
+description = '''
+TODO
+'''
+
+[variants.MXV]
+variant_name = "MXV"
+description = '''
+TODO
+'''
+
+[variants.MYR]
+variant_name = "MYR"
+description = '''
+TODO
+'''
+
+[variants.MZN]
+variant_name = "MZN"
+description = '''
+TODO
+'''
+
+[variants.NAD]
+variant_name = "NAD"
+description = '''
+TODO
+'''
+
+[variants.NGN]
+variant_name = "NGN"
+description = '''
+TODO
+'''
+
+[variants.NIO]
+variant_name = "NIO"
+description = '''
+TODO
+'''
+
+[variants.NOK]
+variant_name = "NOK"
+description = '''
+TODO
+'''
+
+[variants.NPR]
+variant_name = "NPR"
+description = '''
+TODO
+'''
+
+[variants.NZD]
+variant_name = "NZD"
+description = '''
+TODO
+'''
+
+[variants.OMR]
+variant_name = "OMR"
+description = '''
+TODO
+'''
+
+[variants.PAB]
+variant_name = "PAB"
+description = '''
+TODO
+'''
+
+[variants.PEN]
+variant_name = "PEN"
+description = '''
+TODO
+'''
+
+[variants.PGK]
+variant_name = "PGK"
+description = '''
+TODO
+'''
+
+[variants.PHP]
+variant_name = "PHP"
+description = '''
+TODO
+'''
+
+[variants.PKR]
+variant_name = "PKR"
+description = '''
+TODO
+'''
+
+[variants.PLN]
+variant_name = "PLN"
+description = '''
+TODO
+'''
+
+[variants.PYG]
+variant_name = "PYG"
+description = '''
+TODO
+'''
+
+[variants.QAR]
+variant_name = "QAR"
+description = '''
+TODO
+'''
+
+[variants.RON]
+variant_name = "RON"
+description = '''
+TODO
+'''
+
+[variants.RSD]
+variant_name = "RSD"
+description = '''
+TODO
+'''
+
+[variants.RUB]
+variant_name = "RUB"
+description = '''
+TODO
+'''
+
+[variants.RWF]
+variant_name = "RWF"
+description = '''
+TODO
+'''
+
+[variants.SAR]
+variant_name = "SAR"
+description = '''
+TODO
+'''
+
+[variants.SBD]
+variant_name = "SBD"
+description = '''
+TODO
+'''
+
+[variants.SCR]
+variant_name = "SCR"
+description = '''
+TODO
+'''
+
+[variants.SDG]
+variant_name = "SDG"
+description = '''
+TODO
+'''
+
+[variants.SEK]
+variant_name = "SEK"
+description = '''
+TODO
+'''
+
+[variants.SGD]
+variant_name = "SGD"
+description = '''
+TODO
+'''
+
+[variants.SHP]
+variant_name = "SHP"
+description = '''
+TODO
+'''
+
+[variants.SLL]
+variant_name = "SLL"
+description = '''
+TODO
+'''
+
+[variants.SOS]
+variant_name = "SOS"
+description = '''
+TODO
+'''
+
+[variants.SRD]
+variant_name = "SRD"
+description = '''
+TODO
+'''
+
+[variants.SSP]
+variant_name = "SSP"
+description = '''
+TODO
+'''
+
+[variants.STD]
+variant_name = "STD"
+description = '''
+TODO
+'''
+
+[variants.SYP]
+variant_name = "SYP"
+description = '''
+TODO
+'''
+
+[variants.SZL]
+variant_name = "SZL"
+description = '''
+TODO
+'''
+
+[variants.THB]
+variant_name = "THB"
+description = '''
+TODO
+'''
+
+[variants.TJS]
+variant_name = "TJS"
+description = '''
+TODO
+'''
+
+[variants.TMT]
+variant_name = "TMT"
+description = '''
+TODO
+'''
+
+[variants.TND]
+variant_name = "TND"
+description = '''
+TODO
+'''
+
+[variants.TOP]
+variant_name = "TOP"
+description = '''
+TODO
+'''
+
+[variants.TRY]
+variant_name = "TRY"
+description = '''
+TODO
+'''
+
+[variants.TTD]
+variant_name = "TTD"
+description = '''
+TODO
+'''
+
+[variants.TWD]
+variant_name = "TWD"
+description = '''
+TODO
+'''
+
+[variants.TZS]
+variant_name = "TZS"
+description = '''
+TODO
+'''
+
+[variants.UAH]
+variant_name = "UAH"
+description = '''
+TODO
+'''
+
+[variants.UGX]
+variant_name = "UGX"
+description = '''
+TODO
+'''
+
+[variants.USD]
+variant_name = "USD"
+description = '''
+TODO
+'''
+
+[variants.USN]
+variant_name = "USN"
+description = '''
+TODO
+'''
+
+[variants.UYI]
+variant_name = "UYI"
+description = '''
+TODO
+'''
+
+[variants.UYU]
+variant_name = "UYU"
+description = '''
+TODO
+'''
+
+[variants.UZS]
+variant_name = "UZS"
+description = '''
+TODO
+'''
+
+[variants.VEF]
+variant_name = "VEF"
+description = '''
+TODO
+'''
+
+[variants.VND]
+variant_name = "VND"
+description = '''
+TODO
+'''
+
+[variants.VUV]
+variant_name = "VUV"
+description = '''
+TODO
+'''
+
+[variants.WST]
+variant_name = "WST"
+description = '''
+TODO
+'''
+
+[variants.XAG]
+variant_name = "XAG"
+description = '''
+TODO
+'''
+
+[variants.XAU]
+variant_name = "XAU"
+description = '''
+TODO
+'''
+
+[variants.XBA]
+variant_name = "XBA"
+description = '''
+TODO
+'''
+
+[variants.XBB]
+variant_name = "XBB"
+description = '''
+TODO
+'''
+
+[variants.XBC]
+variant_name = "XBC"
+description = '''
+TODO
+'''
+
+[variants.XBD]
+variant_name = "XBD"
+description = '''
+TODO
+'''
+
+[variants.XCD]
+variant_name = "XCD"
+description = '''
+TODO
+'''
+
+[variants.XOF]
+variant_name = "XOF"
+description = '''
+TODO
+'''
+
+[variants.XPD]
+variant_name = "XPD"
+description = '''
+TODO
+'''
+
+[variants.XPF]
+variant_name = "XPF"
+description = '''
+TODO
+'''
+
+[variants.XPT]
+variant_name = "XPT"
+description = '''
+TODO
+'''
+
+[variants.XSU]
+variant_name = "XSU"
+description = '''
+TODO
+'''
+
+[variants.XTS]
+variant_name = "XTS"
+description = '''
+TODO
+'''
+
+[variants.XUA]
+variant_name = "XUA"
+description = '''
+TODO
+'''
+
+[variants.XXX]
+variant_name = "XXX"
+description = '''
+TODO
+'''
+
+[variants.YER]
+variant_name = "YER"
+description = '''
+TODO
+'''
+
+[variants.ZAR]
+variant_name = "ZAR"
+description = '''
+TODO
+'''
+
+[variants.ZMW]
+variant_name = "ZMW"
+description = '''
+TODO
+'''
+
+[variants.ZWL]
+variant_name = "ZWL"
+description = '''
+TODO
+'''

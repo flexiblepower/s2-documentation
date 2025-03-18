@@ -1,0 +1,53 @@
+type_name = "PPBC.PowerProfileDefinition"
+sent_by = []
+description = '''
+TODO
+'''
+
+[fields.end_time]
+field_name = "end_time"
+field_type = "string"
+optional = false
+description = '''
+Indicates when the last `PPBC.PowerSequence` shall be finished at the latest
+'''
+
+[fields.id]
+field_name = "id"
+field_type = "ID"
+optional = false
+description = '''
+ID of the `PPBC.PowerProfileDefinition`. Must be unique in the scope of the Resource Manager, for at least the duration of the session between Resource Manager and CEM.
+'''
+
+[fields.message_id]
+field_name = "message_id"
+field_type = "ID"
+optional = false
+description = '''
+ID of this message
+'''
+
+[fields.message_type]
+field_name = "message_type"
+field_type = "string"
+optional = false
+description = '''
+TODO
+'''
+
+[fields.power_sequences_containers]
+field_name = "power_sequences_containers"
+field_type = "PPBC.PowerSequenceContainer[]"
+optional = false
+description = '''
+The `PPBC.PowerSequenceContainers` that make up this `PPBC.PowerProfileDefinition`. There shall be at least one `PPBC.PowerSequenceContainer` that includes at least one `PPBC.PowerSequence`. `PPBC.PowerSequenceContainers` must be placed in chronological order.
+'''
+
+[fields.start_time]
+field_name = "start_time"
+field_type = "string"
+optional = false
+description = '''
+Indicates the first possible time the first `PPBC.PowerSequence` could start
+'''

@@ -1,0 +1,37 @@
+type_name = "FRBC.FillLevelTargetProfile"
+sent_by = []
+description = '''
+TODO
+'''
+
+[fields.elements]
+field_name = "elements"
+field_type = "FRBC.FillLevelTargetProfileElement[]"
+optional = false
+description = '''
+List of different fill levels that have to be targeted within a given duration. There shall be at least one element. Elements must be placed in chronological order.
+'''
+
+[fields.message_id]
+field_name = "message_id"
+field_type = "ID"
+optional = false
+description = '''
+ID of this message
+'''
+
+[fields.message_type]
+field_name = "message_type"
+field_type = "string"
+optional = false
+description = '''
+TODO
+'''
+
+[fields.start_time]
+field_name = "start_time"
+field_type = "string"
+optional = false
+description = '''
+Time at which the `FRBC.FillLevelTargetProfile` starts.
+'''

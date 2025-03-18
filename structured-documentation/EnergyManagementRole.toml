@@ -1,0 +1,16 @@
+type_name = "EnergyManagementRole"
+description = '''
+
+'''
+
+[variants.CEM]
+variant_name = "CEM"
+description = '''
+Customer Energy Manager
+'''
+
+[variants.RM]
+variant_name = "RM"
+description = '''
+Resource Manager
+'''

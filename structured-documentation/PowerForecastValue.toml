@@ -1,0 +1,69 @@
+type_name = "PowerForecastValue"
+sent_by = []
+description = '''
+TODO
+'''
+
+[fields.commodity_quantity]
+field_name = "commodity_quantity"
+field_type = "CommodityQuantity"
+optional = false
+description = '''
+The power quantity the value refers to
+'''
+
+[fields.value_expected]
+field_name = "value_expected"
+field_type = "float"
+optional = false
+description = '''
+The expected power value.
+'''
+
+[fields.value_lower_68PPR]
+field_name = "value_lower_68PPR"
+field_type = "float"
+optional = true
+description = '''
+The lower boundary of the range with 68 % certainty the power value is in it
+'''
+
+[fields.value_lower_95PPR]
+field_name = "value_lower_95PPR"
+field_type = "float"
+optional = true
+description = '''
+The lower boundary of the range with 95 % certainty the power value is in it
+'''
+
+[fields.value_lower_limit]
+field_name = "value_lower_limit"
+field_type = "float"
+optional = true
+description = '''
+The lower boundary of the range with 100 % certainty the power value is in it
+'''
+
+[fields.value_upper_68PPR]
+field_name = "value_upper_68PPR"
+field_type = "float"
+optional = true
+description = '''
+The upper boundary of the range with 68 % certainty the power value is in it
+'''
+
+[fields.value_upper_95PPR]
+field_name = "value_upper_95PPR"
+field_type = "float"
+optional = true
+description = '''
+The upper boundary of the range with 95 % certainty the power value is in it
+'''
+
+[fields.value_upper_limit]
+field_name = "value_upper_limit"
+field_type = "float"
+optional = true
+description = '''
+The upper boundary of the range with 100 % certainty the power value is in it
+'''

@@ -1,0 +1,53 @@
+type_name = "FRBC.StorageDescription"
+sent_by = []
+description = '''
+TODO
+'''
+
+[fields.diagnostic_label]
+field_name = "diagnostic_label"
+field_type = "string"
+optional = true
+description = '''
+Human readable name/description of the storage (`e.g`. hot water buffer or battery). This element is only intended for diagnostic purposes and not for HMI applications.
+'''
+
+[fields.fill_level_label]
+field_name = "fill_level_label"
+field_type = "string"
+optional = true
+description = '''
+Human readable description of the (physical) units associated with the fill_level (`e.g`. degrees Celsius or percentage state of charge). This element is only intended for diagnostic purposes and not for HMI applications.
+'''
+
+[fields.fill_level_range]
+field_name = "fill_level_range"
+field_type = "NumberRange"
+optional = false
+description = '''
+The range in which the fill_level should remain. It is expected of the CEM to keep the fill_level within this range. When the fill_level is not within this range, the Resource Manager can ignore instructions from the CEM (except during abnormal conditions). 
+'''
+
+[fields.provides_fill_level_target_profile]
+field_name = "provides_fill_level_target_profile"
+field_type = "boolean"
+optional = false
+description = '''
+Indicates whether the Storage could provide a target profile for the fill level through the `FRBC.FillLevelTargetProfile`.
+'''
+
+[fields.provides_leakage_behaviour]
+field_name = "provides_leakage_behaviour"
+field_type = "boolean"
+optional = false
+description = '''
+Indicates whether the Storage could provide details of power leakage behaviour through the `FRBC.LeakageBehaviour`.
+'''
+
+[fields.provides_usage_forecast]
+field_name = "provides_usage_forecast"
+field_type = "boolean"
+optional = false
+description = '''
+Indicates whether the Storage could provide a UsageForecast through the `FRBC.UsageForecast`.
+'''

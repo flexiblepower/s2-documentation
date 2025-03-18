@@ -1,0 +1,2716 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Message",
+    "$defs": {
+        "PPBC.PowerSequenceStatus": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/schemas/PPBC.PowerSequenceStatus",
+            "title": "PPBC_PowerSequenceStatus",
+            "enum": [
+                "NOT_SCHEDULED",
+                "SCHEDULED",
+                "EXECUTING",
+                "INTERRUPTED",
+                "FINISHED",
+                "ABORTED"
+            ],
+            "description": "NOT_SCHEDULED: No PPBC.PowerSequence within the PPBC.PowerSequenceContainer is scheduled\nSCHEDULED: The selected PPBC.PowerSequence is scheduled to be executed in the future\nEXECUTING: The selected PPBC.PowerSequence is currently being executed\nINTERRUPTED: The selected PPBC.PowerSequence is being executed, but is currently interrupted and will continue afterwards\nFINISHED: The selected PPBC.PowerSequence was executed and finished successfully\nABORTED: The selected PPBC.PowerSequence was aborted by the device and will not continue"
+        },
+        "ControlType": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/schemas/ControlType",
+            "title": "ControlType",
+            "enum": [
+                "POWER_ENVELOPE_BASED_CONTROL",
+                "POWER_PROFILE_BASED_CONTROL",
+                "OPERATION_MODE_BASED_CONTROL",
+                "FILL_RATE_BASED_CONTROL",
+                "DEMAND_DRIVEN_BASED_CONTROL",
+                "NOT_CONTROLABLE",
+                "NO_SELECTION"
+            ],
+            "description": "POWER_ENVELOPE_BASED_CONTROL: Identifier for the Power Envelope Based Control type\nPOWER_PROFILE_BASED_CONTROL: Identifier for the Power Profile Based Control type\nOPERATION_MODE_BASED_CONTROL: Identifier for the Operation Mode Based Control type\nFILL_RATE_BASED_CONTROL: Identifier for the Demand Driven Based Control type\nDEMAND_DRIVEN_BASED_CONTROL: Identifier for the Fill Rate Based Control type\nNOT_CONTROLABLE: Identifier that is to be used if no control is possible. Resources of this type can still provide measurements and forecast\nNO_SELECTION: Identifier that is to be used if no control type is or has been selected. "
+        },
+        "PEBC.AllowedLimitRange": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/schemas/PEBC.AllowedLimitRange",
+            "title": "PEBC_AllowedLimitRange",
+            "properties": {
+                "commodity_quantity": {
+                    "$ref": "#/$defs/CommodityQuantity",
+                    "description": "Type of power quantity this PEBC.AllowedLimitRange applies to"
+                },
+                "limit_type": {
+                    "$ref": "#/$defs/PEBC.PowerEnvelopeLimitType",
+                    "description": "Indicates if this ranges applies to the upper limit or the lower limit"
+                },
+                "range_boundary": {
+                    "$ref": "#/$defs/NumberRange",
+                    "description": "Boundaries of the power range of this PEBC.AllowedLimitRange. The CEM is allowed to choose values within this range for the power envelope for the limit as described in limit_type. The start of the range shall be smaller or equal than the end of the range. "
+                },
+                "abnormal_condition_only": {
+                    "type": "boolean",
+                    "description": "Indicates if this PEBC.AllowedLimitRange may only be used during an abnormal condition"
+                }
+            },
+            "required": [
+                "commodity_quantity",
+                "limit_type",
+                "range_boundary",
+                "abnormal_condition_only"
+            ],
+            "additionalProperties": false
+        },
+        "RevokableObjects": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/schemas/RevokableObjects",
+            "title": "RevokableObjects",
+            "enum": [
+                "PEBC.PowerConstraints",
+                "PEBC.EnergyConstraint",
+                "PEBC.Instruction",
+                "PPBC.PowerProfileDefinition",
+                "PPBC.ScheduleInstruction",
+                "PPBC.StartInterruptionInstruction",
+                "PPBC.EndInterruptionInstruction",
+                "OMBC.SystemDescription",
+                "OMBC.Instruction",
+                "FRBC.SystemDescription",
+                "FRBC.Instruction",
+                "DDBC.SystemDescription",
+                "DDBC.Instruction"
+            ],
+            "description": "PEBC.PowerConstraints: Object type PEBC.PowerConstraints\nPEBC.EnergyConstraint: Object type PEBC.EnergyConstraint\nPEBC.Instruction: Object type PEBC.Instruction\nPPBC.PowerProfileDefinition: Object type PPBC.PowerProfileDefinition\nPPBC.ScheduleInstruction: Object type PPBC.ScheduleInstruction\nPPBC.StartInterruptionInstruction: Object type PPBC.StartInterruptionInstruction\nPPBC.EndInterruptionInstruction: Object type PPBC.EndInterruptionInstruction\nOMBC.SystemDescription: Object type OMBC.SystemDescription\nOMBC.Instruction: Object type OMBC.Instruction\nFRBC.SystemDescription: Object type FRBC.SystemDescription\nFRBC.Instruction: Object type FRBC.Instruction\nDDBC.SystemDescription: Object type DDBC.SystemDescription\nDDBC.Instruction: Object type DDBC.Instruction"
+        },
+        "PPBC.PowerSequenceContainerStatus": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/schemas/PPBC.PowerSequenceContainerStatus",
+            "title": "PPBC_PowerSequenceContainerStatus",
+            "properties": {
+                "power_profile_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of the PPBC.PowerProfileDefinition of which the data element ‘sequence_container_id’ refers to. "
+                },
+                "sequence_container_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of the PPBC.PowerSequenceContainer this PPBC.PowerSequenceContainerStatus provides information about."
+                },
+                "selected_sequence_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of selected PPBC.PowerSequence. When no ID is given, no sequence was selected yet."
+                },
+                "progress": {
+                    "$ref": "#/$defs/Duration",
+                    "description": "Time that has passed since the selected sequence has started. A value must be provided, unless no sequence has been selected or the selected sequence hasn’t started yet."
+                },
+                "status": {
+                    "$ref": "#/$defs/PPBC.PowerSequenceStatus",
+                    "description": "Status of the selected PPBC.PowerSequence"
+                }
+            },
+            "required": [
+                "power_profile_id",
+                "sequence_container_id",
+                "status"
+            ],
+            "additionalProperties": false
+        },
+        "Currency": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/schemas/Currency",
+            "title": "Currency",
+            "type": "string",
+            "enum": [
+                "AED",
+                "ANG",
+                "AUD",
+                "CHE",
+                "CHF",
+                "CHW",
+                "EUR",
+                "GBP",
+                "LBP",
+                "LKR",
+                "LRD",
+                "LSL",
+                "LYD",
+                "MAD",
+                "MDL",
+                "MGA",
+                "MKD",
+                "MMK",
+                "MNT",
+                "MOP",
+                "MRO",
+                "MUR",
+                "MVR",
+                "MWK",
+                "MXN",
+                "MXV",
+                "MYR",
+                "MZN",
+                "NAD",
+                "NGN",
+                "NIO",
+                "NOK",
+                "NPR",
+                "NZD",
+                "OMR",
+                "PAB",
+                "PEN",
+                "PGK",
+                "PHP",
+                "PKR",
+                "PLN",
+                "PYG",
+                "QAR",
+                "RON",
+                "RSD",
+                "RUB",
+                "RWF",
+                "SAR",
+                "SBD",
+                "SCR",
+                "SDG",
+                "SEK",
+                "SGD",
+                "SHP",
+                "SLL",
+                "SOS",
+                "SRD",
+                "SSP",
+                "STD",
+                "SYP",
+                "SZL",
+                "THB",
+                "TJS",
+                "TMT",
+                "TND",
+                "TOP",
+                "TRY",
+                "TTD",
+                "TWD",
+                "TZS",
+                "UAH",
+                "UGX",
+                "USD",
+                "USN",
+                "UYI",
+                "UYU",
+                "UZS",
+                "VEF",
+                "VND",
+                "VUV",
+                "WST",
+                "XAG",
+                "XAU",
+                "XBA",
+                "XBB",
+                "XBC",
+                "XBD",
+                "XCD",
+                "XOF",
+                "XPD",
+                "XPF",
+                "XPT",
+                "XSU",
+                "XTS",
+                "XUA",
+                "XXX",
+                "YER",
+                "ZAR",
+                "ZMW",
+                "ZWL"
+            ],
+            "description": "Currency used when this resource gives cost information"
+        },
+        "NumberRange": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/schemas/NumberRange",
+            "title": "NumberRange",
+            "properties": {
+                "start_of_range": {
+                    "type": "number",
+                    "description": "Number that defines the start of the range"
+                },
+                "end_of_range": {
+                    "type": "number",
+                    "description": "Number that defines the end of the range"
+                }
+            },
+            "required": [
+                "start_of_range",
+                "end_of_range"
+            ],
+            "additionalProperties": false
+        },
+        "Transition": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/schemas/Transition",
+            "title": "Transition",
+            "properties": {
+                "id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of the Transition. Must be unique in the scope of the OMBC.SystemDescription, FRBC.ActuatorDescription or DDBC.ActuatorDescription in which it is used."
+                },
+                "from": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of the OperationMode (exact type differs per ControlType) that should be switched from."
+                },
+                "to": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of the OperationMode (exact type differs per ControlType) that will be switched to."
+                },
+                "start_timers": {
+                    "type": "array",
+                    "minItems": 0,
+                    "maxItems": 1000,
+                    "items": {
+                        "$ref": "#/$defs/ID"
+                    },
+                    "description": "List of IDs of Timers that will be (re)started when this transition is initiated"
+                },
+                "blocking_timers": {
+                    "type": "array",
+                    "minItems": 0,
+                    "maxItems": 1000,
+                    "items": {
+                        "$ref": "#/$defs/ID"
+                    },
+                    "description": "List of IDs of Timers that block this Transition from initiating while at least one of these Timers is not yet finished"
+                },
+                "transition_costs": {
+                    "type": "number",
+                    "description": "Absolute costs for going through this Transition in the currency as described in the ResourceManagerDetails."
+                },
+                "transition_duration": {
+                    "$ref": "#/$defs/Duration",
+                    "description": "Indicates the time between the initiation of this Transition, and the time at which the device behaves according to the Operation Mode which is defined in the ‘to’ data element. When no value is provided it is assumed the transition duration is negligible."
+                },
+                "abnormal_condition_only": {
+                    "type": "boolean",
+                    "description": "Indicates if this Transition may only be used during an abnormal condition (see Clause )"
+                }
+            },
+            "required": [
+                "id",
+                "from",
+                "to",
+                "start_timers",
+                "blocking_timers",
+                "abnormal_condition_only"
+            ],
+            "additionalProperties": false
+        },
+        "FRBC.LeakageBehaviourElement": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/schemas/FRBC.LeakageBehaviourElement",
+            "title": "FRBC_LeakageBehaviourElement",
+            "properties": {
+                "fill_level_range": {
+                    "$ref": "#/$defs/NumberRange",
+                    "description": "The fill level range for which this FRBC.LeakageBehaviourElement applies. The start of the range must be less than the end of the range."
+                },
+                "leakage_rate": {
+                    "type": "number",
+                    "description": "Indicates how fast the momentary fill level will decrease per second due to leakage within the given range of the fill level. A positive value indicates that the fill level decreases over time due to leakage."
+                }
+            },
+            "required": [
+                "fill_level_range",
+                "leakage_rate"
+            ],
+            "additionalProperties": false
+        },
+        "PowerForecastElement": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/schemas/PowerForecastElement",
+            "title": "PowerForecastElement",
+            "properties": {
+                "duration": {
+                    "$ref": "#/$defs/Duration",
+                    "description": "Duration of the PowerForecastElement"
+                },
+                "power_values": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 10,
+                    "items": {
+                        "$ref": "#/$defs/PowerForecastValue"
+                    },
+                    "description": "The values of power that are expected for the given period of time. There shall be at least one PowerForecastValue, and at most one PowerForecastValue per CommodityQuantity."
+                }
+            },
+            "required": [
+                "duration",
+                "power_values"
+            ],
+            "additionalProperties": false
+        },
+        "Role": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/schemas/Role",
+            "title": "Role",
+            "properties": {
+                "role": {
+                    "$ref": "#/$defs/RoleType",
+                    "description": "Role type of the Resource Manager for the given commodity"
+                },
+                "commodity": {
+                    "$ref": "#/$defs/Commodity",
+                    "description": "Commodity the role refers to."
+                }
+            },
+            "required": [
+                "role",
+                "commodity"
+            ],
+            "additionalProperties": false
+        },
+        "InstructionStatus": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/schemas/InstructionStatus",
+            "title": "InstructionStatus",
+            "enum": [
+                "NEW",
+                "ACCEPTED",
+                "REJECTED",
+                "REVOKED",
+                "STARTED",
+                "SUCCEEDED",
+                "ABORTED"
+            ],
+            "description": "NEW: Instruction was newly created\nACCEPTED: Instruction has been accepted\nREJECTED: Instruction was rejected\nREVOKED: Instruction was revoked\nSTARTED: Instruction was executed\nSUCCEEDED: Instruction finished successfully\nABORTED: Instruction was aborted."
+        },
+        "OMBC.OperationMode": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/schemas/OMBC.OperationMode",
+            "title": "OMBC_OperationMode",
+            "properties": {
+                "id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of the OBMC.OperationMode. Must be unique in the scope of the Resource Manager, for at least the duration of the session between Resource Manager and CEM."
+                },
+                "diagnostic_label": {
+                    "type": "string",
+                    "description": "Human readable name/description of the OMBC.OperationMode. This element is only intended for diagnostic purposes and not for HMI applications."
+                },
+                "power_ranges": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 10,
+                    "items": {
+                        "$ref": "#/$defs/PowerRange"
+                    },
+                    "description": "The power produced or consumed by this operation mode. The start of each PowerRange is associated with an operation_mode_factor of 0, the end is associated with an operation_mode_factor of 1. In the array there must be at least one PowerRange, and at most one PowerRange per CommodityQuantity."
+                },
+                "running_costs": {
+                    "$ref": "#/$defs/NumberRange",
+                    "description": "Additional costs per second (e.g. wear, services) associated with this operation mode in the currency defined by the ResourceManagerDetails , excluding the commodity cost. The range is expressing uncertainty and is not linked to the operation_mode_factor."
+                },
+                "abnormal_condition_only": {
+                    "type": "boolean",
+                    "description": "Indicates if this OMBC.OperationMode may only be used during an abnormal condition."
+                }
+            },
+            "required": [
+                "id",
+                "power_ranges",
+                "abnormal_condition_only"
+            ],
+            "additionalProperties": false
+        },
+        "Timer": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/schemas/Timer",
+            "title": "Timer",
+            "properties": {
+                "id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of the Timer. Must be unique in the scope of the OMBC.SystemDescription, FRBC.ActuatorDescription or DDBC.ActuatorDescription in which it is used."
+                },
+                "diagnostic_label": {
+                    "type": "string",
+                    "description": "Human readable name/description of the Timer. This element is only intended for diagnostic purposes and not for HMI applications."
+                },
+                "duration": {
+                    "$ref": "#/$defs/Duration",
+                    "description": "The time it takes for the Timer to finish after it has been started"
+                }
+            },
+            "required": [
+                "id",
+                "duration"
+            ],
+            "additionalProperties": false
+        },
+        "FRBC.OperationMode": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/schemas/FRBC.OperationMode",
+            "title": "FRBC_OperationMode",
+            "properties": {
+                "id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of the FRBC.OperationMode. Must be unique in the scope of the FRBC.ActuatorDescription in which it is used."
+                },
+                "diagnostic_label": {
+                    "type": "string",
+                    "description": "Human readable name/description of the FRBC.OperationMode. This element is only intended for diagnostic purposes and not for HMI applications."
+                },
+                "elements": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 100,
+                    "items": {
+                        "$ref": "#/$defs/FRBC.OperationModeElement"
+                    },
+                    "description": "List of FRBC.OperationModeElements, which describe the properties of this FRBC.OperationMode depending on the fill_level. The fill_level_ranges of the items in the Array must be contiguous."
+                },
+                "abnormal_condition_only": {
+                    "type": "boolean",
+                    "description": "Indicates if this FRBC.OperationMode may only be used during an abnormal condition"
+                }
+            },
+            "required": [
+                "id",
+                "elements",
+                "abnormal_condition_only"
+            ],
+            "additionalProperties": false
+        },
+        "DDBC.AverageDemandRateForecastElement": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/schemas/DDBC.AverageDemandRateForecastElement",
+            "title": "DDBC_AverageDemandRateForecastElement",
+            "properties": {
+                "duration": {
+                    "$ref": "#/$defs/Duration",
+                    "description": "Duration of the element"
+                },
+                "demand_rate_upper_limit": {
+                    "type": "number",
+                    "description": "The upper limit of the range with a 100 % probability that the demand rate is within that range"
+                },
+                "demand_rate_upper_95PPR": {
+                    "type": "number",
+                    "description": "The upper limit of the range with a 95 % probability that the demand rate is within that range"
+                },
+                "demand_rate_upper_68PPR": {
+                    "type": "number",
+                    "description": "The upper limit of the range with a 68 % probability that the demand rate is within that range"
+                },
+                "demand_rate_expected": {
+                    "type": "number",
+                    "description": "The most likely value for the demand rate; the expected increase or decrease of the fill_level per second"
+                },
+                "demand_rate_lower_68PPR": {
+                    "type": "number",
+                    "description": "The lower limit of the range with a 68 % probability that the demand rate is within that range"
+                },
+                "demand_rate_lower_95PPR": {
+                    "type": "number",
+                    "description": "The lower limit of the range with a 95 % probability that the demand rate is within that range"
+                },
+                "demand_rate_lower_limit": {
+                    "type": "number",
+                    "description": "The lower limit of the range with a 100 % probability that the demand rate is within that range"
+                }
+            },
+            "required": [
+                "duration",
+                "demand_rate_expected"
+            ],
+            "additionalProperties": false
+        },
+        "RoleType": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/schemas/RoleType",
+            "title": "RoleType",
+            "enum": [
+                "ENERGY_PRODUCER",
+                "ENERGY_CONSUMER",
+                "ENERGY_STORAGE"
+            ],
+            "description": "ENERGY_PRODUCER: Identifier for RoleType Producer\nENERGY_CONSUMER: Identifier for RoleType Consumer\nENERGY_STORAGE: Identifier for RoleType Storage"
+        },
+        "FRBC.ActuatorDescription": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/schemas/FRBC.ActuatorDescription",
+            "title": "FRBC_ActuatorDescription",
+            "properties": {
+                "id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of the Actuator. Must be unique in the scope of the Resource Manager, for at least the duration of the session between Resource Manager and CEM."
+                },
+                "diagnostic_label": {
+                    "type": "string",
+                    "description": "Human readable name/description for the actuator. This element is only intended for diagnostic purposes and not for HMI applications."
+                },
+                "supported_commodities": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 4,
+                    "items": {
+                        "$ref": "#/$defs/Commodity"
+                    },
+                    "description": "List of all supported Commodities."
+                },
+                "operation_modes": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 100,
+                    "items": {
+                        "$ref": "#/$defs/FRBC.OperationMode"
+                    },
+                    "description": "Provided FRBC.OperationModes associated with this actuator"
+                },
+                "transitions": {
+                    "type": "array",
+                    "minItems": 0,
+                    "maxItems": 1000,
+                    "items": {
+                        "$ref": "#/$defs/Transition"
+                    },
+                    "description": "Possible transitions between FRBC.OperationModes associated with this actuator."
+                },
+                "timers": {
+                    "type": "array",
+                    "minItems": 0,
+                    "maxItems": 1000,
+                    "items": {
+                        "$ref": "#/$defs/Timer"
+                    },
+                    "description": "List of Timers associated with this actuator"
+                }
+            },
+            "required": [
+                "id",
+                "supported_commodities",
+                "operation_modes",
+                "transitions",
+                "timers"
+            ],
+            "additionalProperties": false
+        },
+        "CommodityQuantity": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/schemas/CommodityQuantity",
+            "title": "CommodityQuantity",
+            "enum": [
+                "ELECTRIC.POWER.L1",
+                "ELECTRIC.POWER.L2",
+                "ELECTRIC.POWER.L3",
+                "ELECTRIC.POWER.3_PHASE_SYMMETRIC",
+                "NATURAL_GAS.FLOW_RATE",
+                "HYDROGEN.FLOW_RATE",
+                "HEAT.TEMPERATURE",
+                "HEAT.FLOW_RATE",
+                "HEAT.THERMAL_POWER",
+                "OIL.FLOW_RATE"
+            ],
+            "description": "ELECTRIC.POWER.L1: Electric power described in Watt on phase 1. If a device utilizes only one phase it should always use L1.\nELECTRIC.POWER.L2: Electric power described in Watt on phase 2. Only applicable for 3 phase devices.\nELECTRIC.POWER.L3: Electric power described in Watt on phase 3. Only applicable for 3 phase devices.\nELECTRIC.POWER.3_PHASE_SYMMETRIC: Electric power described in Watt on when power is equally shared among the three phases. Only applicable for 3 phase devices.\nNATURAL_GAS.FLOW_RATE: Gas flow rate described in liters per second\nHYDROGEN.FLOW_RATE: Gas flow rate described in grams per second\nHEAT.TEMPERATURE: Heat described in degrees Celsius\nHEAT.FLOW_RATE: Flow rate of heat carrying gas or liquid in liters per second\nHEAT.THERMAL_POWER: Thermal power in Watt\nOIL.FLOW_RATE: Oil flow rate described in liters per hour"
+        },
+        "FRBC.UsageForecastElement": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/schemas/FRBC.UsageForecastElement",
+            "title": "FRBC_UsageForecastElement",
+            "properties": {
+                "duration": {
+                    "$ref": "#/$defs/Duration",
+                    "description": "Indicator for how long the given usage_rate is valid."
+                },
+                "usage_rate_upper_limit": {
+                    "type": "number",
+                    "description": "The upper limit of the range with a 100 % probability that the usage rate is within that range. A positive value indicates that the fill level will decrease due to usage."
+                },
+                "usage_rate_upper_95PPR": {
+                    "type": "number",
+                    "description": "The upper limit of the range with a 95 % probability that the usage rate is within that range. A positive value indicates that the fill level will decrease due to usage."
+                },
+                "usage_rate_upper_68PPR": {
+                    "type": "number",
+                    "description": "The upper limit of the range with a 68 % probability that the usage rate is within that range. A positive value indicates that the fill level will decrease due to usage."
+                },
+                "usage_rate_expected": {
+                    "type": "number",
+                    "description": "The most likely value for the usage rate; the expected increase or decrease of the fill_level per second. A positive value indicates that the fill level will decrease due to usage."
+                },
+                "usage_rate_lower_68PPR": {
+                    "type": "number",
+                    "description": "The lower limit of the range with a 68 % probability that the usage rate is within that range. A positive value indicates that the fill level will decrease due to usage."
+                },
+                "usage_rate_lower_95PPR": {
+                    "type": "number",
+                    "description": "The lower limit of the range with a 95 % probability that the usage rate is within that range. A positive value indicates that the fill level will decrease due to usage."
+                },
+                "usage_rate_lower_limit": {
+                    "type": "number",
+                    "description": "The lower limit of the range with a 100 % probability that the usage rate is within that range. A positive value indicates that the fill level will decrease due to usage."
+                }
+            },
+            "required": [
+                "duration",
+                "usage_rate_expected"
+            ],
+            "additionalProperties": false
+        },
+        "ID": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/schemas/ID",
+            "title": "ID",
+            "type": "string",
+            "pattern": "[a-zA-Z0-9\\-_:]{2,64}",
+            "description": "An identifier expressed as a UUID"
+        },
+        "ReceptionStatusValues": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/schemas/ReceptionStatusValues",
+            "title": "ReceptionStatusValues",
+            "enum": [
+                "INVALID_DATA",
+                "INVALID_MESSAGE",
+                "INVALID_CONTENT",
+                "TEMPORARY_ERROR",
+                "PERMANENT_ERROR",
+                "OK"
+            ],
+            "description": "INVALID_DATA: Message not understood (e.g. not valid JSON, no message_id found). Consequence: Message is ignored, proceed if possible\nINVALID_MESSAGE: Message was not according to schema. Consequence: Message is ignored, proceed if possible\nINVALID_CONTENT: Message contents is invalid (e.g. contains a non-existing ID). Somewhat equivalent to BAD_REQUEST in HTTP.. Consequence: Message is ignored, proceed if possible.\nTEMPORARY_ERROR: Receiver encountered an error. Consequence: Try to send to message again\nPERMANENT_ERROR: Receiver encountered an error which it cannot recover from. Consequence: Disconnect.\nOK: Message processed normally. Consequence: Proceed normally."
+        },
+        "FRBC.FillLevelTargetProfileElement": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/schemas/FRBC.FillLevelTargetProfileElement",
+            "title": "FRBC_FillLevelTargetProfileElement",
+            "properties": {
+                "duration": {
+                    "$ref": "#/$defs/Duration",
+                    "description": "The duration of the element."
+                },
+                "fill_level_range": {
+                    "$ref": "#/$defs/NumberRange",
+                    "description": "The target range in which the fill_level must be for the time period during which the element is active. The start of the range must be smaller or equal to the end of the range. The CEM must take best-effort actions to proactively achieve this target."
+                }
+            },
+            "required": [
+                "duration",
+                "fill_level_range"
+            ],
+            "additionalProperties": false
+        },
+        "PEBC.PowerEnvelopeConsequenceType": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/schemas/PEBC.PowerEnvelopeConsequenceType",
+            "title": "PEBC_PowerEnvelopeConsequenceType",
+            "enum": [
+                "VANISH",
+                "DEFER"
+            ],
+            "description": "VANISH: Indicating that the limited load or generated will be lost and not reappear in the future (see Clause 7.6.2)\nDEFER: Indicating that the limited load or generation will be postponed to a later moment (see Clause 7.6.2)"
+        },
+        "FRBC.OperationModeElement": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/schemas/FRBC.OperationModeElement",
+            "title": "FRBC_OperationModeElement",
+            "properties": {
+                "fill_level_range": {
+                    "$ref": "#/$defs/NumberRange",
+                    "description": "The range of the fill level for which this FRBC.OperationModeElement applies. The start of the NumberRange shall be smaller than the end of the NumberRange."
+                },
+                "fill_rate": {
+                    "$ref": "#/$defs/NumberRange",
+                    "description": "Indicates the change in fill_level per second. The lower_boundary of the NumberRange is associated with an operation_mode_factor of 0, the upper_boundary is associated with an operation_mode_factor of 1. "
+                },
+                "power_ranges": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 10,
+                    "items": {
+                        "$ref": "#/$defs/PowerRange"
+                    },
+                    "description": "The power produced or consumed by this operation mode. The start of each PowerRange is associated with an operation_mode_factor of 0, the end is associated with an operation_mode_factor of 1. In the array there must be at least one PowerRange, and at most one PowerRange per CommodityQuantity."
+                },
+                "running_costs": {
+                    "$ref": "#/$defs/NumberRange",
+                    "description": "Additional costs per second (e.g. wear, services) associated with this operation mode in the currency defined by the ResourceManagerDetails, excluding the commodity cost. The range is expressing uncertainty and is not linked to the operation_mode_factor."
+                }
+            },
+            "required": [
+                "fill_level_range",
+                "fill_rate",
+                "power_ranges"
+            ],
+            "additionalProperties": false
+        },
+        "Duration": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/schemas/Duration",
+            "title": "Duration",
+            "type": "integer",
+            "minimum": 0,
+            "description": "Duration in milliseconds"
+        },
+        "SessionRequestType": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/schemas/SessionRequestType",
+            "title": "SessionRequestType",
+            "enum": [
+                "RECONNECT",
+                "TERMINATE"
+            ],
+            "description": "RECONNECT: Please reconnect the WebSocket session. Once reconnected, it starts from scratch with a handshake.\nTERMINATE: Disconnect the session (client can try to reconnecting with exponential backoff)"
+        },
+        "PEBC.PowerEnvelope": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/schemas/PEBC.PowerEnvelope",
+            "title": "PEBC_PowerEnvelope",
+            "properties": {
+                "id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "Identifier of this PEBC.PowerEnvelope. Must be unique in the scope of the Resource Manager, for at least the duration of the session between Resource Manager and CEM."
+                },
+                "commodity_quantity": {
+                    "$ref": "#/$defs/CommodityQuantity",
+                    "description": "Type of power quantity this PEBC.PowerEnvelope applies to"
+                },
+                "power_envelope_elements": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 288,
+                    "items": {
+                        "$ref": "#/$defs/PEBC.PowerEnvelopeElement"
+                    },
+                    "description": "The elements of this PEBC.PowerEnvelope. Shall contain at least one element. Elements must be placed in chronological order."
+                }
+            },
+            "required": [
+                "id",
+                "commodity_quantity",
+                "power_envelope_elements"
+            ],
+            "additionalProperties": false
+        },
+        "PowerForecastValue": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/schemas/PowerForecastValue",
+            "title": "PowerForecastValue",
+            "properties": {
+                "value_upper_limit": {
+                    "type": "number",
+                    "description": "The upper boundary of the range with 100 % certainty the power value is in it"
+                },
+                "value_upper_95PPR": {
+                    "type": "number",
+                    "description": "The upper boundary of the range with 95 % certainty the power value is in it"
+                },
+                "value_upper_68PPR": {
+                    "type": "number",
+                    "description": "The upper boundary of the range with 68 % certainty the power value is in it"
+                },
+                "value_expected": {
+                    "type": "number",
+                    "description": "The expected power value."
+                },
+                "value_lower_68PPR": {
+                    "type": "number",
+                    "description": "The lower boundary of the range with 68 % certainty the power value is in it"
+                },
+                "value_lower_95PPR": {
+                    "type": "number",
+                    "description": "The lower boundary of the range with 95 % certainty the power value is in it"
+                },
+                "value_lower_limit": {
+                    "type": "number",
+                    "description": "The lower boundary of the range with 100 % certainty the power value is in it"
+                },
+                "commodity_quantity": {
+                    "$ref": "#/$defs/CommodityQuantity",
+                    "description": "The power quantity the value refers to"
+                }
+            },
+            "required": [
+                "value_expected",
+                "commodity_quantity"
+            ],
+            "additionalProperties": false
+        },
+        "PowerRange": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/schemas/PowerRange",
+            "title": "PowerRange",
+            "properties": {
+                "start_of_range": {
+                    "type": "number",
+                    "description": "Power value that defines the start of the range."
+                },
+                "end_of_range": {
+                    "type": "number",
+                    "description": "Power value that defines the end of the range."
+                },
+                "commodity_quantity": {
+                    "$ref": "#/$defs/CommodityQuantity",
+                    "description": "The power quantity the values refer to"
+                }
+            },
+            "required": [
+                "start_of_range",
+                "end_of_range",
+                "commodity_quantity"
+            ],
+            "additionalProperties": false
+        },
+        "PPBC.PowerSequence": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/schemas/PPBC.PowerSequence",
+            "title": "PPBC_PowerSequence",
+            "properties": {
+                "id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of the PPBC.PowerSequence. Must be unique in the scope of the PPBC.PowerSequnceContainer in which it is used."
+                },
+                "elements": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 288,
+                    "items": {
+                        "$ref": "#/$defs/PPBC.PowerSequenceElement"
+                    },
+                    "description": "List of PPBC.PowerSequenceElements. Shall contain at least one element. Elements must be placed in chronological order."
+                },
+                "is_interruptible": {
+                    "type": "boolean",
+                    "description": "Indicates whether the option of pausing a sequence is available."
+                },
+                "max_pause_before": {
+                    "$ref": "#/$defs/Duration",
+                    "description": "The maximum duration for which a device can be paused between the end of the previous running sequence and the start of this one"
+                },
+                "abnormal_condition_only": {
+                    "type": "boolean",
+                    "description": "Indicates if this PPBC.PowerSequence may only be used during an abnormal condition"
+                }
+            },
+            "required": [
+                "id",
+                "elements",
+                "is_interruptible",
+                "abnormal_condition_only"
+            ],
+            "additionalProperties": false
+        },
+        "DDBC.ActuatorDescription": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/schemas/DDBC.ActuatorDescription",
+            "title": "DDBC_ActuatorDescription",
+            "properties": {
+                "id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of this DDBC.ActuatorDescription. Must be unique in the scope of the Resource Manager, for at least the duration of the session between Resource Manager and CEM."
+                },
+                "diagnostic_label": {
+                    "type": "string",
+                    "description": "Human readable name/description of the actuator. This element is only intended for diagnostic purposes and not for HMI applications."
+                },
+                "supported_commodites": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 4,
+                    "items": {
+                        "$ref": "#/$defs/Commodity"
+                    },
+                    "description": "Commodities supported by the operation modes of this actuator. There shall be at least one commodity"
+                },
+                "operation_modes": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 100,
+                    "items": {
+                        "$ref": "#/$defs/DDBC.OperationMode"
+                    },
+                    "description": "List of all Operation Modes that are available for this actuator. There shall be at least one DDBC.OperationMode."
+                },
+                "transitions": {
+                    "type": "array",
+                    "minItems": 0,
+                    "maxItems": 1000,
+                    "items": {
+                        "$ref": "#/$defs/Transition"
+                    },
+                    "description": "List of Transitions between Operation Modes. Shall contain at least one Transition."
+                },
+                "timers": {
+                    "type": "array",
+                    "minItems": 0,
+                    "maxItems": 1000,
+                    "items": {
+                        "$ref": "#/$defs/Timer"
+                    },
+                    "description": "List of Timers associated with Transitions for this Actuator. Can be empty."
+                }
+            },
+            "required": [
+                "id",
+                "supported_commodites",
+                "operation_modes",
+                "transitions",
+                "timers"
+            ],
+            "additionalProperties": false
+        },
+        "FRBC.StorageDescription": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/schemas/FRBC.StorageDescription",
+            "title": "FRBC_StorageDescription",
+            "properties": {
+                "diagnostic_label": {
+                    "type": "string",
+                    "description": "Human readable name/description of the storage (e.g. hot water buffer or battery). This element is only intended for diagnostic purposes and not for HMI applications."
+                },
+                "fill_level_label": {
+                    "type": "string",
+                    "description": "Human readable description of the (physical) units associated with the fill_level (e.g. degrees Celsius or percentage state of charge). This element is only intended for diagnostic purposes and not for HMI applications."
+                },
+                "provides_leakage_behaviour": {
+                    "type": "boolean",
+                    "description": "Indicates whether the Storage could provide details of power leakage behaviour through the FRBC.LeakageBehaviour."
+                },
+                "provides_fill_level_target_profile": {
+                    "type": "boolean",
+                    "description": "Indicates whether the Storage could provide a target profile for the fill level through the FRBC.FillLevelTargetProfile."
+                },
+                "provides_usage_forecast": {
+                    "type": "boolean",
+                    "description": "Indicates whether the Storage could provide a UsageForecast through the FRBC.UsageForecast."
+                },
+                "fill_level_range": {
+                    "$ref": "#/$defs/NumberRange",
+                    "description": "The range in which the fill_level should remain. It is expected of the CEM to keep the fill_level within this range. When the fill_level is not within this range, the Resource Manager can ignore instructions from the CEM (except during abnormal conditions). "
+                }
+            },
+            "required": [
+                "provides_leakage_behaviour",
+                "provides_fill_level_target_profile",
+                "provides_usage_forecast",
+                "fill_level_range"
+            ],
+            "additionalProperties": false
+        },
+        "PEBC.PowerEnvelopeLimitType": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/schemas/PEBC.PowerEnvelopeLimitType",
+            "title": "PEBC_PowerEnvelopeLimitType",
+            "enum": [
+                "UPPER_LIMIT",
+                "LOWER_LIMIT"
+            ],
+            "description": "UPPER_LIMIT: Indicating the upper limit of a PEBC.PowerEnvelope (see Clause 7.6.2)\nLOWER_LIMIT: Indicating the lower limit of a PEBC.PowerEnvelope (see Clause 7.6.2)"
+        },
+        "PPBC.PowerSequenceElement": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/schemas/PPBC.PowerSequenceElement",
+            "title": "PPBC_PowerSequenceElement",
+            "properties": {
+                "duration": {
+                    "$ref": "#/$defs/Duration",
+                    "description": "Duration of the PPBC.PowerSequenceElement."
+                },
+                "power_values": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 10,
+                    "items": {
+                        "$ref": "#/$defs/PowerForecastValue"
+                    },
+                    "description": "The value of power and deviations for the given duration. The array should contain at least one PowerForecastValue and at most one PowerForecastValue per CommodityQuantity."
+                }
+            },
+            "required": [
+                "duration",
+                "power_values"
+            ],
+            "additionalProperties": false
+        },
+        "PEBC.PowerEnvelopeElement": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/schemas/PEBC.PowerEnvelopeElement",
+            "title": "PEBC_PowerEnvelopeElement",
+            "properties": {
+                "duration": {
+                    "$ref": "#/$defs/Duration",
+                    "description": "The duration of the element"
+                },
+                "upper_limit": {
+                    "type": "number",
+                    "description": "Upper power limit according to the commodity_quantity of the containing PEBC.PowerEnvelope. The lower_limit must be smaller or equal to the upper_limit. The Resource Manager is requested to keep the power values for the given commodity quantity equal to or below the upper_limit. The upper_limit shall be in accordance with the constraints provided by the Resource Manager through any PEBC.AllowedLimitRange with limit_type UPPER_LIMIT."
+                },
+                "lower_limit": {
+                    "type": "number",
+                    "description": "Lower power limit according to the commodity_quantity of the containing PEBC.PowerEnvelope. The lower_limit must be smaller or equal to the upper_limit. The Resource Manager is requested to keep the power values for the given commodity quantity equal to or above the lower_limit. The lower_limit shall be in accordance with the constraints provided by the Resource Manager through any PEBC.AllowedLimitRange with limit_type LOWER_LIMIT."
+                }
+            },
+            "required": [
+                "duration",
+                "upper_limit",
+                "lower_limit"
+            ],
+            "additionalProperties": false
+        },
+        "PowerValue": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/schemas/PowerValue",
+            "title": "PowerValue",
+            "properties": {
+                "commodity_quantity": {
+                    "$ref": "#/$defs/CommodityQuantity",
+                    "description": "The power quantity the value refers to"
+                },
+                "value": {
+                    "type": "number",
+                    "description": "Power value expressed in the unit associated with the CommodityQuantity"
+                }
+            },
+            "required": [
+                "commodity_quantity",
+                "value"
+            ],
+            "additionalProperties": false
+        },
+        "DDBC.OperationMode": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/schemas/DDBC.OperationMode",
+            "title": "DDBC_OperationMode",
+            "properties": {
+                "Id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of this operation mode. Must be unique in the scope of the DDBC.ActuatorDescription in which it is used."
+                },
+                "diagnostic_label": {
+                    "type": "string",
+                    "description": "Human readable name/description of the DDBC.OperationMode. This element is only intended for diagnostic purposes and not for HMI applications."
+                },
+                "power_ranges": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 10,
+                    "items": {
+                        "$ref": "#/$defs/PowerRange"
+                    },
+                    "description": "The power produced or consumed by this operation mode. The start of each PowerRange is associated with an operation_mode_factor of 0, the end is associated with an operation_mode_factor of 1. In the array there must be at least one PowerRange, and at most one PowerRange per CommodityQuantity."
+                },
+                "supply_range": {
+                    "$ref": "#/$defs/NumberRange",
+                    "description": "The supply rate this DDBC.OperationMode can deliver for the CEM to match the demand rate. The start of the NumberRange is associated with an operation_mode_factor of 0, the end is associated with an operation_mode_factor of 1."
+                },
+                "running_costs": {
+                    "$ref": "#/$defs/NumberRange",
+                    "description": "Additional costs per second (e.g. wear, services) associated with this operation mode in the currency defined by the ResourceManagerDetails, excluding the commodity cost. The range is expressing uncertainty and is not linked to the operation_mode_factor."
+                },
+                "abnormal_condition_only": {
+                    "type": "boolean",
+                    "description": "Indicates if this DDBC.OperationMode may only be used during an abnormal condition."
+                }
+            },
+            "required": [
+                "Id",
+                "power_ranges",
+                "supply_range",
+                "abnormal_condition_only"
+            ],
+            "additionalProperties": false
+        },
+        "EnergyManagementRole": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/schemas/EnergyManagementRole",
+            "title": "EnergyManagementRole",
+            "enum": [
+                "CEM",
+                "RM"
+            ],
+            "description": "CEM: Customer Energy Manager\nRM: Resource Manager"
+        },
+        "PPBC.PowerSequenceContainer": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/schemas/PPBC.PowerSequenceContainer",
+            "title": "PPBC_PowerSequenceContainer",
+            "properties": {
+                "id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of the PPBC.PowerSequenceContainer. Must be unique in the scope of the PPBC.PowerProfileDefinition in which it is used."
+                },
+                "power_sequences": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 288,
+                    "items": {
+                        "$ref": "#/$defs/PPBC.PowerSequence"
+                    },
+                    "description": "List of alternative Sequences where one could be chosen by the CEM"
+                }
+            },
+            "required": [
+                "id",
+                "power_sequences"
+            ],
+            "additionalProperties": false
+        },
+        "Commodity": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/schemas/Commodity",
+            "title": "Commodity",
+            "enum": [
+                "GAS",
+                "HEAT",
+                "ELECTRICITY",
+                "OIL"
+            ],
+            "description": "GAS: Identifier for Commodity GAS\nHEAT: Identifier for Commodity HEAT\nELECTRICITY: Identifier for Commodity ELECTRICITY\nOIL: Identifier for Commodity OIL"
+        },
+        "FRBC.LeakageBehaviour": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/messages/FRBC.LeakageBehaviour",
+            "title": "FRBC_LeakageBehaviour",
+            "properties": {
+                "message_type": {
+                    "type": "string",
+                    "const": "FRBC.LeakageBehaviour"
+                },
+                "message_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of this message"
+                },
+                "valid_from": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Moment this FRBC.LeakageBehaviour starts to be valid. If the FRBC.LeakageBehaviour is immediately valid, the DateTimeStamp should be now or in the past."
+                },
+                "elements": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 288,
+                    "items": {
+                        "$ref": "#/$defs/FRBC.LeakageBehaviourElement"
+                    },
+                    "description": "List of elements that model the leakage behaviour of the buffer. The fill_level_ranges of the elements must be contiguous."
+                }
+            },
+            "required": [
+                "message_type",
+                "message_id",
+                "valid_from",
+                "elements"
+            ],
+            "additionalProperties": false
+        },
+        "RevokeObject": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/messages/RevokeObject",
+            "title": "RevokeObject",
+            "properties": {
+                "message_type": {
+                    "type": "string",
+                    "const": "RevokeObject"
+                },
+                "message_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of this message"
+                },
+                "object_type": {
+                    "$ref": "#/$defs/RevokableObjects",
+                    "description": "The type of object that needs to be revoked"
+                },
+                "object_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "The ID of object that needs to be revoked"
+                }
+            },
+            "required": [
+                "message_type",
+                "message_id",
+                "object_type",
+                "object_id"
+            ],
+            "additionalProperties": false
+        },
+        "PEBC.PowerConstraints": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/messages/PEBC.PowerConstraints",
+            "title": "PEBC_PowerConstraints",
+            "properties": {
+                "message_type": {
+                    "type": "string",
+                    "const": "PEBC.PowerConstraints"
+                },
+                "message_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of this message"
+                },
+                "id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "Identifier of this PEBC.PowerConstraints. Must be unique in the scope of the Resource Manager, for at least the duration of the session between Resource Manager and CEM."
+                },
+                "valid_from": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Moment this PEBC.PowerConstraints start to be valid"
+                },
+                "valid_until": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Moment until this PEBC.PowerConstraints is valid. If valid_until is not present, there is no determined end time of this PEBC.PowerConstraints."
+                },
+                "consequence_type": {
+                    "$ref": "#/$defs/PEBC.PowerEnvelopeConsequenceType",
+                    "description": "Type of consequence of limiting power"
+                },
+                "allowed_limit_ranges": {
+                    "type": "array",
+                    "minItems": 2,
+                    "maxItems": 100,
+                    "items": {
+                        "$ref": "#/$defs/PEBC.AllowedLimitRange"
+                    },
+                    "description": "The actual constraints. There shall be at least one PEBC.AllowedLimitRange for the UPPER_LIMIT and at least one AllowedLimitRange for the LOWER_LIMIT. It is allowed to have multiple PEBC.AllowedLimitRange objects with identical CommodityQuantities and LimitTypes."
+                }
+            },
+            "required": [
+                "message_type",
+                "message_id",
+                "id",
+                "valid_from",
+                "consequence_type",
+                "allowed_limit_ranges"
+            ],
+            "additionalProperties": false
+        },
+        "ReceptionStatus": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/messages/ReceptionStatus",
+            "title": "ReceptionStatus",
+            "properties": {
+                "message_type": {
+                    "type": "string",
+                    "const": "ReceptionStatus"
+                },
+                "subject_message_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "The message this ReceptionStatus refers to"
+                },
+                "status": {
+                    "$ref": "#/$defs/ReceptionStatusValues",
+                    "description": "Enumeration of status values"
+                },
+                "diagnostic_label": {
+                    "type": "string",
+                    "description": "Diagnostic label that can be used to provide additional information for debugging. However, not for HMI purposes."
+                }
+            },
+            "required": [
+                "message_type",
+                "subject_message_id",
+                "status"
+            ],
+            "additionalProperties": false
+        },
+        "PowerForecast": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/messages/PowerForecast",
+            "title": "PowerForecast",
+            "properties": {
+                "message_type": {
+                    "type": "string",
+                    "const": "PowerForecast"
+                },
+                "message_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of this message"
+                },
+                "start_time": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Start time of time period that is covered by the profile."
+                },
+                "elements": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 288,
+                    "items": {
+                        "$ref": "#/$defs/PowerForecastElement"
+                    },
+                    "description": "Elements of which this forecast consists. Contains at least one element. Elements must be placed in chronological order."
+                }
+            },
+            "required": [
+                "message_type",
+                "message_id",
+                "start_time",
+                "elements"
+            ],
+            "additionalProperties": false
+        },
+        "PPBC.StartInterruptionInstruction": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/messages/PPBC.StartInterruptionInstruction",
+            "title": "PPBC_StartInterruptionInstruction",
+            "properties": {
+                "message_type": {
+                    "type": "string",
+                    "const": "PPBC.StartInterruptionInstruction"
+                },
+                "message_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of this message"
+                },
+                "id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of the Instruction. Must be unique in the scope of the Resource Manager, for at least the duration of the session between Resource Manager and CEM."
+                },
+                "power_profile_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of the PPBC.PowerProfileDefinition of which the PPBC.PowerSequence is being interrupted by the CEM."
+                },
+                "sequence_container_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of the PPBC.PowerSequnceContainer of which the PPBC.PowerSequence is being interrupted by the CEM."
+                },
+                "power_sequence_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of the PPBC.PowerSequence that the CEM wants to interrupt."
+                },
+                "execution_time": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Indicates the moment the PPBC.PowerSequence shall be interrupted. When the specified execution time is in the past, execution must start as soon as possible."
+                },
+                "abnormal_condition": {
+                    "type": "boolean",
+                    "description": "Indicates if this is an instruction during an abnormal condition"
+                }
+            },
+            "required": [
+                "message_type",
+                "message_id",
+                "id",
+                "power_profile_id",
+                "sequence_container_id",
+                "power_sequence_id",
+                "execution_time",
+                "abnormal_condition"
+            ],
+            "additionalProperties": false
+        },
+        "DDBC.SystemDescription": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/messages/DDBC.SystemDescription",
+            "title": "DDBC_SystemDescription",
+            "properties": {
+                "message_type": {
+                    "type": "string",
+                    "const": "DDBC.SystemDescription"
+                },
+                "message_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of this message"
+                },
+                "valid_from": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Moment this DDBC.SystemDescription starts to be valid. If the system description is immediately valid, the DateTimeStamp should be now or in the past."
+                },
+                "actuators": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 10,
+                    "items": {
+                        "$ref": "#/$defs/DDBC.ActuatorDescription"
+                    },
+                    "description": "List of all available actuators in the system. Must contain at least one DDBC.ActuatorAggregated."
+                },
+                "present_demand_rate": {
+                    "$ref": "#/$defs/NumberRange",
+                    "description": "Present demand rate that needs to be satisfied by the system"
+                },
+                "provides_average_demand_rate_forecast": {
+                    "type": "boolean",
+                    "description": "Indicates whether the Resource Manager could provide a demand rate forecast through the DDBC.AverageDemandRateForecast."
+                }
+            },
+            "required": [
+                "message_type",
+                "message_id",
+                "valid_from",
+                "actuators",
+                "present_demand_rate",
+                "provides_average_demand_rate_forecast"
+            ],
+            "additionalProperties": false
+        },
+        "FRBC.Instruction": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/messages/FRBC.Instruction",
+            "title": "FRBC_Instruction",
+            "properties": {
+                "message_type": {
+                    "type": "string",
+                    "const": "FRBC.Instruction"
+                },
+                "message_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of this message"
+                },
+                "id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of the instruction. Must be unique in the scope of the Resource Manager, for at least the duration of the session between Resource Manager and CEM."
+                },
+                "actuator_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of the actuator this instruction belongs to."
+                },
+                "operation_mode": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of the FRBC.OperationMode that should be activated."
+                },
+                "operation_mode_factor": {
+                    "type": "number",
+                    "description": "The number indicates the factor with which the FRBC.OperationMode should be configured. The factor should be greater than or equal to 0 and less or equal to 1."
+                },
+                "execution_time": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Indicates the moment the execution of the instruction shall start. When the specified execution time is in the past, execution must start as soon as possible."
+                },
+                "abnormal_condition": {
+                    "type": "boolean",
+                    "description": "Indicates if this is an instruction during an abnormal condition."
+                }
+            },
+            "required": [
+                "message_type",
+                "message_id",
+                "id",
+                "actuator_id",
+                "operation_mode",
+                "operation_mode_factor",
+                "execution_time",
+                "abnormal_condition"
+            ],
+            "additionalProperties": false
+        },
+        "PowerMeasurement": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/messages/PowerMeasurement",
+            "title": "PowerMeasurement",
+            "properties": {
+                "message_type": {
+                    "type": "string",
+                    "const": "PowerMeasurement"
+                },
+                "message_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of this message"
+                },
+                "measurement_timestamp": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Timestamp when PowerValues were measured."
+                },
+                "values": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 10,
+                    "items": {
+                        "$ref": "#/$defs/PowerValue"
+                    },
+                    "description": "Array of measured PowerValues. Must contain at least one item and at most one item per ‘commodity_quantity’ (defined inside the PowerValue)."
+                }
+            },
+            "required": [
+                "message_type",
+                "message_id",
+                "measurement_timestamp",
+                "values"
+            ],
+            "additionalProperties": false
+        },
+        "DDBC.TimerStatus": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/messages/DDBC.TimerStatus",
+            "title": "DDBC_TimerStatus",
+            "properties": {
+                "message_type": {
+                    "type": "string",
+                    "const": "DDBC.TimerStatus"
+                },
+                "message_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of this message"
+                },
+                "timer_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "The ID of the timer this message refers to"
+                },
+                "actuator_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "The ID of the actuator the timer belongs to"
+                },
+                "finished_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Indicates when the Timer will be finished. If the DateTimeStamp is in the future, the timer is not yet finished. If the DateTimeStamp is in the past, the timer is finished. If the timer was never started, the value can be an arbitrary DateTimeStamp in the past."
+                }
+            },
+            "required": [
+                "message_type",
+                "message_id",
+                "timer_id",
+                "actuator_id",
+                "finished_at"
+            ],
+            "additionalProperties": false
+        },
+        "HandshakeResponse": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/messages/HandshakeResponse",
+            "title": "HandshakeResponse",
+            "properties": {
+                "message_type": {
+                    "type": "string",
+                    "const": "HandshakeResponse"
+                },
+                "message_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of this message"
+                },
+                "selected_protocol_version": {
+                    "type": "string",
+                    "description": "The protocol version the CEM selected for this session"
+                }
+            },
+            "required": [
+                "message_type",
+                "message_id",
+                "selected_protocol_version"
+            ],
+            "additionalProperties": false
+        },
+        "SessionRequest": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/messages/SessionRequest",
+            "title": "SessionRequest",
+            "properties": {
+                "message_type": {
+                    "type": "string",
+                    "const": "SessionRequest"
+                },
+                "message_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of this message"
+                },
+                "request": {
+                    "$ref": "#/$defs/SessionRequestType",
+                    "description": "The type of request"
+                },
+                "diagnostic_label": {
+                    "type": "string",
+                    "description": "Optional field for a human readible descirption for debugging purposes"
+                }
+            },
+            "required": [
+                "message_type",
+                "message_id",
+                "request"
+            ],
+            "additionalProperties": false
+        },
+        "OMBC.Instruction": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/messages/OMBC.Instruction",
+            "title": "OMBC_Instruction",
+            "properties": {
+                "message_type": {
+                    "type": "string",
+                    "const": "OMBC.Instruction"
+                },
+                "message_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of this message"
+                },
+                "id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of the instruction. Must be unique in the scope of the Resource Manager, for at least the duration of the session between Resource Manager and CEM."
+                },
+                "execution_time": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Indicates the moment the execution of the instruction shall start. When the specified execution time is in the past, execution must start as soon as possible."
+                },
+                "operation_mode_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of the OMBC.OperationMode that should be activated"
+                },
+                "operation_mode_factor": {
+                    "type": "number",
+                    "description": "The number indicates the factor with which the OMBC.OperationMode should be configured. The factor should be greater than or equal than 0 and less or equal to 1."
+                },
+                "abnormal_condition": {
+                    "type": "boolean",
+                    "description": "Indicates if this is an instruction during an abnormal condition"
+                }
+            },
+            "required": [
+                "message_type",
+                "message_id",
+                "id",
+                "execution_time",
+                "operation_mode_id",
+                "operation_mode_factor",
+                "abnormal_condition"
+            ],
+            "additionalProperties": false
+        },
+        "DDBC.AverageDemandRateForecast": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/messages/DDBC.AverageDemandRateForecast",
+            "title": "DDBC_AverageDemandRateForecast",
+            "properties": {
+                "message_type": {
+                    "type": "string",
+                    "const": "DDBC.AverageDemandRateForecast"
+                },
+                "message_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of this message"
+                },
+                "start_time": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Start time of the profile."
+                },
+                "elements": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 288,
+                    "items": {
+                        "$ref": "#/$defs/DDBC.AverageDemandRateForecastElement"
+                    },
+                    "description": "Elements of the profile. Elements must be placed in chronological order."
+                }
+            },
+            "required": [
+                "message_type",
+                "message_id",
+                "start_time",
+                "elements"
+            ],
+            "additionalProperties": false
+        },
+        "PPBC.PowerProfileStatus": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/messages/PPBC.PowerProfileStatus",
+            "title": "PPBC_PowerProfileStatus",
+            "properties": {
+                "message_type": {
+                    "type": "string",
+                    "const": "PPBC.PowerProfileStatus"
+                },
+                "message_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of this message"
+                },
+                "sequence_container_status": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 1000,
+                    "items": {
+                        "$ref": "#/$defs/PPBC.PowerSequenceContainerStatus"
+                    },
+                    "description": "Array with status information for all PPBC.PowerSequenceContainers in the PPBC.PowerProfileDefinition."
+                }
+            },
+            "required": [
+                "message_type",
+                "message_id",
+                "sequence_container_status"
+            ],
+            "additionalProperties": false
+        },
+        "FRBC.UsageForecast": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/messages/FRBC.UsageForecast",
+            "title": "FRBC_UsageForecast",
+            "properties": {
+                "message_type": {
+                    "type": "string",
+                    "const": "FRBC.UsageForecast"
+                },
+                "message_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of this message"
+                },
+                "start_time": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Time at which the FRBC.UsageForecast starts."
+                },
+                "elements": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 288,
+                    "items": {
+                        "$ref": "#/$defs/FRBC.UsageForecastElement"
+                    },
+                    "description": "Further elements that model the profile. There shall be at least one element. Elements must be placed in chronological order."
+                }
+            },
+            "required": [
+                "message_type",
+                "message_id",
+                "start_time",
+                "elements"
+            ],
+            "additionalProperties": false
+        },
+        "PPBC.ScheduleInstruction": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/messages/PPBC.ScheduleInstruction",
+            "title": "PPBC_ScheduleInstruction",
+            "properties": {
+                "message_type": {
+                    "type": "string",
+                    "const": "PPBC.ScheduleInstruction"
+                },
+                "message_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of this message"
+                },
+                "id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of the Instruction. Must be unique in the scope of the Resource Manager, for at least the duration of the session between Resource Manager and CEM."
+                },
+                "power_profile_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of the PPBC.PowerProfileDefinition of which the PPBC.PowerSequence is being selected and scheduled by the CEM."
+                },
+                "sequence_container_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of the PPBC.PowerSequnceContainer of which the PPBC.PowerSequence is being selected and scheduled by the CEM."
+                },
+                "power_sequence_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of the PPBC.PowerSequence that is being selected and scheduled by the CEM."
+                },
+                "execution_time": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Indicates the moment the PPBC.PowerSequence shall start. When the specified execution time is in the past, execution must start as soon as possible."
+                },
+                "abnormal_condition": {
+                    "type": "boolean",
+                    "description": "Indicates if this is an instruction during an abnormal condition"
+                }
+            },
+            "required": [
+                "message_type",
+                "message_id",
+                "id",
+                "power_profile_id",
+                "sequence_container_id",
+                "power_sequence_id",
+                "execution_time",
+                "abnormal_condition"
+            ],
+            "additionalProperties": false
+        },
+        "PPBC.PowerProfileDefinition": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/messages/PPBC.PowerProfileDefinition",
+            "title": "PPBC_PowerProfileDefinition",
+            "properties": {
+                "message_type": {
+                    "type": "string",
+                    "const": "PPBC.PowerProfileDefinition"
+                },
+                "message_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of this message"
+                },
+                "id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of the PPBC.PowerProfileDefinition. Must be unique in the scope of the Resource Manager, for at least the duration of the session between Resource Manager and CEM."
+                },
+                "start_time": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Indicates the first possible time the first PPBC.PowerSequence could start"
+                },
+                "end_time": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Indicates when the last PPBC.PowerSequence shall be finished at the latest"
+                },
+                "power_sequences_containers": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 1000,
+                    "items": {
+                        "$ref": "#/$defs/PPBC.PowerSequenceContainer"
+                    },
+                    "description": "The PPBC.PowerSequenceContainers that make up this PPBC.PowerProfileDefinition. There shall be at least one PPBC.PowerSequenceContainer that includes at least one PPBC.PowerSequence. PPBC.PowerSequenceContainers must be placed in chronological order."
+                }
+            },
+            "required": [
+                "message_type",
+                "message_id",
+                "id",
+                "start_time",
+                "end_time",
+                "power_sequences_containers"
+            ],
+            "additionalProperties": false
+        },
+        "PEBC.EnergyConstraint": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/messages/PEBC.EnergyConstraint",
+            "title": "PEBC_EnergyConstraint",
+            "properties": {
+                "message_type": {
+                    "type": "string",
+                    "const": "PEBC.EnergyConstraint"
+                },
+                "message_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of this message"
+                },
+                "id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "Identifier of this PEBC.EnergyConstraints. Must be unique in the scope of the Resource Manager, for at least the duration of the session between Resource Manager and CEM."
+                },
+                "valid_from": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Moment this PEBC.EnergyConstraints information starts to be valid"
+                },
+                "valid_until": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Moment until this PEBC.EnergyConstraints information is valid."
+                },
+                "upper_average_power": {
+                    "type": "number",
+                    "description": "Upper average power within the time period given by valid_from and valid_until. If the duration is multiplied with this power value, then the associated upper energy content can be derived. This is the highest amount of energy the resource will consume during that period of time. The Power Envelope created by the CEM must allow at least this much energy consumption (in case the number is positive). Must be greater than or equal to lower_average_power, and can be negative in case of energy production."
+                },
+                "lower_average_power": {
+                    "type": "number",
+                    "description": "Lower average power within the time period given by valid_from and valid_until. If the duration is multiplied with this power value, then the associated lower energy content can be derived. This is the lowest amount of energy the resource will consume during that period of time. The Power Envelope created by the CEM must allow at least this much energy production (in case the number is negative). Must be greater than or equal to lower_average_power, and can be negative in case of energy production."
+                },
+                "commodity_quantity": {
+                    "$ref": "#/$defs/CommodityQuantity",
+                    "description": "Type of power quantity which applies to upper_average_power and lower_average_power"
+                }
+            },
+            "required": [
+                "message_type",
+                "message_id",
+                "id",
+                "valid_from",
+                "valid_until",
+                "upper_average_power",
+                "lower_average_power",
+                "commodity_quantity"
+            ],
+            "additionalProperties": false
+        },
+        "OMBC.TimerStatus": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/messages/OMBC.TimerStatus",
+            "title": "OMBC_TimerStatus",
+            "properties": {
+                "message_type": {
+                    "type": "string",
+                    "const": "OMBC.TimerStatus"
+                },
+                "message_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of this message"
+                },
+                "timer_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "The ID of the timer this message refers to"
+                },
+                "finished_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Indicates when the Timer will be finished. If the DateTimeStamp is in the future, the timer is not yet finished. If the DateTimeStamp is in the past, the timer is finished. If the timer was never started, the value can be an arbitrary DateTimeStamp in the past."
+                }
+            },
+            "required": [
+                "message_type",
+                "message_id",
+                "timer_id",
+                "finished_at"
+            ],
+            "additionalProperties": false
+        },
+        "DDBC.Instruction": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/messages/DDBC.Instruction",
+            "title": "DDBC_Instruction",
+            "properties": {
+                "message_type": {
+                    "type": "string",
+                    "const": "DDBC.Instruction"
+                },
+                "message_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of this message"
+                },
+                "id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "Identifier of this DDBC.Instruction. Must be unique in the scope of the Resource Manager, for at least the duration of the session between Resource Manager and CEM."
+                },
+                "execution_time": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Indicates the moment the execution of the instruction shall start. When the specified execution time is in the past, execution must start as soon as possible."
+                },
+                "abnormal_condition": {
+                    "type": "boolean",
+                    "description": "Indicates if this is an instruction during an abnormal condition"
+                },
+                "actuator_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of the actuator this Instruction belongs to."
+                },
+                "operation_mode_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of the DDBC.OperationMode"
+                },
+                "operation_mode_factor": {
+                    "type": "number",
+                    "description": "The number indicates the factor with which the OMBC.OperationMode should be configured. The factor should be greater than or equal to 0 and less or equal to 1."
+                }
+            },
+            "required": [
+                "message_type",
+                "message_id",
+                "id",
+                "execution_time",
+                "abnormal_condition",
+                "actuator_id",
+                "operation_mode_id",
+                "operation_mode_factor"
+            ],
+            "additionalProperties": false
+        },
+        "ResourceManagerDetails": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/messages/ResourceManagerDetails",
+            "title": "ResourceManagerDetails",
+            "properties": {
+                "message_type": {
+                    "type": "string",
+                    "const": "ResourceManagerDetails"
+                },
+                "message_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of this message"
+                },
+                "resource_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "Identifier of the Resource Manager. Must be unique within the scope of the CEM."
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Human readable name given by user"
+                },
+                "roles": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 3,
+                    "items": {
+                        "$ref": "#/$defs/Role"
+                    },
+                    "description": "Each Resource Manager provides one or more energy Roles"
+                },
+                "manufacturer": {
+                    "type": "string",
+                    "description": "Name of Manufacturer"
+                },
+                "model": {
+                    "type": "string",
+                    "description": "Name of the model of the device (provided by the manufacturer)"
+                },
+                "serial_number": {
+                    "type": "string",
+                    "description": "Serial number of the device (provided by the manufacturer)"
+                },
+                "firmware_version": {
+                    "type": "string",
+                    "description": "Version identifier of the firmware used in the device (provided by the manufacturer)"
+                },
+                "instruction_processing_delay": {
+                    "$ref": "#/$defs/Duration",
+                    "description": "The average time the combination of Resource Manager and HBES/BACS/SASS or (Smart) device needs to process and execute an instruction"
+                },
+                "available_control_types": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 5,
+                    "items": {
+                        "$ref": "#/$defs/ControlType"
+                    },
+                    "description": "The control types supported by this Resource Manager."
+                },
+                "currency": {
+                    "$ref": "#/$defs/Currency",
+                    "description": "Currency to be used for all information regarding costs. Mandatory if cost information is published."
+                },
+                "provides_forecast": {
+                    "type": "boolean",
+                    "description": "Indicates whether the ResourceManager is able to provide PowerForecasts"
+                },
+                "provides_power_measurement_types": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 10,
+                    "items": {
+                        "$ref": "#/$defs/CommodityQuantity"
+                    },
+                    "description": "Array of all CommodityQuantities that this Resource Manager can provide measurements for. "
+                }
+            },
+            "required": [
+                "message_type",
+                "message_id",
+                "resource_id",
+                "roles",
+                "instruction_processing_delay",
+                "available_control_types",
+                "provides_forecast",
+                "provides_power_measurement_types"
+            ],
+            "additionalProperties": false
+        },
+        "OMBC.SystemDescription": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/messages/OMBC.SystemDescription",
+            "title": "OMBC_SystemDescription",
+            "properties": {
+                "message_type": {
+                    "type": "string",
+                    "const": "OMBC.SystemDescription"
+                },
+                "message_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of this message"
+                },
+                "valid_from": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Moment this OMBC.SystemDescription starts to be valid. If the system description is immediately valid, the DateTimeStamp should be now or in the past."
+                },
+                "operation_modes": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 100,
+                    "items": {
+                        "$ref": "#/$defs/OMBC.OperationMode"
+                    },
+                    "description": "OMBC.OperationModes available for the CEM in order to coordinate the device behaviour."
+                },
+                "transitions": {
+                    "type": "array",
+                    "minItems": 0,
+                    "maxItems": 1000,
+                    "items": {
+                        "$ref": "#/$defs/Transition"
+                    },
+                    "description": "Possible transitions to switch from one OMBC.OperationMode to another."
+                },
+                "timers": {
+                    "type": "array",
+                    "minItems": 0,
+                    "maxItems": 1000,
+                    "items": {
+                        "$ref": "#/$defs/Timer"
+                    },
+                    "description": "Timers that control when certain transitions can be made."
+                }
+            },
+            "required": [
+                "message_type",
+                "message_id",
+                "valid_from",
+                "operation_modes",
+                "transitions",
+                "timers"
+            ],
+            "additionalProperties": false
+        },
+        "FRBC.StorageStatus": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/messages/FRBC.StorageStatus",
+            "title": "FRBC_StorageStatus",
+            "properties": {
+                "message_type": {
+                    "type": "string",
+                    "const": "FRBC.StorageStatus"
+                },
+                "message_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of this message"
+                },
+                "present_fill_level": {
+                    "type": "number",
+                    "description": "Present fill level of the Storage"
+                }
+            },
+            "required": [
+                "message_type",
+                "message_id",
+                "present_fill_level"
+            ],
+            "additionalProperties": false
+        },
+        "PPBC.EndInterruptionInstruction": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/messages/PPBC.EndInterruptionInstruction",
+            "title": "PPBC_EndInterruptionInstruction",
+            "properties": {
+                "message_type": {
+                    "type": "string",
+                    "const": "PPBC.EndInterruptionInstruction"
+                },
+                "message_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of this message"
+                },
+                "id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of the Instruction. Must be unique in the scope of the Resource Manager, for at least the duration of the session between Resource Manager and CEM."
+                },
+                "power_profile_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of the PPBC.PowerProfileDefinition of which the PPBC.PowerSequence interruption is being ended by the CEM."
+                },
+                "sequence_container_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of the PPBC.PowerSequnceContainer of which the PPBC.PowerSequence interruption is being ended by the CEM."
+                },
+                "power_sequence_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of the PPBC.PowerSequence for which the CEM wants to end the interruption."
+                },
+                "execution_time": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Indicates the moment PPBC.PowerSequence interruption shall end. When the specified execution time is in the past, execution must start as soon as possible."
+                },
+                "abnormal_condition": {
+                    "type": "boolean",
+                    "description": "Indicates if this is an instruction during an abnormal condition"
+                }
+            },
+            "required": [
+                "message_type",
+                "message_id",
+                "id",
+                "power_profile_id",
+                "sequence_container_id",
+                "power_sequence_id",
+                "execution_time",
+                "abnormal_condition"
+            ],
+            "additionalProperties": false
+        },
+        "SelectControlType": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/messages/SelectControlType",
+            "title": "SelectControlType",
+            "properties": {
+                "message_type": {
+                    "type": "string",
+                    "const": "SelectControlType"
+                },
+                "message_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of this message"
+                },
+                "control_type": {
+                    "$ref": "#/$defs/ControlType",
+                    "description": "The ControlType to activate. Must be one of the available ControlTypes as defined in the ResourceManagerDetails"
+                }
+            },
+            "required": [
+                "message_type",
+                "message_id",
+                "control_type"
+            ],
+            "additionalProperties": false
+        },
+        "Handshake": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/messages/Handshake",
+            "title": "Handshake",
+            "properties": {
+                "message_type": {
+                    "type": "string",
+                    "const": "Handshake"
+                },
+                "message_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of this message"
+                },
+                "role": {
+                    "$ref": "#/$defs/EnergyManagementRole",
+                    "description": "The role of the sender of this message"
+                },
+                "supported_protocol_versions": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Protocol versions supported by the sender of this message. This field is mandatory for the RM, but optional for the CEM."
+                }
+            },
+            "required": [
+                "message_type",
+                "message_id",
+                "role"
+            ],
+            "additionalProperties": false
+        },
+        "OMBC.Status": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/messages/OMBC.Status",
+            "title": "OMBC_Status",
+            "properties": {
+                "message_type": {
+                    "type": "string",
+                    "const": "OMBC.Status"
+                },
+                "message_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of this message"
+                },
+                "active_operation_mode_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of the active OMBC.OperationMode."
+                },
+                "operation_mode_factor": {
+                    "type": "number",
+                    "description": "The number indicates the factor with which the OMBC.OperationMode should be configured. The factor should be greater than or equal than 0 and less or equal to 1."
+                },
+                "previous_operation_mode_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of the OMBC.OperationMode that was previously active. This value shall always be provided, unless the active OMBC.OperationMode is the first OMBC.OperationMode the Resource Manager is aware of."
+                },
+                "transition_timestamp": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Time at which the transition from the previous OMBC.OperationMode to the active OMBC.OperationMode was initiated. This value shall always be provided, unless the active OMBC.OperationMode is the first OMBC.OperationMode the Resource Manager is aware of."
+                }
+            },
+            "required": [
+                "message_type",
+                "message_id",
+                "active_operation_mode_id",
+                "operation_mode_factor"
+            ],
+            "additionalProperties": false
+        },
+        "FRBC.SystemDescription": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/messages/FRBC.SystemDescription",
+            "title": "FRBC_SystemDescription",
+            "properties": {
+                "message_type": {
+                    "type": "string",
+                    "const": "FRBC.SystemDescription"
+                },
+                "message_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of this message"
+                },
+                "valid_from": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Moment this FRBC.SystemDescription starts to be valid. If the system description is immediately valid, the DateTimeStamp should be now or in the past."
+                },
+                "actuators": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 10,
+                    "items": {
+                        "$ref": "#/$defs/FRBC.ActuatorDescription"
+                    },
+                    "description": "Details of all Actuators."
+                },
+                "storage": {
+                    "$ref": "#/$defs/FRBC.StorageDescription",
+                    "description": "Details of the storage."
+                }
+            },
+            "required": [
+                "message_type",
+                "message_id",
+                "valid_from",
+                "actuators",
+                "storage"
+            ],
+            "additionalProperties": false
+        },
+        "PEBC.Instruction": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/messages/PEBC.Instruction",
+            "title": "PEBC_Instruction",
+            "properties": {
+                "message_type": {
+                    "type": "string",
+                    "const": "PEBC.Instruction"
+                },
+                "message_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of this message"
+                },
+                "id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "Identifier of this PEBC.Instruction. Must be unique in the scope of the Resource Manager, for at least the duration of the session between Resource Manager and CEM."
+                },
+                "execution_time": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Indicates the moment the execution of the instruction shall start. When the specified execution time is in the past, execution must start as soon as possible."
+                },
+                "abnormal_condition": {
+                    "type": "boolean",
+                    "description": "Indicates if this is an instruction during an abnormal condition."
+                },
+                "power_constraints_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "Identifier of the PEBC.PowerConstraints this PEBC.Instruction was based on."
+                },
+                "power_envelopes": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 10,
+                    "items": {
+                        "$ref": "#/$defs/PEBC.PowerEnvelope"
+                    },
+                    "description": "The PEBC.PowerEnvelope(s) that should be followed by the Resource Manager. There shall be at least one PEBC.PowerEnvelope, but at most one PEBC.PowerEnvelope for each CommodityQuantity."
+                }
+            },
+            "required": [
+                "message_type",
+                "message_id",
+                "id",
+                "execution_time",
+                "abnormal_condition",
+                "power_constraints_id",
+                "power_envelopes"
+            ],
+            "additionalProperties": false
+        },
+        "FRBC.FillLevelTargetProfile": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/messages/FRBC.FillLevelTargetProfile",
+            "title": "FRBC_FillLevelTargetProfile",
+            "properties": {
+                "message_type": {
+                    "type": "string",
+                    "const": "FRBC.FillLevelTargetProfile"
+                },
+                "message_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of this message"
+                },
+                "start_time": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Time at which the FRBC.FillLevelTargetProfile starts."
+                },
+                "elements": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 288,
+                    "items": {
+                        "$ref": "#/$defs/FRBC.FillLevelTargetProfileElement"
+                    },
+                    "description": "List of different fill levels that have to be targeted within a given duration. There shall be at least one element. Elements must be placed in chronological order."
+                }
+            },
+            "required": [
+                "message_type",
+                "message_id",
+                "start_time",
+                "elements"
+            ],
+            "additionalProperties": false
+        },
+        "FRBC.ActuatorStatus": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/messages/FRBC.ActuatorStatus",
+            "title": "FRBC_ActuatorStatus",
+            "properties": {
+                "message_type": {
+                    "type": "string",
+                    "const": "FRBC.ActuatorStatus"
+                },
+                "message_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of this message"
+                },
+                "actuator_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of the actuator this messages refers to"
+                },
+                "active_operation_mode_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of the FRBC.OperationMode that is presently active."
+                },
+                "operation_mode_factor": {
+                    "type": "number",
+                    "description": "The number indicates the factor with which the FRBC.OperationMode is configured. The factor should be greater than or equal than 0 and less or equal to 1."
+                },
+                "previous_operation_mode_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of the FRBC.OperationMode that was active before the present one. This value shall always be provided, unless the active FRBC.OperationMode is the first FRBC.OperationMode the Resource Manager is aware of."
+                },
+                "transition_timestamp": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Time at which the transition from the previous FRBC.OperationMode to the active FRBC.OperationMode was initiated. This value shall always be provided, unless the active FRBC.OperationMode is the first FRBC.OperationMode the Resource Manager is aware of."
+                }
+            },
+            "required": [
+                "message_type",
+                "message_id",
+                "actuator_id",
+                "active_operation_mode_id",
+                "operation_mode_factor"
+            ],
+            "additionalProperties": false
+        },
+        "DDBC.ActuatorStatus": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/messages/DDBC.ActuatorStatus",
+            "title": "DDBC_ActuatorStatus",
+            "properties": {
+                "message_type": {
+                    "type": "string",
+                    "const": "DDBC.ActuatorStatus"
+                },
+                "message_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of this message"
+                },
+                "actuator_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of the actuator this messages refers to"
+                },
+                "active_operation_mode_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "The operation mode that is presently active for this actuator."
+                },
+                "operation_mode_factor": {
+                    "type": "number",
+                    "description": "The number indicates the factor with which the DDBC.OperationMode is configured. The factor should be greater than or equal to 0 and less or equal to 1."
+                },
+                "previous_operation_mode_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of the DDBC,OperationMode that was active before the present one. This value shall always be provided, unless the active DDBC.OperationMode is the first DDBC.OperationMode the Resource Manager is aware of."
+                },
+                "transition_timestamp": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Time at which the transition from the previous DDBC.OperationMode to the active DDBC.OperationMode was initiated. This value shall always be provided, unless the active DDBC.OperationMode is the first DDBC.OperationMode the Resource Manager is aware of."
+                }
+            },
+            "required": [
+                "message_type",
+                "message_id",
+                "actuator_id",
+                "active_operation_mode_id",
+                "operation_mode_factor"
+            ],
+            "additionalProperties": false
+        },
+        "FRBC.TimerStatus": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/messages/FRBC.TimerStatus",
+            "title": "FRBC_TimerStatus",
+            "properties": {
+                "message_type": {
+                    "type": "string",
+                    "const": "FRBC.TimerStatus"
+                },
+                "message_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of this message"
+                },
+                "timer_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "The ID of the timer this message refers to"
+                },
+                "actuator_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "The ID of the actuator the timer belongs to"
+                },
+                "finished_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Indicates when the Timer will be finished. If the DateTimeStamp is in the future, the timer is not yet finished. If the DateTimeStamp is in the past, the timer is finished. If the timer was never started, the value can be an arbitrary DateTimeStamp in the past."
+                }
+            },
+            "required": [
+                "message_type",
+                "message_id",
+                "timer_id",
+                "actuator_id",
+                "finished_at"
+            ],
+            "additionalProperties": false
+        },
+        "InstructionStatusUpdate": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://raw.githubusercontent.com/flexiblepower/s2-ws-json/main/s2-json-schema/messages/InstructionStatusUpdate",
+            "title": "InstructionStatusUpdate",
+            "properties": {
+                "message_type": {
+                    "type": "string",
+                    "const": "InstructionStatusUpdate"
+                },
+                "message_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of this message"
+                },
+                "instruction_id": {
+                    "$ref": "#/$defs/ID",
+                    "description": "ID of this instruction (as provided by the CEM) "
+                },
+                "status_type": {
+                    "$ref": "#/$defs/InstructionStatus",
+                    "description": "Present status of this instruction."
+                },
+                "timestamp": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Timestamp when status_type has changed the last time."
+                }
+            },
+            "required": [
+                "message_type",
+                "message_id",
+                "instruction_id",
+                "status_type",
+                "timestamp"
+            ],
+            "additionalProperties": false
+        }
+    },
+    "oneOf": [
+        {
+            "$ref": "#/$defs/FRBC.LeakageBehaviour"
+        },
+        {
+            "$ref": "#/$defs/RevokeObject"
+        },
+        {
+            "$ref": "#/$defs/PEBC.PowerConstraints"
+        },
+        {
+            "$ref": "#/$defs/ReceptionStatus"
+        },
+        {
+            "$ref": "#/$defs/PowerForecast"
+        },
+        {
+            "$ref": "#/$defs/PPBC.StartInterruptionInstruction"
+        },
+        {
+            "$ref": "#/$defs/DDBC.SystemDescription"
+        },
+        {
+            "$ref": "#/$defs/FRBC.Instruction"
+        },
+        {
+            "$ref": "#/$defs/PowerMeasurement"
+        },
+        {
+            "$ref": "#/$defs/DDBC.TimerStatus"
+        },
+        {
+            "$ref": "#/$defs/HandshakeResponse"
+        },
+        {
+            "$ref": "#/$defs/SessionRequest"
+        },
+        {
+            "$ref": "#/$defs/OMBC.Instruction"
+        },
+        {
+            "$ref": "#/$defs/DDBC.AverageDemandRateForecast"
+        },
+        {
+            "$ref": "#/$defs/PPBC.PowerProfileStatus"
+        },
+        {
+            "$ref": "#/$defs/FRBC.UsageForecast"
+        },
+        {
+            "$ref": "#/$defs/PPBC.ScheduleInstruction"
+        },
+        {
+            "$ref": "#/$defs/PPBC.PowerProfileDefinition"
+        },
+        {
+            "$ref": "#/$defs/PEBC.EnergyConstraint"
+        },
+        {
+            "$ref": "#/$defs/OMBC.TimerStatus"
+        },
+        {
+            "$ref": "#/$defs/DDBC.Instruction"
+        },
+        {
+            "$ref": "#/$defs/ResourceManagerDetails"
+        },
+        {
+            "$ref": "#/$defs/OMBC.SystemDescription"
+        },
+        {
+            "$ref": "#/$defs/FRBC.StorageStatus"
+        },
+        {
+            "$ref": "#/$defs/PPBC.EndInterruptionInstruction"
+        },
+        {
+            "$ref": "#/$defs/SelectControlType"
+        },
+        {
+            "$ref": "#/$defs/Handshake"
+        },
+        {
+            "$ref": "#/$defs/OMBC.Status"
+        },
+        {
+            "$ref": "#/$defs/FRBC.SystemDescription"
+        },
+        {
+            "$ref": "#/$defs/PEBC.Instruction"
+        },
+        {
+            "$ref": "#/$defs/FRBC.FillLevelTargetProfile"
+        },
+        {
+            "$ref": "#/$defs/FRBC.ActuatorStatus"
+        },
+        {
+            "$ref": "#/$defs/DDBC.ActuatorStatus"
+        },
+        {
+            "$ref": "#/$defs/FRBC.TimerStatus"
+        },
+        {
+            "$ref": "#/$defs/InstructionStatusUpdate"
+        }
+    ]
+}

@@ -1,0 +1,21 @@
+type_name = "PowerForecastElement"
+sent_by = []
+description = '''
+TODO
+'''
+
+[fields.duration]
+field_name = "duration"
+field_type = "Duration"
+optional = false
+description = '''
+Duration of the PowerForecastElement
+'''
+
+[fields.power_values]
+field_name = "power_values"
+field_type = "PowerForecastValue[]"
+optional = false
+description = '''
+The values of power that are expected for the given period of time. There shall be at least one PowerForecastValue, and at most one PowerForecastValue per CommodityQuantity.
+'''
