@@ -1,6 +1,6 @@
 type_name = "ReceptionStatusValues"
 description = '''
-
+TODO
 '''
 
 [variants.INVALID_DATA]

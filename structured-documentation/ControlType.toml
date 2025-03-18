@@ -1,6 +1,6 @@
 type_name = "ControlType"
 description = '''
-
+TODO
 '''
 
 [variants.POWER_ENVELOPE_BASED_CONTROL]

@@ -1,6 +1,6 @@
 type_name = "RoleType"
 description = '''
-
+TODO
 '''
 
 [variants.ENERGY_PRODUCER]

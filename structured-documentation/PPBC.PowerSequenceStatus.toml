@@ -1,6 +1,6 @@
 type_name = "PPBC.PowerSequenceStatus"
 description = '''
-
+TODO
 '''
 
 [variants.NOT_SCHEDULED]

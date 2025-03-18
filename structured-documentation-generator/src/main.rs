@@ -34,7 +34,10 @@ fn main() {
                 .find(&description)
                 .map(|desc| desc.start())
                 .unwrap_or(description.len());
-            let (root_description, _) = description.split_at(root_description_end);
+            let (mut root_description, _) = description.split_at(root_description_end);
+            if root_description.len() == 0 {
+                root_description = "TODO";
+            }
 
             let variant_descriptions: Vec<_> =
                 enum_description_regex.captures_iter(&description).collect();

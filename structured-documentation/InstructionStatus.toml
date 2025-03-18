@@ -1,6 +1,6 @@
 type_name = "InstructionStatus"
 description = '''
-
+TODO
 '''
 
 [variants.NEW]

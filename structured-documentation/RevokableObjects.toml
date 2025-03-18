@@ -1,6 +1,6 @@
 type_name = "RevokableObjects"
 description = '''
-
+TODO
 '''
 
 [variants."PEBC.PowerConstraints"]
