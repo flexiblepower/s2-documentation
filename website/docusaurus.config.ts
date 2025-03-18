@@ -21,6 +21,7 @@ const config: Config = {
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
+  trailingSlash: true,
 
   // Even if you don't use internationalization, you can use this field to set
   // useful metadata like html lang. For example, if your site is Chinese, you
@@ -62,7 +63,7 @@ const config: Config = {
           label: 'Documentation',
         },
         {
-          href: 'https://github.com/facebook/docusaurus',
+          href: 'https://github.com/flexiblepower/s2-documentation',
           label: 'GitHub',
           position: 'right',
         },
@@ -72,42 +73,16 @@ const config: Config = {
       style: 'dark',
       links: [
         {
-          title: 'Docs',
+          title: 'Language-specific tooling',
           items: [
             {
-              label: 'API Reference',
-              to: '/docs/API',
-            },
-          ],
-        },
-        {
-          title: 'Community',
-          items: [
-            {
-              label: 'Stack Overflow',
-              href: 'https://stackoverflow.com/questions/tagged/docusaurus',
+              label: 'Rust crate',
+              href: 'https://crates.io/crates/s2energy',
             },
             {
-              label: 'Discord',
-              href: 'https://discordapp.com/invite/docusaurus',
-            },
-            {
-              label: 'X',
-              href: 'https://x.com/docusaurus',
-            },
-          ],
-        },
-        {
-          title: 'More',
-          items: [
-            {
-              label: 'Blog',
-              to: '/blog',
-            },
-            {
-              label: 'GitHub',
-              href: 'https://github.com/facebook/docusaurus',
-            },
+              label: 'Python library',
+              href: 'https://pypi.org/project/s2-python/',
+            }
           ],
         },
       ],
