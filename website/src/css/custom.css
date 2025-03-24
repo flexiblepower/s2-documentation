@@ -16,7 +16,7 @@
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme='dark'] {
-  --ifm-color-primary: #25c2a0;
+  --ifm-color-primary: #889EDB;
   --ifm-color-primary-dark: #21af90;
   --ifm-color-primary-darker: #1fa588;
   --ifm-color-primary-darkest: #1a8870;
@@ -38,6 +38,20 @@ h1, h2, h3, h4, h5, h6 {
   h2 {
     font-size: 16pt;
   }
+}
+
+.field-card {
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid rgba(18, 62, 183, 0.2);
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+[data-theme='dark'] .field-card {
+  border: none;
+  box-shadow: none;
+  background: rgb(40, 40, 40);
 }
 
 .field-card p {

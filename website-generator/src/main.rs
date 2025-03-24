@@ -10,7 +10,7 @@ fn link_type(
 ) -> handlebars::HelperResult {
     let param = h.param(0).unwrap();
     let param_str = param.value().as_str().unwrap();
-    if param_str == "string" || param_str == "integer" || param_str == "float" {
+    if param_str == "string" || param_str == "integer" || param_str == "float" || param_str == "boolean" {
         out.write(&format!("`{0}`", param_str))?;
     } else {
         let split: Vec<_> = param_str.split(".").collect();

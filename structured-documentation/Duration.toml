@@ -1,0 +1,7 @@
+type_name = "Duration"
+sent_by = []
+description = '''
+TODO
+'''
+
+fields = {}
