@@ -22,7 +22,7 @@ A hybrid heat pump can temporary reduce or stop its electricity consumption by s
 
 ## Choosing the right Control Type
 
-When implementing S2, it's important to choose the right [Control Type(s)](Control_Types) to implement in the RM of the heat pump. S2 is a language for conveying energy flexibility to the CEM without making any assumptions on what the CEM is optimizing for. Although there typically are multiple Control Types that can be used for a heat pump, it is preferred to pick the one that conveys the most information and control options to the CEM, so the CEM can do the best optimization that adds the most value.
+When implementing S2, it's important to choose the right [Control Type(s)](./Control_Types) to implement in the RM of the heat pump. S2 is a language for conveying energy flexibility to the CEM without making any assumptions on what the CEM is optimizing for. Although there typically are multiple Control Types that can be used for a heat pump, it is preferred to pick the one that conveys the most information and control options to the CEM, so the CEM can do the best optimization that adds the most value.
 
 As a general rule, when there is some form of energy (in this case heat) buffering involved, Fill Rate Base Control (FRBC) is the best Control Type. When there is no flexibility involved, but there is an option to switch between different fuels (as is the case with the hybrid heat pump), Demand Driven Based Control (DDBC) typically is the best option. Both Control Types give the CEM relatively direct control over the heat pump.
 
