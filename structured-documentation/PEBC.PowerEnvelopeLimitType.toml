@@ -6,11 +6,11 @@ TODO
 [variants.UPPER_LIMIT]
 variant_name = "UPPER_LIMIT"
 description = '''
-Indicating the upper limit of a `PEBC.PowerEnvelope` (see Clause `7.6`.2)
+Indicating the upper limit of a `PEBC.PowerEnvelope` (see Clause 7.6.2)
 '''
 
 [variants.LOWER_LIMIT]
 variant_name = "LOWER_LIMIT"
 description = '''
-Indicating the lower limit of a `PEBC.PowerEnvelope` (see Clause `7.6`.2)
+Indicating the lower limit of a `PEBC.PowerEnvelope` (see Clause 7.6.2)
 '''

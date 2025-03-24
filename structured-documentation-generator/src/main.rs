@@ -9,7 +9,7 @@ use schemars::schema::{ArrayValidation, InstanceType, RootSchema, SingleOrVec};
 mod doc_types;
 
 fn process_description(description: String) -> String {
-    let s2_type_regex = Regex::new(r"[\w\d]+\.[\w\d]+").unwrap();
+    let s2_type_regex = Regex::new(r"\w[\w\d]+\.\w[\w\d]+").unwrap();
     s2_type_regex.replace_all(&description, "`$0`").into()
 }
 

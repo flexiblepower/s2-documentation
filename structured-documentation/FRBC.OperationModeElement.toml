@@ -33,5 +33,5 @@ field_name = "running_costs"
 field_type = "NumberRange"
 optional = true
 description = '''
-Additional costs per second (`e.g`. wear, services) associated with this operation mode in the currency defined by the ResourceManagerDetails, excluding the commodity cost. The range is expressing uncertainty and is not linked to the operation_mode_factor.
+Additional costs per second (e.g. wear, services) associated with this operation mode in the currency defined by the ResourceManagerDetails, excluding the commodity cost. The range is expressing uncertainty and is not linked to the operation_mode_factor.
 '''

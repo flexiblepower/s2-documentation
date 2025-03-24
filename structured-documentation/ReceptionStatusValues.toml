@@ -6,7 +6,7 @@ TODO
 [variants.INVALID_DATA]
 variant_name = "INVALID_DATA"
 description = '''
-Message not understood (`e.g`. not valid JSON, no message_id found). Consequence: Message is ignored, proceed if possible
+Message not understood (e.g. not valid JSON, no message_id found). Consequence: Message is ignored, proceed if possible
 '''
 
 [variants.INVALID_MESSAGE]
@@ -18,7 +18,7 @@ Message was not according to schema. Consequence: Message is ignored, proceed if
 [variants.INVALID_CONTENT]
 variant_name = "INVALID_CONTENT"
 description = '''
-Message contents is invalid (`e.g`. contains a non-existing ID). Somewhat equivalent to BAD_REQUEST in HTTP.. Consequence: Message is ignored, proceed if possible.
+Message contents is invalid (e.g. contains a non-existing ID). Somewhat equivalent to BAD_REQUEST in HTTP.. Consequence: Message is ignored, proceed if possible.
 '''
 
 [variants.TEMPORARY_ERROR]

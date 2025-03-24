@@ -60,6 +60,14 @@ h1, h2, h3, h4, h5, h6 {
   --ifm-h3-font-size: 1.5rem;
 }
 
+.type-link {
+  color: #C42759;
+}
+
+.type-link a {
+  color: #C42759;
+}
+
 
 body {
   font-family: "Hanken Grotesk", "Helvetica Neueu", "Helvetica", sans-serif;
