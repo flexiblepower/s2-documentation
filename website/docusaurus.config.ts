@@ -7,7 +7,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 const config: Config = {
   title: 'S2 Documentation',
   tagline: 'Documentation for the S2 standard',
-  favicon: 'img/logo-S2-no-text.svg',
+  favicon: 'img/logo-s2-no-text.svg',
 
   // Set the production url of your site here
   url: 'https://flexiblepower.github.io/',
@@ -53,7 +53,7 @@ const config: Config = {
       title: 'The S2 Standard',
       logo: {
         alt: 'S2 Standard',
-        src: 'img/logo-S2-no-text.svg',
+        src: 'img/logo-s2-no-text.svg',
       },
       items: [
         {
