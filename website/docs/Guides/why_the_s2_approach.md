@@ -1,3 +1,7 @@
+---
+title: "Background: S2 Design Principles"
+---
+
 # Why the S2 approach?
 There any many methods and models you could use for utilizing energy flexibility. Why do it the S2 way instead of some other way?
 

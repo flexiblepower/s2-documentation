@@ -1,3 +1,7 @@
+---
+title: "Example: PV Installation"
+---
+
 # S2 example for PV installations
 
 This page serves as a guide for implementing an S2 RM for a PV installation. It provides example S2 messages that help developers to understand how to interact with PV installations and what kind of flexibility they can offer.

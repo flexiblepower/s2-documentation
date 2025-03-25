@@ -1,3 +1,7 @@
+---
+title: "Choosing a Control Type"
+---
+
 # Control Types
 
 A Control Type is a way in which a RM in S2 can express how a resource is flexible, what is current status is, and a way for the CEM to send instructions. There are five control types defined in S2. Each Control Type has its own set of messages. You can think of a Control Type as a sub protocol in S2.

@@ -11,6 +11,7 @@
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
 
   --ifm-code-font-size: 95%;
+  --ifm-font-family-monospace: "Cascadia Code", sans-serif;
   --ifm-leading: 0.75rem;
 }
 
@@ -46,6 +47,10 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 1rem;
   border: 1px solid rgba(18, 62, 183, 0.2);
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+pre > code {
+  font-weight: 400;
 }
 
 [data-theme='dark'] .field-card {
@@ -107,19 +112,25 @@ code {
 @font-face {
   font-family: "Cascadia Code";
   src: url("/font/CascadiaCode-Regular.ttf") format("truetype");
-  font-weight: normal;
+  font-weight: 400;
 }
 
 @font-face {
   font-family: "Cascadia Code";
   src: url("/font/CascadiaCode-Bold.ttf") format("truetype");
-  font-weight: bold;
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: "Cascadia Code";
+  src: url("/font/CascadiaCode-SemiBold.ttf") format("truetype");
+  font-weight: 500;
 }
 
 @font-face {
   font-family: "Cascadia Code";
   src: url("/font/CascadiaCode-Light.ttf") format("truetype");
-  font-weight: light;
+  font-weight: 300;
 }
 
 @font-face {

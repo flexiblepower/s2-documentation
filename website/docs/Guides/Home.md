@@ -1,3 +1,7 @@
+---
+title: "FAQ"
+---
+
 # S2 Introduction
 
 ## What is S2?

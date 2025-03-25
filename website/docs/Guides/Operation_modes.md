@@ -1,3 +1,7 @@
+---
+title: "Guide to Operation Modes"
+---
+
 # Operation Mode based Control Types
 
 ## Similarities

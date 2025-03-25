@@ -1,3 +1,7 @@
+---
+title: "S2 Glossary"
+---
+
 The following is a list of commonly used terms in S2. This can be used as a reference.
 
 # Abnormal Condition

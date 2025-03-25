@@ -1,6 +1,10 @@
+---
+title: "States of Communication"
+---
+
 # State of S2 session
 
-![image](https://user-images.githubusercontent.com/851310/205604844-4b65ca5c-a2b6-4d3f-9434-bd17d65341ff.png)
+![image](/img/state_of_communication.png)
 
 
 | State | Messages that can be sent by CEM /received by RM | Messages that can be sent by RM / received by CEM |

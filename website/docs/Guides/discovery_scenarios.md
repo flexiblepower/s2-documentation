@@ -1,3 +1,7 @@
+---
+title: "Discovery in S2"
+---
+
 As part of the S2 WebSockets Implementation a way for Resources to be able to discover each other and establish communication is necessary.
 We identified the following scenarios:
 

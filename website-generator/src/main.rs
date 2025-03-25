@@ -10,7 +10,7 @@ fn link_type(
 ) -> handlebars::HelperResult {
     let param = h.param(0).unwrap();
     let param_str = param.value().as_str().unwrap();
-    if param_str == "string" || param_str == "integer" || param_str == "float" || param_str == "boolean" {
+    if matches!(param_str.replace("[]", "").as_str(), "string" | "integer" | "float" | "boolean") { // ==  || param_str == "integer" || param_str == "float" || param_str == "boolean" {
         out.write(&format!("`{0}`", param_str))?;
     } else {
         let split: Vec<_> = param_str.split(".").collect();
@@ -32,7 +32,12 @@ fn main() {
     handlebars.register_helper("linktype", Box::new(link_type));
     handlebars.register_escape_fn(|x| x.to_string());
 
-    let _ = std::fs::remove_dir_all("../website/docs/API/"); // Ignore errors on this, doesn't matter
+    let _ = std::fs::remove_dir_all("../website/docs/API/Common");
+    let _ = std::fs::remove_dir_all("../website/docs/API/DDBC");
+    let _ = std::fs::remove_dir_all("../website/docs/API/FRBC");
+    let _ = std::fs::remove_dir_all("../website/docs/API/OMBC");
+    let _ = std::fs::remove_dir_all("../website/docs/API/PEBC");
+    let _ = std::fs::remove_dir_all("../website/docs/API/PPBC");
 
     for toml_file in std::fs::read_dir("../structured-documentation").unwrap() {
         let toml_file = toml_file.unwrap();
