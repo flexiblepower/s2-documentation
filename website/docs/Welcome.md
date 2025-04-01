@@ -18,12 +18,12 @@ As the S2 standard is a semantic protocol, it needs an underlying implementing p
 An important implementing protocol is `S2-ws-json`. It is an open source specification using common webtechnologies that allow for IP-based communication of the S2 standard. A key feature of the specification is that it allows for device connections and energy managers to run on-premises (LAN) or in the cloud (WAN), in all possible combinations.
 
 ## What's next?
-For reading a bit more about energy flexibility in general and how S2 relates to it, you can find more information [here](Background/Intro_energy_flexibility.md).
+For reading a bit more about energy flexibility in general and how S2 relates to it, you can find more information [here](/docs/Background/Intro_energy_flexibility.md).
 
-If you want to know more about the design principles of S2, you can continue reading here at [link](Concepts/Architecture.md).
+If you want to know more about the design principles of S2, you can continue reading here at [link](/docs/Concepts/Architecture.md).
 
-Before starting to implement S2, make sure to familiarize yourself with the [concepts](Concepts/Architecture.md).
+Before starting to implement S2, make sure to familiarize yourself with the [concepts](/docs/Concepts/Architecture.md).
 
-More information about the implementing protocol specification is provided [here](<S2 Json over Websockets/Introduction.md>).
+More information about the implementing protocol specification is provided [here](/docs/S2%20Json%20over%20Websockets/Introduction.md).
 
-If you want to read about how to model energy flexibility from some typical devices, head over to the [examples](Examples/Example_EV.md).
+If you want to read about how to model energy flexibility from some typical devices, head over to the [examples](/docs/Examples/Example_EV.md).
