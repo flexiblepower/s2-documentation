@@ -1,5 +1,5 @@
 ---
-title: "Background: S2 Design Principles"
+title: "S2 Design Principles"
 ---
 
 # Why the S2 approach?

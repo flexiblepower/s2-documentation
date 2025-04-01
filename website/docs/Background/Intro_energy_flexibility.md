@@ -1,11 +1,12 @@
 ---
-title: "FAQ"
+title: "Introduction to Energy Flexibility"
+sidebar_position: 0
 ---
 
-# S2 Introduction
+# Energy Flexibility
 
-## What is S2?
-S2 is the short name for the EN 50491-12-2 standard for in building energy management. It is a protocol for the energy management of energy intensive devices found in the build environment, such as photovoltaic (PV) systems, electric vehicle (EV) chargers, batteries, (hybrid) heat pumps and white goods. It is specifically designed to utilize energy flexibility. It is built in such a way that it can work with any flexible device from any manufacturer, and that it would work for any energy management use case. It is not meant to replace existing protocols for energy management, but rather to provide a universal language for energy flexibility in the build environment.
+<!-- ## What is S2?
+S2 is the short name for the EN 50491-12-2 standard for in building energy management. It is a protocol for the energy management of energy intensive devices found in the build environment, such as photovoltaic (PV) systems, electric vehicle (EV) chargers, batteries, (hybrid) heat pumps and white goods. It is specifically designed to utilize energy flexibility. It is built in such a way that it can work with any flexible device from any manufacturer, and that it would work for any energy management use case. It is not meant to replace existing protocols for energy management, but rather to provide a universal language for energy flexibility in the build environment. -->
 
 ## What is energy flexibility?
 Most energy intensive devices have some kind of comfort target. For example, an EV charger needs to make sure the car is sufficiently charged at a certain time, and a heat pump needs to make sure the room has the right temperature and that the shower has hot water. However, when these devices consume or produce energy typically has some flexibility. For example, as long as the car is sufficiently charged at the desired time, an EV charger might delay charging a while or might charge with less power. A heat pump might generate a bit more heat at some point, so it doesn't have to do it later. This flexibility in when a devices consumes or produces energy, without sacrificing the comfort targets, is what we refer to as energy flexibility.
@@ -31,7 +32,7 @@ On the other hand, there are many types of optimizations an energy management sy
 
 With a common protocol for energy flexibility, any device can work with any energy management system. With a common protocol for energy flexibility, you are free to choose which devices you buy *and* the energy management system that optimizes energy flexibility the way you want.
 
-For more information on why S2 was designed the way it was designed, take a look at [Why the S2 approach?](https://github.com/flexiblepower/s2-ws-json/wiki/why_the_s2_approach).
+For more information on why S2 was designed the way it was designed, take a look at [Why the S2 approach?](why_the_s2_approach).
 
 ## How does S2 relate to other protocols for energy management?
 How S2 relates exactly to another protocol of course depends on the other protocol. But most protocols out there tend to pick a type of device (e.g. EV charger, white goods) or pick an optimization (e.g. tariffs, grid signals). S2 is unique in that it is agnostic to both aspects.
