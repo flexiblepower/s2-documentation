@@ -18,7 +18,7 @@ The battery management system in the EV consists of hardware and software that u
 In principle, the RM can be implemented either on EV level or on the charge point level. However, the availability of the required data for the RM depends on the interfaces between EV and charge point (so both the EV and the charge point need to support right interfaces). For example, some EVs do not share State-of-Charge (SoC) information with the charge point and, on the other hand, the EV typically doesn't know where it is connected in the grid. Depending on the energy flexibility use case and as long as the RM has the required data, it can be implemented both on EV or on charge point level. However, in a specific situation, there should only be one RM for the charger-EV combination.
 
 ## Choosing the right Control Type
-S2 is a language for conveying energy flexibility to the CEM without making any assumptions on what the CEM is optimizing for. Although there are multiple [Control Type(s)](./Control_Types.md) that can be used for an EV, it is preferred to pick the one that conveys the most information and control options to the CEM, so the CEM can do the best optimization that adds the most value. In the ideal situation, the RM has access to the following data points:
+S2 is a language for conveying energy flexibility to the CEM without making any assumptions on what the CEM is optimizing for. Although there are multiple [Control Type(s)](/docs/Concepts/Control_Types.md) that can be used for an EV, it is preferred to pick the one that conveys the most information and control options to the CEM, so the CEM can do the best optimization that adds the most value. In the ideal situation, the RM has access to the following data points:
  - Minimum charging power (and discharging power, only relevant for V2G)
  - Maximum charging power (and discharging power, only relevant for V2G)
  - SoC at arrival
@@ -61,7 +61,7 @@ We cover the situation in which the RM has access to the following data:
 
 Furthermore, the RM can control the charging power of the EV such that it can set the power at any value between the minimum and maximum value.
 
-The following sequence diagram is an example of what a message exchange between the CEM and RM could look like, but messages could also be sent in a different order (see also [State of communication](./State_of_communication.md) and the [FRBC Message reference](/docs/API/FRBC/FRBC.SystemDescription)). `ReceptionStatus` messages are omitted for readability.
+The following sequence diagram is an example of what a message exchange between the CEM and RM could look like, but messages could also be sent in a different order (see also [State of communication](/docs/S2%20Json%20over%20Websockets/State_of_communication.md) and the [FRBC Message reference](/docs/API/FRBC/FRBC.SystemDescription)). `ReceptionStatus` messages are omitted for readability.
 
 ![cem_rm_interactions](https://www.plantuml.com/plantuml/png/VP7DJiCm3CVlUOey0F007D1W0x539TI2E9lKWcYf7MndQ3mzeI0HMCNLF_y_BA_KGAnCoH4RUjwZ-FLrT-Bxxjm_ujF0OOVc0nDXC1oTgzIVNipy5cZK5zYXw-TPHUrmQRD7pKoARYblIz4YfFXUSrhBAk8Y0JiWU4RPe45CsleFc33Ocic4q_qXB_itt4Emk0VxatJJNwtFXeCQJXlK835RP78kCMSVoHFx368nb0JYMKQKLdx7RoWTWXR12ScElI-35J2MmS2A7aTNL4_yfks5CzwIcfGmTsgapVXB-P17C7H8e_zi_gl6WAfriSVNWchk_x-FKNzUlwf-PKeV)
 <details>
