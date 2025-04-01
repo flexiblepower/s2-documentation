@@ -11,15 +11,26 @@ jobs:
   build:
     name: Build Docusaurus
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./website
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
+          cache-dependency-path: website/package-lock.json
           node-version: 18
           cache: npm
 
+      # TODO: create a separate job to build the API docs
+      - name: Install Cargo
+        run: curl https://sh.rustup.rs -sSf | sh -s -- -y
+      - name: Create API docs
+        run: cargo run --release
+        working-directory: website-generator          
+      
       - name: Install dependencies
         run: npm ci
       - name: Build website
