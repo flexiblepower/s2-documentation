@@ -10,8 +10,8 @@ const config: Config = {
   favicon: 'img/logo-s2-no-text.svg',
 
   // Set the production url of your site here
-  url: 'https://flexiblepower.github.io/',
-  baseUrl: '/s2-documentation/',
+  url: 'https://docs.s2standard.org/',
+  baseUrl: '/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
