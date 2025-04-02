@@ -53,7 +53,7 @@ const config: Config = {
       title: 'The S2 Standard',
       logo: {
         alt: 'S2 Standard',
-        src: 'img/logo-s2-no-text.svg',
+        src: 'img/Logo-S2-no-text.svg',
       },
       items: [
         {
