@@ -7,7 +7,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 const config: Config = {
   title: 'S2 Documentation',
   tagline: 'Documentation for the S2 standard',
-  favicon: 'img/logo-s2-no-text.svg',
+  favicon: 'img/Logo-S2-no-text.svg',
 
   // Set the production url of your site here
   url: 'https://docs.s2standard.org/',
