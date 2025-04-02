@@ -23,7 +23,7 @@ jobs:
           cache-dependency-path: website/package-lock.json
           node-version: 18
           cache: npm
-      - uses: dtolnay/rust-toolchain@1.86.0
+      - uses: dtolnay/rust-toolchain@1.85.1
     
       - name: Create API docs
         run: cargo run --release
