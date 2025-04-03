@@ -1,5 +1,5 @@
 type_name = "RevokeObject"
-sent_by = []
+sent_by = ["RM", "CEM"]
 description = '''
 TODO
 '''

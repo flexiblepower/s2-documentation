@@ -1,5 +1,5 @@
 type_name = "HandshakeResponse"
-sent_by = []
+sent_by = ["CEM"]
 description = '''
 TODO
 '''

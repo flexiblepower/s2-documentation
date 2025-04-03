@@ -1,5 +1,5 @@
 type_name = "ReceptionStatus"
-sent_by = []
+sent_by = ["CEM", "RM"]
 description = '''
 TODO
 '''

@@ -1,5 +1,5 @@
 type_name = "PowerMeasurement"
-sent_by = []
+sent_by = ["RM"]
 description = '''
 TODO
 '''

@@ -1,5 +1,5 @@
 type_name = "ResourceManagerDetails"
-sent_by = []
+sent_by = ["RM"]
 description = '''
 TODO
 '''
