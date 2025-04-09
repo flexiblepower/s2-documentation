@@ -10,7 +10,7 @@ field_name = "commodity_quantity"
 field_type = "CommodityQuantity"
 optional = false
 description = """
-The power quantity the value refers to
+The power quantity the value refers to.
 """
 
 [fields.value]
@@ -18,5 +18,5 @@ field_name = "value"
 field_type = "float"
 optional = false
 description = """
-Power value expressed in the unit associated with the CommodityQuantity
+The power value, expressed in the unit associated with this object's `commodity_quantity`.
 """

@@ -1,7 +1,9 @@
 type_name = "PowerMeasurement"
-sent_by = []
+sent_by = ["RM"]
 description = """
-TODO
+Message containing one or more power measurements.
+
+This message informs the CEM about power values measured by the RM's device. A well-behaved RM should send `PowerMeasurement`s periodically if possible.
 """
 see_also = []
 
@@ -10,7 +12,7 @@ field_name = "measurement_timestamp"
 field_type = "string"
 optional = false
 description = """
-Timestamp when PowerValues were measured.
+Timestamp when the power values were measured.
 """
 
 [fields.message_id]
@@ -18,7 +20,7 @@ field_name = "message_id"
 field_type = "ID"
 optional = false
 description = """
-ID of this message
+ID of this message.
 """
 
 [fields.message_type]
@@ -26,7 +28,7 @@ field_name = "message_type"
 field_type = "string"
 optional = false
 description = """
-TODO
+The string `"PowerMeasurement"`.
 """
 
 [fields.values]
@@ -34,5 +36,5 @@ field_name = "values"
 field_type = "PowerValue[]"
 optional = false
 description = """
-Array of measured PowerValues. Must contain at least one item and at most one item per ‘commodity_quantity’ (defined inside the PowerValue).
+The measured `PowerValue`s. Must contain at least one item, and at most one item per `CommodityQuantity`.
 """

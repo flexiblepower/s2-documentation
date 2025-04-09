@@ -1,7 +1,7 @@
 type_name = "PowerForecast"
-sent_by = []
+sent_by = ["RM"]
 description = """
-TODO
+Forecast of the power values for a future period of time.
 """
 see_also = []
 
@@ -10,7 +10,7 @@ field_name = "elements"
 field_type = "PowerForecastElement[]"
 optional = false
 description = """
-Elements of which this forecast consists. Contains at least one element. Elements must be placed in chronological order.
+The elements describing the forecast. This must contain at least one element, and elements must be placed in chronological order.
 """
 
 [fields.message_id]
@@ -18,7 +18,7 @@ field_name = "message_id"
 field_type = "ID"
 optional = false
 description = """
-ID of this message
+ID of this message.
 """
 
 [fields.message_type]
@@ -26,7 +26,7 @@ field_name = "message_type"
 field_type = "string"
 optional = false
 description = """
-TODO
+The string `"PowerForecast"`.
 """
 
 [fields.start_time]

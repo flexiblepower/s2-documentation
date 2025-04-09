@@ -1,32 +1,18 @@
 type_name = "ReceptionStatus"
-sent_by = []
+sent_by = ["RM", "CEM"]
 description = """
-TODO
+Indicates whether a message was received successfully.
+
+When an RM or CEM receives a message, it should send back a `ReceptionStatus` indication whether the message was received successfully. The exception is that `ReceptionStatus` messages should not be answered themselves by a `ReceptionStatus`. The RM/CEM should send this as soon as the status is known.
 """
 see_also = []
-
-[fields.diagnostic_label]
-field_name = "diagnostic_label"
-field_type = "string"
-optional = true
-description = """
-Diagnostic label that can be used to provide additional information for debugging. However, not for HMI purposes.
-"""
 
 [fields.message_type]
 field_name = "message_type"
 field_type = "string"
 optional = false
 description = """
-TODO
-"""
-
-[fields.status]
-field_name = "status"
-field_type = "ReceptionStatusValues"
-optional = false
-description = """
-Enumeration of status values
+The string `"ReceptionStatus"`.
 """
 
 [fields.subject_message_id]
@@ -34,5 +20,21 @@ field_name = "subject_message_id"
 field_type = "ID"
 optional = false
 description = """
-The message this ReceptionStatus refers to
+The message this `ReceptionStatus` refers to.
+"""
+
+[fields.status]
+field_name = "status"
+field_type = "ReceptionStatusValues"
+optional = false
+description = """
+The reception status of the referred message.
+"""
+
+[fields.diagnostic_label]
+field_name = "diagnostic_label"
+field_type = "string"
+optional = true
+description = """
+Diagnostic label that can be used to provide additional information for debugging.
 """

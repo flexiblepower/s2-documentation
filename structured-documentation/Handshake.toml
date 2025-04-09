@@ -1,7 +1,9 @@
 type_name = "Handshake"
-sent_by = []
+sent_by = ["CEM", "RM"]
 description = """
-TODO
+Message sent to initialize an S2 session.
+
+When starting a new S2 session, `Handshake` should be the first message sent from both sides. The CEM should then send a `HandshakeResponse` to establish the S2 protocol version used in the session. The handshaking process should always occur at the start of a session, even if the specific CEM and RM already have many succesfull S2 sessions behind them.
 """
 see_also = []
 
@@ -10,7 +12,7 @@ field_name = "message_id"
 field_type = "ID"
 optional = false
 description = """
-ID of this message
+ID of this message.
 """
 
 [fields.message_type]
@@ -18,7 +20,7 @@ field_name = "message_type"
 field_type = "string"
 optional = false
 description = """
-TODO
+The string `"Handshake"`.
 """
 
 [fields.role]
@@ -26,7 +28,7 @@ field_name = "role"
 field_type = "EnergyManagementRole"
 optional = false
 description = """
-The role of the sender of this message
+The role of the sender of this message.
 """
 
 [fields.supported_protocol_versions]

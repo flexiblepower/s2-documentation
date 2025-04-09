@@ -1,65 +1,67 @@
 type_name = "CommodityQuantity"
 description = """
-TODO
+Specifies the commodity and quantity a value is describing.
+
+This enumeration is used to specify the commodity and quantity of an accompanying value. It's used in many places where S2 information is shared in a commodity-agnostic way; for example, in `PEBC.EnergyConstraint` it's used to specify what commodity/quantity the constraint is about.
 """
 see_also = []
 
 [variants."ELECTRIC.POWER.L1"]
 variant_name = "ELECTRIC.POWER.L1"
 description = """
-Electric power described in Watt on phase 1. If a device utilizes only one phase it should always use L1.
+Electric power, described in Watt on phase 1. If a device utilizes only one phase, it should always use L1.
 """
 
 [variants."ELECTRIC.POWER.L2"]
 variant_name = "ELECTRIC.POWER.L2"
 description = """
-Electric power described in Watt on phase 2. Only applicable for 3 phase devices.
+Electric power, described in Watt on phase 2. Only applicable for 3 phase devices.
 """
 
 [variants."ELECTRIC.POWER.L3"]
 variant_name = "ELECTRIC.POWER.L3"
 description = """
-Electric power described in Watt on phase 3. Only applicable for 3 phase devices.
+Electric power, described in Watt on phase 3. Only applicable for 3 phase devices.
 """
 
 [variants."ELECTRIC.POWER.3_PHASE_SYMMETRIC"]
 variant_name = "ELECTRIC.POWER.3_PHASE_SYMMETRIC"
 description = """
-Electric power described in Watt on when power is equally shared among the three phases. Only applicable for 3 phase devices.
+Electric power, described in Watt when power is equally shared among the three phases. Only applicable for 3 phase devices.
 """
 
 [variants."NATURAL_GAS.FLOW_RATE"]
 variant_name = "NATURAL_GAS.FLOW_RATE"
 description = """
-Gas flow rate described in liters per second
+Natural gas flow rate, described in liters per second.
 """
 
 [variants."HYDROGEN.FLOW_RATE"]
 variant_name = "HYDROGEN.FLOW_RATE"
 description = """
-Gas flow rate described in grams per second
+Hydrogen gas flow rate, described in grams per second
 """
 
 [variants."HEAT.TEMPERATURE"]
 variant_name = "HEAT.TEMPERATURE"
 description = """
-Heat described in degrees Celsius
+Heat, described in degrees Celsius.
 """
 
 [variants."HEAT.FLOW_RATE"]
 variant_name = "HEAT.FLOW_RATE"
 description = """
-Flow rate of heat carrying gas or liquid in liters per second
+Flow rate of heat carrying gas or liquid, described in liters per second.
 """
 
 [variants."HEAT.THERMAL_POWER"]
 variant_name = "HEAT.THERMAL_POWER"
 description = """
-Thermal power in Watt
+Thermal power, described in Watt.
 """
 
 [variants."OIL.FLOW_RATE"]
 variant_name = "OIL.FLOW_RATE"
 description = """
-Oil flow rate described in liters per hour
+Oil flow rate, described in liters per hour.
 """

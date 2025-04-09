@@ -1,9 +1,11 @@
 type_name = "ID"
 sent_by = []
 description = """
-A globally unique ID. 
+Unique identifier for many S2 objects.
 
-This should be a string in the format of a UUID, e.g. `8D8AC610-566D-4EF0-9C22-186B2A5ED793`. Almost all S2 messages carry a `message_id`, and many objects (such as `OMBC.OperationMode`) carry an `id` as well to easily refer to them.
+`ID` is a string that represents a unique identifier. Almost all S2 messages carry a `message_id`, and many objects (such as `OMBC.OperationMode`) carry an `id` as well to easily refer to them.
+
+It's highly recommended to use a UUID for this; while the S2 specification allows for different options, UUIDs are widely supported and fulfill all the requirements. If you use JSON to encode S2 messages, you must use UUIDs for `ID`.
 """
 see_also = []
 
