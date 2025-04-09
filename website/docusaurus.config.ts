@@ -6,9 +6,10 @@ import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
   title: 'S2 Documentation',
-  tagline: 'The place to learn everthing about creating interoperable energy management solutions',
-  favicon: 'img/logo-s2-no-text.svg',
 
+  tagline: 'The place to learn everthing about creating interoperable energy management solutions',
+  favicon: 'img/Logo-S2-no-text.svg',
+  
   // Set the production url of your site here
   url: 'https://docs.s2standard.org/',
   baseUrl: '/',

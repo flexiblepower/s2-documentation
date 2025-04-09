@@ -23,9 +23,8 @@ jobs:
           cache-dependency-path: website/package-lock.json
           node-version: 18
           cache: npm
-
-      - name: Install Cargo
-        run: curl https://sh.rustup.rs -sSf | sh -s -- -y
+      - uses: dtolnay/rust-toolchain@1.85.1
+    
       - name: Create API docs
         run: cargo run --release
         working-directory: website-generator
