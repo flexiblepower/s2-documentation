@@ -1,69 +1,70 @@
 type_name = "FRBC.UsageForecastElement"
 sent_by = []
-description = '''
+description = """
 TODO
-'''
+"""
+see_also = []
 
 [fields.duration]
 field_name = "duration"
 field_type = "Duration"
 optional = false
-description = '''
+description = """
 Indicator for how long the given usage_rate is valid.
-'''
+"""
 
 [fields.usage_rate_expected]
 field_name = "usage_rate_expected"
 field_type = "float"
 optional = false
-description = '''
+description = """
 The most likely value for the usage rate; the expected increase or decrease of the fill_level per second. A positive value indicates that the fill level will decrease due to usage.
-'''
+"""
 
 [fields.usage_rate_lower_68PPR]
 field_name = "usage_rate_lower_68PPR"
 field_type = "float"
 optional = true
-description = '''
+description = """
 The lower limit of the range with a 68 % probability that the usage rate is within that range. A positive value indicates that the fill level will decrease due to usage.
-'''
+"""
 
 [fields.usage_rate_lower_95PPR]
 field_name = "usage_rate_lower_95PPR"
 field_type = "float"
 optional = true
-description = '''
+description = """
 The lower limit of the range with a 95 % probability that the usage rate is within that range. A positive value indicates that the fill level will decrease due to usage.
-'''
+"""
 
 [fields.usage_rate_lower_limit]
 field_name = "usage_rate_lower_limit"
 field_type = "float"
 optional = true
-description = '''
+description = """
 The lower limit of the range with a 100 % probability that the usage rate is within that range. A positive value indicates that the fill level will decrease due to usage.
-'''
+"""
 
 [fields.usage_rate_upper_68PPR]
 field_name = "usage_rate_upper_68PPR"
 field_type = "float"
 optional = true
-description = '''
+description = """
 The upper limit of the range with a 68 % probability that the usage rate is within that range. A positive value indicates that the fill level will decrease due to usage.
-'''
+"""
 
 [fields.usage_rate_upper_95PPR]
 field_name = "usage_rate_upper_95PPR"
 field_type = "float"
 optional = true
-description = '''
+description = """
 The upper limit of the range with a 95 % probability that the usage rate is within that range. A positive value indicates that the fill level will decrease due to usage.
-'''
+"""
 
 [fields.usage_rate_upper_limit]
 field_name = "usage_rate_upper_limit"
 field_type = "float"
 optional = true
-description = '''
+description = """
 The upper limit of the range with a 100 % probability that the usage rate is within that range. A positive value indicates that the fill level will decrease due to usage.
-'''
+"""

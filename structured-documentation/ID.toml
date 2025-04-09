@@ -1,10 +1,10 @@
 type_name = "ID"
 sent_by = []
-description = '''
+description = """
 A globally unique ID. 
 
-This should be a string in the format of a UUID, e.g. `8D8AC610-566D-4EF0-9C22-186B2A5ED793`. 
-Almost all S2 messages carry a `message_id`, and many objects (such as `OMBC.OperationMode`) carry an `id` as well to easily refer to them.
-'''
+This should be a string in the format of a UUID, e.g. `8D8AC610-566D-4EF0-9C22-186B2A5ED793`. Almost all S2 messages carry a `message_id`, and many objects (such as `OMBC.OperationMode`) carry an `id` as well to easily refer to them.
+"""
+see_also = []
 
-fields = {}
+[fields]

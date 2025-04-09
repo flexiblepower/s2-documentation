@@ -1,21 +1,22 @@
 type_name = "PowerValue"
 sent_by = []
-description = '''
+description = """
 TODO
-'''
+"""
+see_also = []
 
 [fields.commodity_quantity]
 field_name = "commodity_quantity"
 field_type = "CommodityQuantity"
 optional = false
-description = '''
+description = """
 The power quantity the value refers to
-'''
+"""
 
 [fields.value]
 field_name = "value"
 field_type = "float"
 optional = false
-description = '''
+description = """
 Power value expressed in the unit associated with the CommodityQuantity
-'''
+"""

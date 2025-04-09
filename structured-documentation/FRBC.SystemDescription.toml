@@ -1,45 +1,46 @@
 type_name = "FRBC.SystemDescription"
 sent_by = []
-description = '''
+description = """
 TODO
-'''
+"""
+see_also = []
 
 [fields.actuators]
 field_name = "actuators"
 field_type = "FRBC.ActuatorDescription[]"
 optional = false
-description = '''
+description = """
 Details of all Actuators.
-'''
+"""
 
 [fields.message_id]
 field_name = "message_id"
 field_type = "ID"
 optional = false
-description = '''
+description = """
 ID of this message
-'''
+"""
 
 [fields.message_type]
 field_name = "message_type"
 field_type = "string"
 optional = false
-description = '''
+description = """
 TODO
-'''
+"""
 
 [fields.storage]
 field_name = "storage"
 field_type = "FRBC.StorageDescription"
 optional = false
-description = '''
+description = """
 Details of the storage.
-'''
+"""
 
 [fields.valid_from]
 field_name = "valid_from"
 field_type = "string"
 optional = false
-description = '''
+description = """
 Moment this `FRBC.SystemDescription` starts to be valid. If the system description is immediately valid, the DateTimeStamp should be now or in the past.
-'''
+"""

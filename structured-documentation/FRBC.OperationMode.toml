@@ -1,37 +1,38 @@
 type_name = "FRBC.OperationMode"
 sent_by = []
-description = '''
+description = """
 TODO
-'''
+"""
+see_also = []
 
 [fields.abnormal_condition_only]
 field_name = "abnormal_condition_only"
 field_type = "boolean"
 optional = false
-description = '''
+description = """
 Indicates if this `FRBC.OperationMode` may only be used during an abnormal condition
-'''
+"""
 
 [fields.diagnostic_label]
 field_name = "diagnostic_label"
 field_type = "string"
 optional = true
-description = '''
+description = """
 Human readable name/description of the `FRBC.OperationMode`. This element is only intended for diagnostic purposes and not for HMI applications.
-'''
+"""
 
 [fields.elements]
 field_name = "elements"
 field_type = "FRBC.OperationModeElement[]"
 optional = false
-description = '''
+description = """
 List of `FRBC.OperationModeElements`, which describe the properties of this `FRBC.OperationMode` depending on the fill_level. The fill_level_ranges of the items in the Array must be contiguous.
-'''
+"""
 
 [fields.id]
 field_name = "id"
 field_type = "ID"
 optional = false
-description = '''
+description = """
 ID of the `FRBC.OperationMode`. Must be unique in the scope of the `FRBC.ActuatorDescription` in which it is used.
-'''
+"""

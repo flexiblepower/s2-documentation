@@ -1,16 +1,17 @@
 type_name = "PEBC.PowerEnvelopeLimitType"
-description = '''
+description = """
 TODO
-'''
+"""
+see_also = []
 
 [variants.UPPER_LIMIT]
 variant_name = "UPPER_LIMIT"
-description = '''
+description = """
 Indicating the upper limit of a `PEBC.PowerEnvelope` (see Clause 7.6.2)
-'''
+"""
 
 [variants.LOWER_LIMIT]
 variant_name = "LOWER_LIMIT"
-description = '''
+description = """
 Indicating the lower limit of a `PEBC.PowerEnvelope` (see Clause 7.6.2)
-'''
+"""

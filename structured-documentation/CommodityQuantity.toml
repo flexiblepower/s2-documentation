@@ -1,64 +1,65 @@
 type_name = "CommodityQuantity"
-description = '''
+description = """
 TODO
-'''
+"""
+see_also = []
 
 [variants."ELECTRIC.POWER.L1"]
 variant_name = "ELECTRIC.POWER.L1"
-description = '''
+description = """
 Electric power described in Watt on phase 1. If a device utilizes only one phase it should always use L1.
-'''
+"""
 
 [variants."ELECTRIC.POWER.L2"]
 variant_name = "ELECTRIC.POWER.L2"
-description = '''
+description = """
 Electric power described in Watt on phase 2. Only applicable for 3 phase devices.
-'''
+"""
 
 [variants."ELECTRIC.POWER.L3"]
 variant_name = "ELECTRIC.POWER.L3"
-description = '''
+description = """
 Electric power described in Watt on phase 3. Only applicable for 3 phase devices.
-'''
+"""
 
 [variants."ELECTRIC.POWER.3_PHASE_SYMMETRIC"]
 variant_name = "ELECTRIC.POWER.3_PHASE_SYMMETRIC"
-description = '''
+description = """
 Electric power described in Watt on when power is equally shared among the three phases. Only applicable for 3 phase devices.
-'''
+"""
 
 [variants."NATURAL_GAS.FLOW_RATE"]
 variant_name = "NATURAL_GAS.FLOW_RATE"
-description = '''
+description = """
 Gas flow rate described in liters per second
-'''
+"""
 
 [variants."HYDROGEN.FLOW_RATE"]
 variant_name = "HYDROGEN.FLOW_RATE"
-description = '''
+description = """
 Gas flow rate described in grams per second
-'''
+"""
 
 [variants."HEAT.TEMPERATURE"]
 variant_name = "HEAT.TEMPERATURE"
-description = '''
+description = """
 Heat described in degrees Celsius
-'''
+"""
 
 [variants."HEAT.FLOW_RATE"]
 variant_name = "HEAT.FLOW_RATE"
-description = '''
+description = """
 Flow rate of heat carrying gas or liquid in liters per second
-'''
+"""
 
 [variants."HEAT.THERMAL_POWER"]
 variant_name = "HEAT.THERMAL_POWER"
-description = '''
+description = """
 Thermal power in Watt
-'''
+"""
 
 [variants."OIL.FLOW_RATE"]
 variant_name = "OIL.FLOW_RATE"
-description = '''
+description = """
 Oil flow rate described in liters per hour
-'''
+"""

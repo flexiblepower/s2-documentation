@@ -1,40 +1,41 @@
 type_name = "PPBC.PowerSequenceStatus"
-description = '''
+description = """
 TODO
-'''
+"""
+see_also = []
 
 [variants.NOT_SCHEDULED]
 variant_name = "NOT_SCHEDULED"
-description = '''
+description = """
 No `PPBC.PowerSequence` within the `PPBC.PowerSequenceContainer` is scheduled
-'''
+"""
 
 [variants.SCHEDULED]
 variant_name = "SCHEDULED"
-description = '''
+description = """
 The selected `PPBC.PowerSequence` is scheduled to be executed in the future
-'''
+"""
 
 [variants.EXECUTING]
 variant_name = "EXECUTING"
-description = '''
+description = """
 The selected `PPBC.PowerSequence` is currently being executed
-'''
+"""
 
 [variants.INTERRUPTED]
 variant_name = "INTERRUPTED"
-description = '''
+description = """
 The selected `PPBC.PowerSequence` is being executed, but is currently interrupted and will continue afterwards
-'''
+"""
 
 [variants.FINISHED]
 variant_name = "FINISHED"
-description = '''
+description = """
 The selected `PPBC.PowerSequence` was executed and finished successfully
-'''
+"""
 
 [variants.ABORTED]
 variant_name = "ABORTED"
-description = '''
+description = """
 The selected `PPBC.PowerSequence` was aborted by the device and will not continue
-'''
+"""

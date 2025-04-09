@@ -1,604 +1,605 @@
 type_name = "Currency"
-description = '''
+description = """
 Currency used when this resource gives cost information
-'''
+"""
+see_also = []
 
 [variants.AED]
 variant_name = "AED"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.ANG]
 variant_name = "ANG"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.AUD]
 variant_name = "AUD"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.CHE]
 variant_name = "CHE"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.CHF]
 variant_name = "CHF"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.CHW]
 variant_name = "CHW"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.EUR]
 variant_name = "EUR"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.GBP]
 variant_name = "GBP"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.LBP]
 variant_name = "LBP"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.LKR]
 variant_name = "LKR"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.LRD]
 variant_name = "LRD"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.LSL]
 variant_name = "LSL"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.LYD]
 variant_name = "LYD"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.MAD]
 variant_name = "MAD"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.MDL]
 variant_name = "MDL"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.MGA]
 variant_name = "MGA"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.MKD]
 variant_name = "MKD"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.MMK]
 variant_name = "MMK"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.MNT]
 variant_name = "MNT"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.MOP]
 variant_name = "MOP"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.MRO]
 variant_name = "MRO"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.MUR]
 variant_name = "MUR"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.MVR]
 variant_name = "MVR"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.MWK]
 variant_name = "MWK"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.MXN]
 variant_name = "MXN"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.MXV]
 variant_name = "MXV"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.MYR]
 variant_name = "MYR"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.MZN]
 variant_name = "MZN"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.NAD]
 variant_name = "NAD"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.NGN]
 variant_name = "NGN"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.NIO]
 variant_name = "NIO"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.NOK]
 variant_name = "NOK"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.NPR]
 variant_name = "NPR"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.NZD]
 variant_name = "NZD"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.OMR]
 variant_name = "OMR"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.PAB]
 variant_name = "PAB"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.PEN]
 variant_name = "PEN"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.PGK]
 variant_name = "PGK"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.PHP]
 variant_name = "PHP"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.PKR]
 variant_name = "PKR"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.PLN]
 variant_name = "PLN"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.PYG]
 variant_name = "PYG"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.QAR]
 variant_name = "QAR"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.RON]
 variant_name = "RON"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.RSD]
 variant_name = "RSD"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.RUB]
 variant_name = "RUB"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.RWF]
 variant_name = "RWF"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.SAR]
 variant_name = "SAR"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.SBD]
 variant_name = "SBD"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.SCR]
 variant_name = "SCR"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.SDG]
 variant_name = "SDG"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.SEK]
 variant_name = "SEK"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.SGD]
 variant_name = "SGD"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.SHP]
 variant_name = "SHP"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.SLL]
 variant_name = "SLL"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.SOS]
 variant_name = "SOS"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.SRD]
 variant_name = "SRD"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.SSP]
 variant_name = "SSP"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.STD]
 variant_name = "STD"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.SYP]
 variant_name = "SYP"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.SZL]
 variant_name = "SZL"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.THB]
 variant_name = "THB"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.TJS]
 variant_name = "TJS"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.TMT]
 variant_name = "TMT"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.TND]
 variant_name = "TND"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.TOP]
 variant_name = "TOP"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.TRY]
 variant_name = "TRY"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.TTD]
 variant_name = "TTD"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.TWD]
 variant_name = "TWD"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.TZS]
 variant_name = "TZS"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.UAH]
 variant_name = "UAH"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.UGX]
 variant_name = "UGX"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.USD]
 variant_name = "USD"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.USN]
 variant_name = "USN"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.UYI]
 variant_name = "UYI"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.UYU]
 variant_name = "UYU"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.UZS]
 variant_name = "UZS"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.VEF]
 variant_name = "VEF"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.VND]
 variant_name = "VND"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.VUV]
 variant_name = "VUV"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.WST]
 variant_name = "WST"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.XAG]
 variant_name = "XAG"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.XAU]
 variant_name = "XAU"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.XBA]
 variant_name = "XBA"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.XBB]
 variant_name = "XBB"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.XBC]
 variant_name = "XBC"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.XBD]
 variant_name = "XBD"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.XCD]
 variant_name = "XCD"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.XOF]
 variant_name = "XOF"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.XPD]
 variant_name = "XPD"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.XPF]
 variant_name = "XPF"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.XPT]
 variant_name = "XPT"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.XSU]
 variant_name = "XSU"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.XTS]
 variant_name = "XTS"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.XUA]
 variant_name = "XUA"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.XXX]
 variant_name = "XXX"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.YER]
 variant_name = "YER"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.ZAR]
 variant_name = "ZAR"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.ZMW]
 variant_name = "ZMW"
-description = '''
+description = """
 TODO
-'''
+"""
 
 [variants.ZWL]
 variant_name = "ZWL"
-description = '''
+description = """
 TODO
-'''
+"""

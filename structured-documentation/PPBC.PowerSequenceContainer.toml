@@ -1,21 +1,22 @@
 type_name = "PPBC.PowerSequenceContainer"
 sent_by = []
-description = '''
+description = """
 TODO
-'''
+"""
+see_also = []
 
 [fields.id]
 field_name = "id"
 field_type = "ID"
 optional = false
-description = '''
+description = """
 ID of the `PPBC.PowerSequenceContainer`. Must be unique in the scope of the `PPBC.PowerProfileDefinition` in which it is used.
-'''
+"""
 
 [fields.power_sequences]
 field_name = "power_sequences"
 field_type = "PPBC.PowerSequence[]"
 optional = false
-description = '''
+description = """
 List of alternative Sequences where one could be chosen by the CEM
-'''
+"""

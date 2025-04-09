@@ -1,50 +1,49 @@
 type_name = "InstructionStatus"
-description = '''
+description = """
 Indicates the current status of an instruction.
 
-Used by the RM to indicate the status of instructions it receives to the CEM in an `InstructionStatusUpdate`.
-RMs don't necessarily need to inform the CEM of all the intermediary steps (i.e. `NEW` -> `ACCEPTED` -> `STARTED` -> `SUCCEEDED`),
-but they should always at least send `SUCCEEDED` when an instruction has been successfully executed.
-'''
+Used by the RM to indicate the status of instructions it receives to the CEM in an `InstructionStatusUpdate`. RMs don't necessarily need to inform the CEM of all the intermediary steps (i.e. `NEW` -> `ACCEPTED` -> `STARTED` -> `SUCCEEDED`), but they should always at least send `SUCCEEDED` when an instruction has been successfully executed.
+"""
+see_also = []
 
 [variants.NEW]
 variant_name = "NEW"
-description = '''
+description = """
 Instruction was newly created.
-'''
+"""
 
 [variants.ACCEPTED]
 variant_name = "ACCEPTED"
-description = '''
+description = """
 Instruction has been accepted.
-'''
+"""
 
 [variants.REJECTED]
 variant_name = "REJECTED"
-description = '''
+description = """
 Instruction was rejected.
-'''
+"""
 
 [variants.REVOKED]
 variant_name = "REVOKED"
-description = '''
+description = """
 Instruction was revoked.
-'''
+"""
 
 [variants.STARTED]
 variant_name = "STARTED"
-description = '''
+description = """
 Instruction was executed.
-'''
+"""
 
 [variants.SUCCEEDED]
 variant_name = "SUCCEEDED"
-description = '''
+description = """
 Instruction finished successfully.
-'''
+"""
 
 [variants.ABORTED]
 variant_name = "ABORTED"
-description = '''
+description = """
 Instruction was aborted.
-'''
+"""

@@ -66,6 +66,7 @@ fn main() {
             GenericDocumentation::Enum(EnumDocumentation {
                 type_name: name.clone(),
                 description: process_description(root_description.to_string()),
+                see_also: Vec::new(),
                 variants,
             })
         } else if let Some(object_values) = def.object {
@@ -144,6 +145,7 @@ fn main() {
                 type_name: name.clone(),
                 sent_by: Vec::new(),
                 description: process_description(description),
+                see_also: Vec::new(),
                 fields,
             })
         } else {

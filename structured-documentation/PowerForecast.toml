@@ -1,37 +1,38 @@
 type_name = "PowerForecast"
-sent_by = ["RM"]
-description = '''
+sent_by = []
+description = """
 TODO
-'''
+"""
+see_also = []
 
 [fields.elements]
 field_name = "elements"
 field_type = "PowerForecastElement[]"
 optional = false
-description = '''
+description = """
 Elements of which this forecast consists. Contains at least one element. Elements must be placed in chronological order.
-'''
+"""
 
 [fields.message_id]
 field_name = "message_id"
 field_type = "ID"
 optional = false
-description = '''
+description = """
 ID of this message
-'''
+"""
 
 [fields.message_type]
 field_name = "message_type"
 field_type = "string"
 optional = false
-description = '''
+description = """
 TODO
-'''
+"""
 
 [fields.start_time]
 field_name = "start_time"
 field_type = "string"
 optional = false
-description = '''
+description = """
 Start time of time period that is covered by the profile.
-'''
+"""

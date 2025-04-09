@@ -1,16 +1,17 @@
 type_name = "SessionRequestType"
-description = '''
+description = """
 TODO
-'''
+"""
+see_also = []
 
 [variants.RECONNECT]
 variant_name = "RECONNECT"
-description = '''
+description = """
 Please reconnect the WebSocket session. Once reconnected, it starts from scratch with a handshake.
-'''
+"""
 
 [variants.TERMINATE]
 variant_name = "TERMINATE"
-description = '''
+description = """
 Disconnect the session (client can try to reconnecting with exponential backoff)
-'''
+"""

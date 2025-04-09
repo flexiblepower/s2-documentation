@@ -1,53 +1,54 @@
 type_name = "DDBC.ActuatorDescription"
 sent_by = []
-description = '''
+description = """
 TODO
-'''
+"""
+see_also = []
 
 [fields.diagnostic_label]
 field_name = "diagnostic_label"
 field_type = "string"
 optional = true
-description = '''
+description = """
 Human readable name/description of the actuator. This element is only intended for diagnostic purposes and not for HMI applications.
-'''
+"""
 
 [fields.id]
 field_name = "id"
 field_type = "ID"
 optional = false
-description = '''
+description = """
 ID of this `DDBC.ActuatorDescription`. Must be unique in the scope of the Resource Manager, for at least the duration of the session between Resource Manager and CEM.
-'''
+"""
 
 [fields.operation_modes]
 field_name = "operation_modes"
 field_type = "DDBC.OperationMode[]"
 optional = false
-description = '''
+description = """
 List of all Operation Modes that are available for this actuator. There shall be at least one `DDBC.OperationMode`.
-'''
+"""
 
 [fields.supported_commodites]
 field_name = "supported_commodites"
 field_type = "Commodity[]"
 optional = false
-description = '''
+description = """
 Commodities supported by the operation modes of this actuator. There shall be at least one commodity
-'''
+"""
 
 [fields.timers]
 field_name = "timers"
 field_type = "Timer[]"
 optional = false
-description = '''
+description = """
 List of Timers associated with Transitions for this Actuator. Can be empty.
-'''
+"""
 
 [fields.transitions]
 field_name = "transitions"
 field_type = "Transition[]"
 optional = false
-description = '''
+description = """
 List of Transitions between Operation Modes. Shall contain at least one Transition.
-'''
+"""

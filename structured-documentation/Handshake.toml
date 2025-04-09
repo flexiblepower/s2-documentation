@@ -1,37 +1,38 @@
 type_name = "Handshake"
-sent_by = ["CEM", "RM"]
-description = '''
+sent_by = []
+description = """
 TODO
-'''
+"""
+see_also = []
 
 [fields.message_id]
 field_name = "message_id"
 field_type = "ID"
 optional = false
-description = '''
+description = """
 ID of this message
-'''
+"""
 
 [fields.message_type]
 field_name = "message_type"
 field_type = "string"
 optional = false
-description = '''
+description = """
 TODO
-'''
+"""
 
 [fields.role]
 field_name = "role"
 field_type = "EnergyManagementRole"
 optional = false
-description = '''
+description = """
 The role of the sender of this message
-'''
+"""
 
 [fields.supported_protocol_versions]
 field_name = "supported_protocol_versions"
 field_type = "string[]"
 optional = true
-description = '''
+description = """
 Protocol versions supported by the sender of this message. This field is mandatory for the RM, but optional for the CEM.
-'''
+"""

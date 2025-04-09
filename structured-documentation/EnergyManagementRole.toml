@@ -1,16 +1,17 @@
 type_name = "EnergyManagementRole"
-description = '''
+description = """
 TODO
-'''
+"""
+see_also = []
 
 [variants.CEM]
 variant_name = "CEM"
-description = '''
+description = """
 Customer Energy Manager
-'''
+"""
 
 [variants.RM]
 variant_name = "RM"
-description = '''
+description = """
 Resource Manager
-'''
+"""

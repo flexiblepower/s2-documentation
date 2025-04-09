@@ -1,22 +1,23 @@
 type_name = "RoleType"
-description = '''
+description = """
 TODO
-'''
+"""
+see_also = []
 
 [variants.ENERGY_PRODUCER]
 variant_name = "ENERGY_PRODUCER"
-description = '''
+description = """
 Identifier for RoleType Producer
-'''
+"""
 
 [variants.ENERGY_CONSUMER]
 variant_name = "ENERGY_CONSUMER"
-description = '''
+description = """
 Identifier for RoleType Consumer
-'''
+"""
 
 [variants.ENERGY_STORAGE]
 variant_name = "ENERGY_STORAGE"
-description = '''
+description = """
 Identifier for RoleType Storage
-'''
+"""

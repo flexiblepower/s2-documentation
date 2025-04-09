@@ -1,28 +1,29 @@
 type_name = "Commodity"
-description = '''
+description = """
 TODO
-'''
+"""
+see_also = []
 
 [variants.GAS]
 variant_name = "GAS"
-description = '''
+description = """
 Identifier for Commodity GAS
-'''
+"""
 
 [variants.HEAT]
 variant_name = "HEAT"
-description = '''
+description = """
 Identifier for Commodity HEAT
-'''
+"""
 
 [variants.ELECTRICITY]
 variant_name = "ELECTRICITY"
-description = '''
+description = """
 Identifier for Commodity ELECTRICITY
-'''
+"""
 
 [variants.OIL]
 variant_name = "OIL"
-description = '''
+description = """
 Identifier for Commodity OIL
-'''
+"""

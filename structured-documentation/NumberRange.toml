@@ -1,21 +1,22 @@
 type_name = "NumberRange"
 sent_by = []
-description = '''
+description = """
 TODO
-'''
+"""
+see_also = []
 
 [fields.end_of_range]
 field_name = "end_of_range"
 field_type = "float"
 optional = false
-description = '''
+description = """
 Number that defines the end of the range
-'''
+"""
 
 [fields.start_of_range]
 field_name = "start_of_range"
 field_type = "float"
 optional = false
-description = '''
+description = """
 Number that defines the start of the range
-'''
+"""

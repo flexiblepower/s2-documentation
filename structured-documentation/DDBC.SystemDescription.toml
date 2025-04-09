@@ -1,53 +1,54 @@
 type_name = "DDBC.SystemDescription"
 sent_by = []
-description = '''
+description = """
 TODO
-'''
+"""
+see_also = []
 
 [fields.actuators]
 field_name = "actuators"
 field_type = "DDBC.ActuatorDescription[]"
 optional = false
-description = '''
+description = """
 List of all available actuators in the system. Must contain at least one `DDBC.ActuatorAggregated`.
-'''
+"""
 
 [fields.message_id]
 field_name = "message_id"
 field_type = "ID"
 optional = false
-description = '''
+description = """
 ID of this message
-'''
+"""
 
 [fields.message_type]
 field_name = "message_type"
 field_type = "string"
 optional = false
-description = '''
+description = """
 TODO
-'''
+"""
 
 [fields.present_demand_rate]
 field_name = "present_demand_rate"
 field_type = "NumberRange"
 optional = false
-description = '''
+description = """
 Present demand rate that needs to be satisfied by the system
-'''
+"""
 
 [fields.provides_average_demand_rate_forecast]
 field_name = "provides_average_demand_rate_forecast"
 field_type = "boolean"
 optional = false
-description = '''
+description = """
 Indicates whether the Resource Manager could provide a demand rate forecast through the `DDBC.AverageDemandRateForecast`.
-'''
+"""
 
 [fields.valid_from]
 field_name = "valid_from"
 field_type = "string"
 optional = false
-description = '''
+description = """
 Moment this `DDBC.SystemDescription` starts to be valid. If the system description is immediately valid, the DateTimeStamp should be now or in the past.
-'''
+"""

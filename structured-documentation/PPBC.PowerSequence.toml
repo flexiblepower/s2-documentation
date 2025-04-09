@@ -1,45 +1,46 @@
 type_name = "PPBC.PowerSequence"
 sent_by = []
-description = '''
+description = """
 TODO
-'''
+"""
+see_also = []
 
 [fields.abnormal_condition_only]
 field_name = "abnormal_condition_only"
 field_type = "boolean"
 optional = false
-description = '''
+description = """
 Indicates if this `PPBC.PowerSequence` may only be used during an abnormal condition
-'''
+"""
 
 [fields.elements]
 field_name = "elements"
 field_type = "PPBC.PowerSequenceElement[]"
 optional = false
-description = '''
+description = """
 List of `PPBC.PowerSequenceElements`. Shall contain at least one element. Elements must be placed in chronological order.
-'''
+"""
 
 [fields.id]
 field_name = "id"
 field_type = "ID"
 optional = false
-description = '''
+description = """
 ID of the `PPBC.PowerSequence`. Must be unique in the scope of the `PPBC.PowerSequnceContainer` in which it is used.
-'''
+"""
 
 [fields.is_interruptible]
 field_name = "is_interruptible"
 field_type = "boolean"
 optional = false
-description = '''
+description = """
 Indicates whether the option of pausing a sequence is available.
-'''
+"""
 
 [fields.max_pause_before]
 field_name = "max_pause_before"
 field_type = "Duration"
 optional = true
-description = '''
+description = """
 The maximum duration for which a device can be paused between the end of the previous running sequence and the start of this one
-'''
+"""

@@ -1,53 +1,54 @@
 type_name = "DDBC.OperationMode"
 sent_by = []
-description = '''
+description = """
 TODO
-'''
+"""
+see_also = []
 
 [fields.Id]
 field_name = "Id"
 field_type = "ID"
 optional = false
-description = '''
+description = """
 ID of this operation mode. Must be unique in the scope of the `DDBC.ActuatorDescription` in which it is used.
-'''
+"""
 
 [fields.abnormal_condition_only]
 field_name = "abnormal_condition_only"
 field_type = "boolean"
 optional = false
-description = '''
+description = """
 Indicates if this `DDBC.OperationMode` may only be used during an abnormal condition.
-'''
+"""
 
 [fields.diagnostic_label]
 field_name = "diagnostic_label"
 field_type = "string"
 optional = true
-description = '''
+description = """
 Human readable name/description of the `DDBC.OperationMode`. This element is only intended for diagnostic purposes and not for HMI applications.
-'''
+"""
 
 [fields.power_ranges]
 field_name = "power_ranges"
 field_type = "PowerRange[]"
 optional = false
-description = '''
+description = """
 The power produced or consumed by this operation mode. The start of each PowerRange is associated with an operation_mode_factor of 0, the end is associated with an operation_mode_factor of 1. In the array there must be at least one PowerRange, and at most one PowerRange per CommodityQuantity.
-'''
+"""
 
 [fields.running_costs]
 field_name = "running_costs"
 field_type = "NumberRange"
 optional = true
-description = '''
+description = """
 Additional costs per second (e.g. wear, services) associated with this operation mode in the currency defined by the ResourceManagerDetails, excluding the commodity cost. The range is expressing uncertainty and is not linked to the operation_mode_factor.
-'''
+"""
 
 [fields.supply_range]
 field_name = "supply_range"
 field_type = "NumberRange"
 optional = false
-description = '''
+description = """
 The supply rate this `DDBC.OperationMode` can deliver for the CEM to match the demand rate. The start of the NumberRange is associated with an operation_mode_factor of 0, the end is associated with an operation_mode_factor of 1.
-'''
+"""

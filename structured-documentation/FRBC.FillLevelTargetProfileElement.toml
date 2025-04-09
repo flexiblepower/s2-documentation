@@ -1,21 +1,22 @@
 type_name = "FRBC.FillLevelTargetProfileElement"
 sent_by = []
-description = '''
+description = """
 TODO
-'''
+"""
+see_also = []
 
 [fields.duration]
 field_name = "duration"
 field_type = "Duration"
 optional = false
-description = '''
+description = """
 The duration of the element.
-'''
+"""
 
 [fields.fill_level_range]
 field_name = "fill_level_range"
 field_type = "NumberRange"
 optional = false
-description = '''
+description = """
 The target range in which the fill_level must be for the time period during which the element is active. The start of the range must be smaller or equal to the end of the range. The CEM must take best-effort actions to proactively achieve this target.
-'''
+"""

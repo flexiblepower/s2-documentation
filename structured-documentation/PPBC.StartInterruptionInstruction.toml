@@ -1,69 +1,70 @@
 type_name = "PPBC.StartInterruptionInstruction"
 sent_by = []
-description = '''
+description = """
 TODO
-'''
+"""
+see_also = []
 
 [fields.abnormal_condition]
 field_name = "abnormal_condition"
 field_type = "boolean"
 optional = false
-description = '''
+description = """
 Indicates if this is an instruction during an abnormal condition
-'''
+"""
 
 [fields.execution_time]
 field_name = "execution_time"
 field_type = "string"
 optional = false
-description = '''
+description = """
 Indicates the moment the `PPBC.PowerSequence` shall be interrupted. When the specified execution time is in the past, execution must start as soon as possible.
-'''
+"""
 
 [fields.id]
 field_name = "id"
 field_type = "ID"
 optional = false
-description = '''
+description = """
 ID of the Instruction. Must be unique in the scope of the Resource Manager, for at least the duration of the session between Resource Manager and CEM.
-'''
+"""
 
 [fields.message_id]
 field_name = "message_id"
 field_type = "ID"
 optional = false
-description = '''
+description = """
 ID of this message
-'''
+"""
 
 [fields.message_type]
 field_name = "message_type"
 field_type = "string"
 optional = false
-description = '''
+description = """
 TODO
-'''
+"""
 
 [fields.power_profile_id]
 field_name = "power_profile_id"
 field_type = "ID"
 optional = false
-description = '''
+description = """
 ID of the `PPBC.PowerProfileDefinition` of which the `PPBC.PowerSequence` is being interrupted by the CEM.
-'''
+"""
 
 [fields.power_sequence_id]
 field_name = "power_sequence_id"
 field_type = "ID"
 optional = false
-description = '''
+description = """
 ID of the `PPBC.PowerSequence` that the CEM wants to interrupt.
-'''
+"""
 
 [fields.sequence_container_id]
 field_name = "sequence_container_id"
 field_type = "ID"
 optional = false
-description = '''
+description = """
 ID of the `PPBC.PowerSequnceContainer` of which the `PPBC.PowerSequence` is being interrupted by the CEM.
-'''
+"""

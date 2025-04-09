@@ -1,29 +1,30 @@
 type_name = "FRBC.StorageStatus"
 sent_by = []
-description = '''
+description = """
 TODO
-'''
+"""
+see_also = []
 
 [fields.message_id]
 field_name = "message_id"
 field_type = "ID"
 optional = false
-description = '''
+description = """
 ID of this message
-'''
+"""
 
 [fields.message_type]
 field_name = "message_type"
 field_type = "string"
 optional = false
-description = '''
+description = """
 TODO
-'''
+"""
 
 [fields.present_fill_level]
 field_name = "present_fill_level"
 field_type = "float"
 optional = false
-description = '''
+description = """
 Present fill level of the Storage
-'''
+"""

@@ -1,29 +1,30 @@
 type_name = "Timer"
 sent_by = []
-description = '''
+description = """
 TODO
-'''
+"""
+see_also = []
 
 [fields.diagnostic_label]
 field_name = "diagnostic_label"
 field_type = "string"
 optional = true
-description = '''
+description = """
 Human readable name/description of the Timer. This element is only intended for diagnostic purposes and not for HMI applications.
-'''
+"""
 
 [fields.duration]
 field_name = "duration"
 field_type = "Duration"
 optional = false
-description = '''
+description = """
 The time it takes for the Timer to finish after it has been started
-'''
+"""
 
 [fields.id]
 field_name = "id"
 field_type = "ID"
 optional = false
-description = '''
+description = """
 ID of the Timer. Must be unique in the scope of the `OMBC.SystemDescription`, `FRBC.ActuatorDescription` or `DDBC.ActuatorDescription` in which it is used.
-'''
+"""

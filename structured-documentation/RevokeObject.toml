@@ -1,37 +1,38 @@
 type_name = "RevokeObject"
-sent_by = ["RM", "CEM"]
-description = '''
+sent_by = []
+description = """
 TODO
-'''
+"""
+see_also = []
 
 [fields.message_id]
 field_name = "message_id"
 field_type = "ID"
 optional = false
-description = '''
+description = """
 ID of this message
-'''
+"""
 
 [fields.message_type]
 field_name = "message_type"
 field_type = "string"
 optional = false
-description = '''
+description = """
 TODO
-'''
+"""
 
 [fields.object_id]
 field_name = "object_id"
 field_type = "ID"
 optional = false
-description = '''
+description = """
 The ID of object that needs to be revoked
-'''
+"""
 
 [fields.object_type]
 field_name = "object_type"
 field_type = "RevokableObjects"
 optional = false
-description = '''
+description = """
 The type of object that needs to be revoked
-'''
+"""

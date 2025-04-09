@@ -1,46 +1,47 @@
 type_name = "ControlType"
-description = '''
+description = """
 TODO
-'''
+"""
+see_also = []
 
 [variants.POWER_ENVELOPE_BASED_CONTROL]
 variant_name = "POWER_ENVELOPE_BASED_CONTROL"
-description = '''
+description = """
 Identifier for the Power Envelope Based Control type
-'''
+"""
 
 [variants.POWER_PROFILE_BASED_CONTROL]
 variant_name = "POWER_PROFILE_BASED_CONTROL"
-description = '''
+description = """
 Identifier for the Power Profile Based Control type
-'''
+"""
 
 [variants.OPERATION_MODE_BASED_CONTROL]
 variant_name = "OPERATION_MODE_BASED_CONTROL"
-description = '''
+description = """
 Identifier for the Operation Mode Based Control type
-'''
+"""
 
 [variants.FILL_RATE_BASED_CONTROL]
 variant_name = "FILL_RATE_BASED_CONTROL"
-description = '''
+description = """
 Identifier for the Demand Driven Based Control type
-'''
+"""
 
 [variants.DEMAND_DRIVEN_BASED_CONTROL]
 variant_name = "DEMAND_DRIVEN_BASED_CONTROL"
-description = '''
+description = """
 Identifier for the Fill Rate Based Control type
-'''
+"""
 
 [variants.NOT_CONTROLABLE]
 variant_name = "NOT_CONTROLABLE"
-description = '''
+description = """
 Identifier that is to be used if no control is possible. Resources of this type can still provide measurements and forecast
-'''
+"""
 
 [variants.NO_SELECTION]
 variant_name = "NO_SELECTION"
-description = '''
+description = """
 Identifier that is to be used if no control type is or has been selected. 
-'''
+"""

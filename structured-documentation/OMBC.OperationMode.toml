@@ -1,45 +1,46 @@
 type_name = "OMBC.OperationMode"
 sent_by = []
-description = '''
+description = """
 TODO
-'''
+"""
+see_also = []
 
 [fields.abnormal_condition_only]
 field_name = "abnormal_condition_only"
 field_type = "boolean"
 optional = false
-description = '''
+description = """
 Indicates if this `OMBC.OperationMode` may only be used during an abnormal condition.
-'''
+"""
 
 [fields.diagnostic_label]
 field_name = "diagnostic_label"
 field_type = "string"
 optional = true
-description = '''
+description = """
 Human readable name/description of the `OMBC.OperationMode`. This element is only intended for diagnostic purposes and not for HMI applications.
-'''
+"""
 
 [fields.id]
 field_name = "id"
 field_type = "ID"
 optional = false
-description = '''
+description = """
 ID of the `OBMC.OperationMode`. Must be unique in the scope of the Resource Manager, for at least the duration of the session between Resource Manager and CEM.
-'''
+"""
 
 [fields.power_ranges]
 field_name = "power_ranges"
 field_type = "PowerRange[]"
 optional = false
-description = '''
+description = """
 The power produced or consumed by this operation mode. The start of each PowerRange is associated with an operation_mode_factor of 0, the end is associated with an operation_mode_factor of 1. In the array there must be at least one PowerRange, and at most one PowerRange per CommodityQuantity.
-'''
+"""
 
 [fields.running_costs]
 field_name = "running_costs"
 field_type = "NumberRange"
 optional = true
-description = '''
+description = """
 Additional costs per second (e.g. wear, services) associated with this operation mode in the currency defined by the ResourceManagerDetails , excluding the commodity cost. The range is expressing uncertainty and is not linked to the operation_mode_factor.
-'''
+"""

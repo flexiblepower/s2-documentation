@@ -13,6 +13,7 @@ pub struct ObjectDocumentation {
     pub type_name: String,
     pub sent_by: Vec<String>,
     pub description: String,
+    pub see_also: Vec<String>,
     pub fields: IndexMap<String, FieldDocumentation>,
 }
 
@@ -28,6 +29,7 @@ pub struct FieldDocumentation {
 pub struct EnumDocumentation {
     pub type_name: String,
     pub description: String,
+    pub see_also: Vec<String>,
     pub variants: IndexMap<String, VariantDocumentation>,
 }
 

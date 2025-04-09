@@ -1,29 +1,30 @@
 type_name = "PowerRange"
 sent_by = []
-description = '''
+description = """
 TODO
-'''
+"""
+see_also = []
 
 [fields.commodity_quantity]
 field_name = "commodity_quantity"
 field_type = "CommodityQuantity"
 optional = false
-description = '''
+description = """
 The power quantity the values refer to
-'''
+"""
 
 [fields.end_of_range]
 field_name = "end_of_range"
 field_type = "float"
 optional = false
-description = '''
+description = """
 Power value that defines the end of the range.
-'''
+"""
 
 [fields.start_of_range]
 field_name = "start_of_range"
 field_type = "float"
 optional = false
-description = '''
+description = """
 Power value that defines the start of the range.
-'''
+"""

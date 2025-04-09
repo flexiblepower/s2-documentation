@@ -1,29 +1,30 @@
 type_name = "PPBC.PowerProfileStatus"
 sent_by = []
-description = '''
+description = """
 TODO
-'''
+"""
+see_also = []
 
 [fields.message_id]
 field_name = "message_id"
 field_type = "ID"
 optional = false
-description = '''
+description = """
 ID of this message
-'''
+"""
 
 [fields.message_type]
 field_name = "message_type"
 field_type = "string"
 optional = false
-description = '''
+description = """
 TODO
-'''
+"""
 
 [fields.sequence_container_status]
 field_name = "sequence_container_status"
 field_type = "PPBC.PowerSequenceContainerStatus[]"
 optional = false
-description = '''
+description = """
 Array with status information for all `PPBC.PowerSequenceContainers` in the `PPBC.PowerProfileDefinition`.
-'''
+"""

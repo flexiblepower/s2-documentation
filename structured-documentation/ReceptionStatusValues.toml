@@ -1,40 +1,41 @@
 type_name = "ReceptionStatusValues"
-description = '''
+description = """
 TODO
-'''
+"""
+see_also = []
 
 [variants.INVALID_DATA]
 variant_name = "INVALID_DATA"
-description = '''
+description = """
 Message not understood (e.g. not valid JSON, no message_id found). Consequence: Message is ignored, proceed if possible
-'''
+"""
 
 [variants.INVALID_MESSAGE]
 variant_name = "INVALID_MESSAGE"
-description = '''
+description = """
 Message was not according to schema. Consequence: Message is ignored, proceed if possible
-'''
+"""
 
 [variants.INVALID_CONTENT]
 variant_name = "INVALID_CONTENT"
-description = '''
+description = """
 Message contents is invalid (e.g. contains a non-existing ID). Somewhat equivalent to BAD_REQUEST in HTTP.. Consequence: Message is ignored, proceed if possible.
-'''
+"""
 
 [variants.TEMPORARY_ERROR]
 variant_name = "TEMPORARY_ERROR"
-description = '''
+description = """
 Receiver encountered an error. Consequence: Try to send to message again
-'''
+"""
 
 [variants.PERMANENT_ERROR]
 variant_name = "PERMANENT_ERROR"
-description = '''
+description = """
 Receiver encountered an error which it cannot recover from. Consequence: Disconnect.
-'''
+"""
 
 [variants.OK]
 variant_name = "OK"
-description = '''
+description = """
 Message processed normally. Consequence: Proceed normally.
-'''
+"""

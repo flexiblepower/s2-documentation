@@ -1,48 +1,48 @@
 type_name = "InstructionStatusUpdate"
-sent_by = ["RM"]
-description = '''
+sent_by = []
+description = """
 Message sent to indicate the status of an instruction.
 
-Used by the RM to indicate the status of instructions it receives. RMs should send these for every instruction they receive until the instruction
-has either succeeded (indicated by `SUCCEEDED`) or revoked/failed (indicated by `REVOKED`, `REJECTED` or `ABORTED`).
-'''
+Used by the RM to indicate the status of instructions it receives. RMs should send these for every instruction they receive until the instruction has either succeeded (indicated by `SUCCEEDED`) or revoked/failed (indicated by `REVOKED`, `REJECTED` or `ABORTED`).
+"""
+see_also = []
 
 [fields.instruction_id]
 field_name = "instruction_id"
 field_type = "ID"
 optional = false
-description = '''
-ID of the instruction this message is about.
-'''
+description = """
+ID of this instruction (as provided by the CEM).
+"""
 
 [fields.message_id]
 field_name = "message_id"
 field_type = "ID"
 optional = false
-description = '''
+description = """
 ID of this message.
-'''
+"""
 
 [fields.message_type]
 field_name = "message_type"
 field_type = "string"
 optional = false
-description = '''
-The constant `"InstructionStatusUpdate"`.
-'''
+description = """
+The string `"InstructionStatusUpdate"`.
+"""
 
 [fields.status_type]
 field_name = "status_type"
 field_type = "InstructionStatus"
 optional = false
-description = '''
+description = """
 Present status of this instruction.
-'''
+"""
 
 [fields.timestamp]
 field_name = "timestamp"
 field_type = "string"
 optional = false
-description = '''
-Timestamp indicating when `status_type` has last changed.
-'''
+description = """
+Timestamp when status_type has changed the last time.
+"""
