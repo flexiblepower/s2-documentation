@@ -6,7 +6,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
   title: 'S2 Documentation',
-  tagline: 'Documentation for the S2 standard',
+  tagline: 'The place to learn everthing about creating interoperable energy management solutions',
   favicon: 'img/logo-s2-no-text.svg',
 
   // Set the production url of your site here
@@ -86,7 +86,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} TNO.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Flexiblepower Alliance Network (FAN).`,
     },
     docs: {
       sidebar: {
