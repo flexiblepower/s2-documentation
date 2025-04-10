@@ -31,7 +31,7 @@ The Power Envelope Based Control control type is used for devices that can be in
 ## Example of controlling an PV inverter using Power Envelope Based control (PEBC)
 This example describes how a PV interter can expose its curtailment capabilities to the CEM and let the CEM control this inverter by sending it messages that will ask it to curtail itself.
 
-The following sequence diagram is an example of what a message exchange between a CEM and RM could look like, but messages could also be sent in a different order (see also [State of communication](/docs/S2%20Json%20over%20Websockets/State_of_communication.md)). ReceptionStatus messages are omitted for readability.
+The following sequence diagram is an example of what a message exchange between a CEM and RM could look like, but messages could also be sent in a different order (see also [State of communication](/docs/s2-json-over-websockets/state-of-communication.md)). ReceptionStatus messages are omitted for readability.
 
 First an overview of the messages is presented graphically, next sections will describe the example messages in more detail.
 
