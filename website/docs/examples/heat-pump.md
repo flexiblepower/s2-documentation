@@ -53,7 +53,7 @@ The possible Control Types to implement are summarized in the table below.
 
 In this example we will work out the communication between CEM and RM for an all electric heat pump that utilizes the DHW buffer for energy flexibility using FRBC.
 
-The following sequence diagram is an example of what a message exchange between a CEM and RM could look like, but messages could also be sent in a different order (see also [State of communication](/docs/s2-json-over-websockets/state-of-communication.md) and the [FRBC Message reference](/docs/API/FRBC/FRBC.SystemDescription)). `ReceptionStatus` messages are omitted for readability.
+The following sequence diagram is an example of what a message exchange between a CEM and RM could look like, but messages could also be sent in a different order (see also [State of communication](/docs/s2-json-over-websockets/state-of-communication.md) and the [FRBC Message reference](/model-reference/FRBC/FRBC.SystemDescription)). `ReceptionStatus` messages are omitted for readability.
 
 ![XPBVhX8n4CRl-nHz0FK1l308I2Hn4xCByNhiVe66RcUTcMBmwLqW9-bXEJcty_l-TD9Pg95O6P9pcGsUpn2_-jPyy6tpsV_2xux32UO3vunWw9sRgF_uvSQ_K-xrI2UuzZQRK3ryfcoX8sV5qxvjZXOfnN_NdYfoCd6HW8Oo7I1h6CMaTNw7X60hpYQSTfVnUNx5FGMBPxA7fasxN](https://github.com/flexiblepower/s2-ws-json/assets/851310/49422881-d6e3-4ffc-b513-74230d61875d)
 <details>

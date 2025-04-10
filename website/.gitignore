@@ -7,12 +7,12 @@
 # Generated files
 .docusaurus
 .cache-loader
-docs/API/Common
-docs/API/DDBC
-docs/API/FRBC
-docs/API/OMBC
-docs/API/PEBC
-docs/API/PPBC
+model-reference/Common
+model-reference/DDBC
+model-reference/FRBC
+model-reference/OMBC
+model-reference/PEBC
+model-reference/PPBC
 
 # Misc
 .DS_Store

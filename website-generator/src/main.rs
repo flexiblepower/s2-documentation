@@ -16,7 +16,7 @@ fn link_type(
         let split: Vec<_> = param_str.split(".").collect();
         let module_name = if split.len() == 1 { "Common" } else { split[0] };
         out.write(&format!(
-            "[`{0}`](/docs/API/{1}/{2})",
+            "[`{0}`](/model-reference/{1}/{2})",
             param_str,
             module_name,
             param_str.replace("[]", "")
@@ -32,12 +32,12 @@ fn main() {
     handlebars.register_helper("linktype", Box::new(link_type));
     handlebars.register_escape_fn(|x| x.to_string());
 
-    let _ = std::fs::remove_dir_all("../website/docs/API/Common");
-    let _ = std::fs::remove_dir_all("../website/docs/API/DDBC");
-    let _ = std::fs::remove_dir_all("../website/docs/API/FRBC");
-    let _ = std::fs::remove_dir_all("../website/docs/API/OMBC");
-    let _ = std::fs::remove_dir_all("../website/docs/API/PEBC");
-    let _ = std::fs::remove_dir_all("../website/docs/API/PPBC");
+    let _ = std::fs::remove_dir_all("../website/model-reference/Common");
+    let _ = std::fs::remove_dir_all("../website/model-reference/DDBC");
+    let _ = std::fs::remove_dir_all("../website/model-reference/FRBC");
+    let _ = std::fs::remove_dir_all("../website/model-reference/OMBC");
+    let _ = std::fs::remove_dir_all("../website/model-reference/PEBC");
+    let _ = std::fs::remove_dir_all("../website/model-reference/PPBC");
 
     for toml_file in std::fs::read_dir("../structured-documentation").unwrap() {
         let toml_file = toml_file.unwrap();
@@ -51,10 +51,10 @@ fn main() {
         }
         let rendered = handlebars.render_template(doc_template, &doc).unwrap();
 
-        std::fs::create_dir_all(format!("../website/docs/API/{module_name}/")).unwrap();
+        std::fs::create_dir_all(format!("../website/model-reference/{module_name}/")).unwrap();
         std::fs::write(
             format!(
-                "../website/docs/API/{module_name}/{type_name}.md",
+                "../website/model-reference/{module_name}/{type_name}.md",
                 type_name = doc.type_name()
             ),
             rendered,
@@ -62,7 +62,7 @@ fn main() {
         .unwrap();
 
         println!(
-            "Rendered ../website/docs/API/{module_name}/{type_name}.md",
+            "Rendered ../website/model-reference/{module_name}/{type_name}.md",
             type_name = doc.type_name()
         );
     }
