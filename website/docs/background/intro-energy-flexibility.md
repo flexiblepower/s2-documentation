@@ -32,7 +32,7 @@ On the other hand, there are many types of optimizations an energy management sy
 
 With a common protocol for energy flexibility, any device can work with any energy management system. With a common protocol for energy flexibility, you are free to choose which devices you buy *and* the energy management system that optimizes energy flexibility the way you want.
 
-For more information on why S2 was designed the way it was designed, take a look at [Why the S2 approach?](/docs/Background/Why_the_s2_approach.md).
+For more information on why S2 was designed the way it was designed, take a look at [Why the S2 approach?](/docs/background/why-the-s2-approach.md).
 
 ## How does S2 relate to other protocols for energy management?
 How S2 relates exactly to another protocol of course depends on the other protocol. But most protocols out there tend to pick a type of device (e.g. EV charger, white goods) or pick an optimization (e.g. tariffs, grid signals). S2 is unique in that it is agnostic to both aspects.
