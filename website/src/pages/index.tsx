@@ -20,7 +20,7 @@ function HomepageHeader() {
             <p className="hero__subtitle padding-bottom--lg">{siteConfig.tagline}</p>
             <div className={styles.flexContainer}>
                 <Link to="/docs/welcome" className={clsx("button button--primary button--lg shadow--md", styles.actionButton)}>Read the documentation</Link>
-                <Link to="/docs/API/reading-this-documentation" className={clsx("button button--outline button--primary button--lg", styles.actionButton)}>Data model reference</Link>
+                <Link to="/model-reference/reading-this-documentation" className={clsx("button button--outline button--primary button--lg", styles.actionButton)}>Data model reference</Link>
             </div>
           </div>
         <div className="col col--6">

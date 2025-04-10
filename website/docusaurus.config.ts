@@ -46,7 +46,15 @@ const config: Config = {
       } satisfies Preset.Options,
     ],
   ],
-
+  
+  plugins:[
+    ['@docusaurus/plugin-content-docs',{
+      id: "api",
+      path: "model-reference",
+      routeBasePath: "model-reference",
+    }]
+  ],
+  
   themeConfig: {
     // Replace with your project's social card
     image: 'img/docusaurus-social-card.jpg',
@@ -59,9 +67,15 @@ const config: Config = {
       items: [
         {
           type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
+          sidebarId: 'learnSidebar',
           position: 'left',
-          label: 'Documentation',
+          label: 'Learn',
+        },
+        {
+          to: 'model-reference/reading-this-documentation',
+          activeBaseRegex: 'model-reference',
+          position: 'left',
+          label: 'Reference',
         },
         {
           href: 'https://github.com/flexiblepower/s2-documentation',
