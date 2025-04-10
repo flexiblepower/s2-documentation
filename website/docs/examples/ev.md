@@ -61,7 +61,7 @@ We cover the situation in which the RM has access to the following data:
 
 Furthermore, the RM can control the charging power of the EV such that it can set the power at any value between the minimum and maximum value.
 
-The following sequence diagram is an example of what a message exchange between the CEM and RM could look like, but messages could also be sent in a different order (see also [State of communication](/docs/s2-json-over-websockets/state-of-communication.md) and the [FRBC Message reference](/model-reference/FRBC/FRBC.SystemDescription)). `ReceptionStatus` messages are omitted for readability.
+The following sequence diagram is an example of what a message exchange between the CEM and RM could look like, but messages could also be sent in a different order (see also [State of communication](/docs/s2-json-over-websockets/state-of-communication.md) and the [FRBC Message reference](/docs/API/FRBC/FRBC.SystemDescription)). `ReceptionStatus` messages are omitted for readability.
 
 ![cem_rm_interactions](https://www.plantuml.com/plantuml/png/VP7DJiCm3CVlUOey0F007D1W0x539TI2E9lKWcYf7MndQ3mzeI0HMCNLF_y_BA_KGAnCoH4RUjwZ-FLrT-Bxxjm_ujF0OOVc0nDXC1oTgzIVNipy5cZK5zYXw-TPHUrmQRD7pKoARYblIz4YfFXUSrhBAk8Y0JiWU4RPe45CsleFc33Ocic4q_qXB_itt4Emk0VxatJJNwtFXeCQJXlK835RP78kCMSVoHFx368nb0JYMKQKLdx7RoWTWXR12ScElI-35J2MmS2A7aTNL4_yfks5CzwIcfGmTsgapVXB-P17C7H8e_zi_gl6WAfriSVNWchk_x-FKNzUlwf-PKeV)
 <details>
