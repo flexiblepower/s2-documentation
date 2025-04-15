@@ -22,7 +22,7 @@ Reduce or stop heating the building for a certain period, without significantly 
 
 3. **(Hybrid heat pump only) Switching between electricity and natural gas**
 
-A hybrid heat pump can temporary reduce or stop its electricity consumption by starting or increasing the power of the natural gas boiler. This way, the heat output of the hybrid heat pump isn't significantly affected.
+A hybrid heat pump can temporarily reduce or stop its electricity consumption by starting or increasing the power of the natural gas boiler. This way, the heat output of the hybrid heat pump isn't significantly affected.
 
 ## Choosing the right Control Type
 
@@ -187,7 +187,7 @@ The CEM informs the RM that it wants to use FRBC ControlType (the RM defined in 
 ### RM -> CEM: FRBC.SystemDescription
 The idea behind FRBC is that the RM describes an abstract device, which can be mapped to the physical device. The abstract device should be accurate enough for the CEM to create realistic plans and instructions. The FRBC.SystemDescription message defines this abstract device. This description usually pretty static, but can be updated by the RM if the parameters change (e.g. due to efficiency changes do to a changing outside temperature). The FRBC.SystemDecription is relatively large message, so we'll break it down in parts.
 
-First of all we'll take a look at how the _storage_ is described. The storage is an energy storage for which we know how _full_ it is. The fullness of the buffer is described with a number called the _fill level_. How exactly energy is stored and what the exact unit of the fill level is is not that relevant to the CEM; it only cares about energy exchanged with the grid. In our case the storage is our DHW buffer, and the we'll use the temperature in Celsius as the fill level. For comfort and efficiency reasons, we'll allow a water temperature anywhere between 45 and 55 degrees Celsius. If it is below 45, the DHW buffer MUST be heated for user comfort and the heat pump is no longer energy flexible. A temperature above 55 degrees Celsius is not desirable due to efficiency reasons. When the temperature is above 55 the heat pump cannot turn on and also isn't energy flexible. These two temperatures are defined as the fill level range.
+First of all we'll take a look at how the _storage_ is described. The storage is an energy storage for which we know how _full_ it is. The fullness of the buffer is described with a number called the _fill level_. How exactly energy is stored and what the exact unit of the fill level is is not that relevant to the CEM; it only cares about energy exchanged with the grid. In our case the storage is our DHW buffer, and we'll use the temperature in Celsius as the fill level. For comfort and efficiency reasons, we'll allow a water temperature anywhere between 45 and 55 degrees Celsius. If it is below 45, the DHW buffer MUST be heated for user comfort and the heat pump is no longer energy flexible. A temperature above 55 degrees Celsius is not desirable due to efficiency reasons. When the temperature is above 55 the heat pump cannot turn on and also isn't energy flexible. These two temperatures are defined as the fill level range.
 
 For debugging purposes (so for humans, not for algorithms) a label is provided for the storage and the fill level. Also, it is indicated which information the storage provides. The fill level target is not relevant in our case, so it is not provided.
 

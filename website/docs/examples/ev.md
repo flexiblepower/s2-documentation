@@ -8,7 +8,7 @@ This page serves as a guide for implementing a S2 RM for an electric vehicle (ch
 
 ## How is an EV (charger) flexible?
 
-From an energy flexibility point of view, an electric vehicle is a battery on wheels with a charging need (which depends on the mileage). Compared to a typical home battery, an EV battery actually is a *big* battery on wheels (is 2-10 times larger than a home battery). Obviously, the energy flexibility is only available if the EV is connected to a charger. We call the period that EV is connected to the charger a charging session. Within that period, the EV needs to charge to fulfill the end users charging need but the exact time and power at which charging is done is most of the times not relevant for the user. Hence, the charging session provides flexibility. In addition, an EV and the charger might be capable of discharging, which is referred to as Vehicle to Grid (V2G), that provides even more energy flexibility.
+From an energy flexibility point of view, an electric vehicle is a battery on wheels with a charging need (which depends on the mileage). Compared to a typical home battery, an EV battery actually is a *big* battery on wheels (is 2-10 times larger than a home battery). Obviously, the energy flexibility is only available if the EV is connected to a charger. We call the period that the EV is connected to the charger a charging session. Within that period, the EV needs to charge to fulfill the end user's charging need but the exact time and power at which charging is done is typically not relevant for the user. Hence, the charging session provides flexibility. In addition, an EV and the charger might be capable of discharging, which is referred to as Vehicle to Grid (V2G), that provides even more energy flexibility.
 
 The power at which the battery is charged can typically be set at any value between a minimum and maximum charging power, although some charger-EV combinations only offer binary (i.e. on/off) charging control.
 
@@ -193,7 +193,7 @@ In the S2 standard, the RM describes an abstract device that can be mapped to th
 
 First, we take a look at how the _storage_ is described. The level to which a storage is filled is described by a number called the _fill level_. How energy is exactly stored and what the exact unit of the fill level is, is not that relevant to the CEM; it only cares about energy exchanged with the grid. In our case the storage is the battery in our EV and we use the SoC as the fill level. We have different options to define the fill level range, depending on the availability of data. If the battery capacity is available, we can (and should) define the fill level range over the allowed SoC range. Taking into account that the EV battery management systems already uses limits that are such that the battery capacity hardly degrades, the range can be defined from 0 to 100. If the battery capacity is not available (and the desired SoC at the end of the charging session is available) the `fill_level_range` is associated to the amount of energy to charge in the session and range then also from 0 to 100.
 
-For debugging purposes (so for humans, not for algorithms) a label is provided for the storage and the fill level. Also, it is indicated which information the storage provides. If available, the desired SoC at the end of the charging session can be expressed in the fill level target, which we do in this example. Furthermore, we do not model the battery self-discharge losses because they are neglectable (particularly during a charging session) so we set the provides leakage behavior is set to false. Finally, this RM provides a forecast neither.
+For debugging purposes (so for humans, not for algorithms) a label is provided for the storage and the fill level. Also, it is indicated which information the storage provides. If available, the desired SoC at the end of the charging session can be expressed in the fill level target, which we do in this example. Furthermore, we do not model the battery self-discharge losses because they are negligible (particularly during a charging session) so we set the provides leakage behavior is set to false. Finally, this RM provides a forecast neither.
 
 ```json
   {
@@ -211,7 +211,7 @@ For debugging purposes (so for humans, not for algorithms) a label is provided f
 
 Secondly, we define the characteristics of charging the EV. In FRBC this is referred to as an actuator. An actuator is something that the CEM can control, affects the fill level of the storage and exchanges power with the power grid (in our case, consuming electricity).
 
-An actuator consist of operation modes, transitions and timers. Transitions occur when a CEM instructs the RM to switch from one operation mode to another. Timers can be optionaly linked to transitions to indicate that a transition to another operation mode is temporarily blocked (until the timer finishes).
+An actuator consist of operation modes, transitions and timers. Transitions occur when a CEM instructs the RM to switch from one operation mode to another. Timers can be optionally linked to transitions to indicate that a transition to another operation mode is temporarily blocked (until the timer finishes).
 
 Because a RM can change the charging power of an EV very fast, there is in practice no need to define timers actuators for FRBC battery charging.
 
@@ -418,7 +418,7 @@ Below is given an example of a power measurement message:
 ```
 
 ### RM -> CEM: FRBC.ActuatorStatus
-In S2, the RM is in charge of the control of a device. It receives instructions form the CEM how to operate and it is supposed to follow that as closely as possible. However, if user constraints of device constraints would be violated, the RM can decide by itself to deviate from the instructions as received from the CEM. It is also possible that the CEM did not send any instructions at all. Therefore, the RM must send updates about the status of the actuators to the CEM. The message below is example of such an update. It is up to the RM to decide when this actually send but the principle is that it must send an update if the state changes significantly.
+In S2, the RM is in charge of the control of a device. It receives instructions from the CEM how to operate, and it is supposed to follow that as closely as possible. However, if user constraints of device constraints would be violated, the RM can decide by itself to deviate from the instructions as received from the CEM. It is also possible that the CEM did not send any instructions at all. Therefore, the RM must send updates about the status of the actuators to the CEM. The message below is example of such an update. It is up to the RM to decide when this actually send but the principle is that it must send an update if the state changes significantly.
 ```json
 {
   "message_type": "FRBC.ActuatorStatus",
@@ -443,7 +443,7 @@ Similarly as for the FRBC.ActuatorStatus, the FRBC RM must also send updates for
 
 
 ### CEM -> RM: FRBC.Instruction
-After the CEM has determined how to use the energy flexibility provided by the RM(s), it sends instructions to the RM(s). This instructions are telling the RM when (the `execution_time`) to change an actuator's operation mode and operation mode factor. Below is given an example:
+After the CEM has determined how to use the energy flexibility provided by the RM(s), it sends instructions to the RM(s). These instructions are telling the RM when (the `execution_time`) to change an actuator's operation mode and operation mode factor. Below is given an example:
 ```json
 {
   "message_type": "FRBC.Instruction",

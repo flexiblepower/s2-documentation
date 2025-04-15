@@ -37,7 +37,7 @@ export default function Home(): ReactNode {
   return (
     <Layout
       title={`${siteConfig.title}`}
-      description="The place to learn everthing about creating interoperable energy management solutions">
+      description="The place to learn everything about creating interoperable energy management solutions.">
       <HomepageHeader />
       <main>
       </main>

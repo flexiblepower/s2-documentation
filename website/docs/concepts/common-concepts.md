@@ -8,7 +8,7 @@ The following is a list of commonly used terms in S2. This can be used as a refe
 In S2, an "Abnormal Condition" is a state of emergency where user comfort may be sacrificed in order to prevent even greater discomfort (e.g. a power outage). What exactly constitutes an emergency depends on local regulation, and might be subject to an audit or financial compensation. The CEM must implement the abnormal condition functionality according to this local regulation. A RM can offer functionality (e.g. an Operation Mode or Transition) which is only allowed to be used by the CEM during Abnormal Conditions, and the CEM must explicitly indicate with Instructions to the RM when there is an Abnormal Condition. Safe operation of the hardware must always be guaranteed and disproportional wear to the hardware must always be prevented; also during an Abnormal Condition.
 
 # CEM (Customer Energy Manager)
-The CEM is a logical component that uses S2 to communicate with one or multiple RM's. The CEM is usually part of an EMS. The CEM is the entity optimizing the energy flexibility of one or multiple energy flexible devices towards a certain goal. For more information see [CEM in the Architecture page](https://github.com/flexiblepower/s2-ws-json/wiki/Architecture#customer-energy-manager-cem).
+The CEM is a logical component that uses S2 to communicate with one or multiple RMs. The CEM is usually part of an EMS. The CEM is the entity optimizing the energy flexibility of one or multiple energy flexible devices towards a certain goal. For more information see [CEM in the Architecture page](https://github.com/flexiblepower/s2-ws-json/wiki/Architecture#customer-energy-manager-cem).
 
 # Commodity
 In S2, a Commodity is a form of energy that can be consumed or produced by a device, for which the energy flexibility can be optimized by the CEM. Typically this electricity, but S2 also supports natural gas, hydrogen, heat and heating oil. Only energy exchanged with the grid is considered, not any energy exchanges within the device itself.
@@ -22,7 +22,7 @@ The CommodityQuantity is a data structure that combines the Commodity with a qua
 For details see the reference of the [CommodityQuantity enum type](https://github.com/flexiblepower/s2-ws-json/wiki/Common_messages#commodityquantity).
 
 # Costs (running costs and transition costs)
-When S2 talks about costs, this is never the costs of energy. Instead costs could indicate to the CEM if there are some cost associated with running in a certain mode or activating some flexibility. The logic of the CEM could take these costs into consideration. Examples could be exceptional wear and tear to the device or a contractual fee for activating flexibility.
+When S2 talks about costs, this is never the costs of energy. Instead, costs could indicate to the CEM if there are some cost associated with running in a certain mode or activating some flexibility. The logic of the CEM could take these costs into consideration. Examples could be exceptional wear and tear to the device or a contractual fee for activating flexibility.
 
 The cost of energy as defined by the Commodities is not communicated from the RM to the CEM, since the CEM is component that, if relevant, should be aware of the cost of energy; not the RM.
 
