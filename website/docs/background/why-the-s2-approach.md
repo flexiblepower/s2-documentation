@@ -40,11 +40,11 @@ The device manufacturer is always in charge of a safe operation and user comfort
 
 The combination of device and RM can determine the amount of control from the EMS in two ways:
 
-* The RM informs the CEM what kind of instructions it is allow to send the RM (what that looks like depends on the Control Type). And the device can change this at any moment in case something changes. A correct CEM implementation will never send instructions the device doesn't want to receive.
+* The RM informs the CEM what kind of instructions it is allowed to send the RM (what that looks like depends on the Control Type). And the device can change this at any moment in case something changes. A correct CEM implementation will never send instructions the device doesn't want to receive.
 * Even then, a RM can always reject instructions from the CEM for whatever reason.
 
 ### Focus on one thing and do it well
-When creating a communication protocol for smart devices there is always the temptation of including just a little more functionality that would be very useful, such as information about EV charging sessions, meter readings, billing, power quality, debugging... But that's not what S2 does. S2 to aims to do one thing and do that really well: communicating energy flexibility information and its activation. When it comes to interoperability, less is more. By specifying less, S2 needs less assumptions or what systems look like or aim to do and the broader it can be applied. And becomes easier to implement.
+When creating a communication protocol for smart devices there is always the temptation of including just a little more functionality that would be very useful, such as information about EV charging sessions, meter readings, billing, power quality, debugging... But that's not what S2 does. S2 to aims to do one thing and do that really well: communicating energy flexibility information and its activation. When it comes to interoperability, less is more. By specifying less, S2 needs fewer assumptions or what systems look like or aim to do and the broader it can be applied. And becomes easier to implement.
 
 You are free to use or specify any other form of communication parallel to S2. Do whatever makes sense in your context.
 

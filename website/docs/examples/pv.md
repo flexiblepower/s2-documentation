@@ -24,12 +24,12 @@ S2 supports five different control types for flexibility (and one for no control
 
 The table shows two ways to interact with a PV installation: just using the power measurements such that the CEM can optimize based on the production of the PV installation and using Power Envelope Based Control, which allows the CEM to instruct the PV installation to curtail.
 
-We could also model the PV installation as a state machine using Operation Mode Based Control (OMBC). Different states (operation modes in S2 language) could be modeled that describe at which maximum power output the PV installation should adhere to, but this approach is more work to configure than PEBC, and does not increase the amount of flexiblity that a CEM can utilize.
+We could also model the PV installation as a state machine using Operation Mode Based Control (OMBC). Different states (operation modes in S2 language) could be modeled that describe at which maximum power output the PV installation should adhere to, but this approach is more work to configure than PEBC, and does not increase the amount of flexibility that a CEM can utilize.
 
-The Power Envelope Based Control control type is used for devices that can be influenced to use or produce a minimum and/or maximum amount of power over time. This means that the CEM cannot control the amount of power produced or consumed by the device directly, but it can dictate power limits, which can change over time. The Resource Manager informs the CEM with which power limits it can work using the `PEBC.PowerConstraints` message. Optionally, the Resource Manager can also instruct the CEM how much energy it needs to consume or produce in a certain timespan (by sending a `PEBC.EnergyConstraints` message), which the CEM shall take into consideration while setting power limits.
+Power Envelope Based Control is used for devices that can be influenced to use or produce a minimum and/or maximum amount of power over time. This means that the CEM cannot control the amount of power produced or consumed by the device directly, but it can dictate power limits, which can change over time. The Resource Manager informs the CEM with which power limits it can work using the `PEBC.PowerConstraints` message. Optionally, the Resource Manager can also instruct the CEM how much energy it needs to consume or produce in a certain timespan (by sending a `PEBC.EnergyConstraints` message), which the CEM shall take into consideration while setting power limits.
 
 ## Example of controlling an PV inverter using Power Envelope Based control (PEBC)
-This example describes how a PV interter can expose its curtailment capabilities to the CEM and let the CEM control this inverter by sending it messages that will ask it to curtail itself.
+This example describes how a PV inverter can expose its curtailment capabilities to the CEM and let the CEM control this inverter by sending it messages that will ask it to curtail itself.
 
 The following sequence diagram is an example of what a message exchange between a CEM and RM could look like, but messages could also be sent in a different order (see also [State of communication](/docs/s2-json-over-websockets/state-of-communication.md)). ReceptionStatus messages are omitted for readability.
 
@@ -65,7 +65,7 @@ end loop
 ```
 </details>
 
-As shown, the RM needs to know what the maximum output power of the inverter is and how it can get measurements that can be send to the CEM.
+As shown, the RM needs to know what the maximum output power of the inverter is and how it can get measurements that can be sent to the CEM.
 
 ### Communication between de RM of the PV installation and a CEM
 
@@ -172,7 +172,7 @@ The RM informs the CEM about several static properties of the RM/PV installation
 * This PV installation does not define any costs related parameters, so no currency needs to be provided.
 * This RM only implements the Power Envelope Based Control (PEBC) Control Type.
 * This RM also provides power forecasts (e.g. by using an external forecast service connected to this RM).
-* This PV installation is a single phase electric device (when there is only one phase the phase L1 must be used), so it will only provide measurements for the single phase. For three phase inverters, all phases should be listed here (and for each phase measurements should be provided), or in the case the three-phase power is symmetric and therefore equally shared over all phases, `ELECTRIC.POWER.3_PHASE_SYMMETRIC` could be used here.
+* This PV installation is a single phase electric device (when there is only one phase the phase L1 must be used), so it will only provide measurements for the single phase. For three-phase inverters, all phases should be listed here (and for each phase measurements should be provided), or in the case the three-phase power is symmetric and therefore equally shared over all phases, `ELECTRIC.POWER.3_PHASE_SYMMETRIC` could be used here.
 
 ```json
 {
@@ -221,7 +221,7 @@ Using the `PEBC.PowerConstraints` message, a RM can specify the constraints in w
 
 1. `valid_from` and `valid_until` specify for which period this constraint is valid. In the example it is defined as 24 hours. If `valid_until` is not present, there is no determined end time of this `PEBC.PowerConstraints`.
 
-2. `consequence_type` defines what happens if the constraint is applied. For PV installations it means that if the installation is curtailed, the amount of electricity that is curtailed is vanished (denoted by the the enum literal `VANISHED`), e.g. it will be lost and never reappear. For other devices (e.g. for an EV or other devices that can shift their consumption in time) the consequence could be `DEFER` to denote that the load is postponed (e.g. the lost energy is caught up later in time e.g. by longer charging or compensated by faster charging later on).
+2. `consequence_type` defines what happens if the constraint is applied. For PV installations it means that if the installation is curtailed, the amount of electricity that is curtailed is vanished (denoted by the enum literal `VANISHED`), e.g. it will be lost and never reappear. For other devices (e.g. for an EV or other devices that can shift their consumption in time) the consequence could be `DEFER` to denote that the load is postponed (e.g. the lost energy is caught up later in time e.g. by longer charging or compensated by faster charging later on).
 
 3. A list of `allowed_limit_ranges` of type `PEBC.AllowedLimitRange`. These are the actual constraints that can be defined.
    There shall be at least one PEBC.AllowedLimitRange for the UPPER_LIMIT and at least one AllowedLimitRange for the LOWER_LIMIT. For each Allowed
@@ -305,7 +305,7 @@ For the interested reader the Json message is shown below. Please refer to the E
 
 #### RM -> CEM: PowerMeasurement
 The RM sends power measurements to the CEM using the `PowerMeasurement` message.
-It can send multiple values with the same timestamp (e.g. for three phase measurements). For our example only one phase is used.
+It can send multiple values with the same timestamp (e.g. for three-phase measurements). For our example only one phase is used.
 
 ```json
 {
