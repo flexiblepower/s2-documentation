@@ -11,7 +11,7 @@ pagination_prev: null
 <div style=\{{ marginLeft: "1rem", marginBottom: "2rem" }}>
 <div class="api-title">
 <div style=\{{ width: "fit-content", fontWeight: 500, color: "gray" }}>
-{{#if sent_by}}
+{{#if (isdefined sent_by)}}
 Message
 {{#each sent_by}}
 ({{this}})
