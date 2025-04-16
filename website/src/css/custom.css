@@ -13,6 +13,7 @@
   --ifm-code-font-size: 95%;
   --ifm-font-family-monospace: "Cascadia Code", sans-serif;
   --ifm-leading: 0.75rem;
+  --ifm-code-padding-horizontal: 0;
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
