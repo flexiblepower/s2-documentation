@@ -1,5 +1,4 @@
 type_name = "PowerForecastElement"
-sent_by = []
 description = """
 Specifies power forecast values valid for a duration.
 """

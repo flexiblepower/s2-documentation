@@ -1,5 +1,4 @@
 type_name = "NumberRange"
-sent_by = []
 description = """
 Specifies a numerical range.
 """

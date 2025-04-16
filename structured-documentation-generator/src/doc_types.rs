@@ -11,7 +11,7 @@ pub enum GenericDocumentation {
 #[derive(Serialize, Deserialize)]
 pub struct ObjectDocumentation {
     pub type_name: String,
-    pub sent_by: Vec<String>,
+    pub sent_by: Option<Vec<String>>,
     pub description: String,
     pub see_also: Vec<String>,
     pub fields: IndexMap<String, FieldDocumentation>,

@@ -1,10 +1,8 @@
 type_name = "Duration"
-sent_by = []
 description = """
 Duration in milliseconds.
 
 `Duration` is specified as a simple unsigned `integer`, representing the number of milliseconds.
 """
 see_also = []
-
-[fields]
+fields = {}

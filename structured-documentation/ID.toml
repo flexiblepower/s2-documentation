@@ -1,5 +1,4 @@
 type_name = "ID"
-sent_by = []
 description = """
 Unique identifier for many S2 objects.
 
@@ -8,5 +7,4 @@ Unique identifier for many S2 objects.
 It's highly recommended to use a UUID for this; while the S2 specification allows for different options, UUIDs are widely supported and fulfill all the requirements. If you use JSON to encode S2 messages, you must use UUIDs for `ID`.
 """
 see_also = []
-
-[fields]
+fields = {}

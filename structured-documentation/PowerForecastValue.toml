@@ -1,5 +1,4 @@
 type_name = "PowerForecastValue"
-sent_by = []
 description = """
 Specifies the expected power value for a specific commodity/quantitiy.
 

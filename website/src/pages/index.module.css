@@ -5,7 +5,7 @@
 
 .heroBanner {
   padding: 4rem 0;
-  text-align: center;
+  text-align: left;
   position: relative;
   overflow: hidden;
 }
@@ -16,8 +16,22 @@
   }
 }
 
-.buttons {
+/* .buttons {
   display: flex;
   align-items: center;
   justify-content: center;
+} */
+
+.actionButton{
+  min-width: 280px;
+}
+
+.flexContainer{
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.systemImg {
+  max-width: 40%;
 }

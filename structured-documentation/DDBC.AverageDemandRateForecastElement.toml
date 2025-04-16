@@ -1,8 +1,7 @@
 type_name = "DDBC.AverageDemandRateForecastElement"
-sent_by = []
-description = """
+description = '''
 TODO
-"""
+'''
 see_also = []
 
 [fields.demand_rate_expected]

@@ -6,9 +6,10 @@ import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
   title: 'S2 Documentation',
-  tagline: 'Documentation for the S2 standard',
-  favicon: 'img/Logo-S2-no-text.svg',
 
+  tagline: 'The place to learn everything about creating interoperable energy management solutions.',
+  favicon: 'img/Logo-S2-no-text.svg',
+  
   // Set the production url of your site here
   url: 'https://docs.s2standard.org/',
   baseUrl: '/',
@@ -45,7 +46,15 @@ const config: Config = {
       } satisfies Preset.Options,
     ],
   ],
-
+  
+  plugins:[
+    ['@docusaurus/plugin-content-docs',{
+      id: "api",
+      path: "model-reference",
+      routeBasePath: "model-reference",
+    }]
+  ],
+  
   themeConfig: {
     // Replace with your project's social card
     image: 'img/docusaurus-social-card.jpg',
@@ -58,9 +67,15 @@ const config: Config = {
       items: [
         {
           type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
+          sidebarId: 'learnSidebar',
           position: 'left',
-          label: 'Documentation',
+          label: 'Learn',
+        },
+        {
+          to: 'model-reference/reading-this-documentation',
+          activeBaseRegex: 'model-reference',
+          position: 'left',
+          label: 'Reference',
         },
         {
           href: 'https://github.com/flexiblepower/s2-documentation',
@@ -86,7 +101,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} TNO.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Flexiblepower Alliance Network (FAN).`,
     },
     docs: {
       sidebar: {

@@ -143,7 +143,7 @@ fn main() {
 
             GenericDocumentation::Object(ObjectDocumentation {
                 type_name: name.clone(),
-                sent_by: Vec::new(),
+                sent_by: Some(Vec::new()),
                 description: process_description(description),
                 see_also: Vec::new(),
                 fields,

@@ -1,12 +1,12 @@
 /* You can override the default Infima variables here. */
 :root {
   --ifm-color-primary: #123EB7;
-  --ifm-color-primary-dark: #002484;
-  --ifm-color-primary-darker: #277148;
+  --ifm-color-primary-dark: #002098;
+  --ifm-color-primary-darker: #002098;
   --ifm-color-primary-darkest: #205d3b;
   --ifm-color-primary-light: #4778FF;
-  --ifm-color-primary-lighter: #359962;
-  --ifm-color-primary-lightest: #3cad6e;
+  --ifm-color-primary-lighter: #7286dd;
+  --ifm-color-primary-lightest: #e8eaf9;
   --ifm-color-success: #2EA339;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
 
@@ -47,6 +47,33 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 1rem;
   border: 1px solid rgba(18, 62, 183, 0.2);
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+.api-title {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.api-title h1:first-child {
+  color: #C42759;
+  margin: 0;
+}
+
+.api-title code {
+  padding: 0;
+  margin: 0;
+}
+
+.api-title p {
+  margin: 0;
+}
+
+@media (max-width: 1920px) {
+  .api-title {
+    flex-direction: column;
+  }
 }
 
 pre > code {
