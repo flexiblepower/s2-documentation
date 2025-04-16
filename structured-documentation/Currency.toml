@@ -1,6 +1,6 @@
 type_name = "Currency"
 description = """
-Currency used when this resource gives cost information
+The currency used when this resource gives cost information.
 """
 see_also = []
 

@@ -52,6 +52,7 @@ const config: Config = {
       id: "api",
       path: "model-reference",
       routeBasePath: "model-reference",
+      breadcrumbs: false,
     }]
   ],
   

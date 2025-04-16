@@ -1,17 +1,17 @@
 type_name = "EnergyManagementRole"
 description = """
-TODO
+Describes whether a resource is an RM or CEM.
 """
-see_also = []
+see_also = [{ name = "Guide to the S2 architecture", link = "https://docs.s2standard.org/docs/concepts/architecture/"}]
 
 [variants.CEM]
 variant_name = "CEM"
 description = """
-Customer Energy Manager
+Customer Energy Manager.
 """
 
 [variants.RM]
 variant_name = "RM"
 description = """
-Resource Manager
+Resource Manager.
 """
