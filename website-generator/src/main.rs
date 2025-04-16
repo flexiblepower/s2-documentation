@@ -1,5 +1,6 @@
-use handlebars::Handlebars;
+use handlebars::{handlebars_helper, Handlebars};
 use s2_documentation_generator::GenericDocumentation;
+use serde_json::Value;
 
 fn link_type(
     h: &handlebars::Helper,
@@ -10,7 +11,10 @@ fn link_type(
 ) -> handlebars::HelperResult {
     let param = h.param(0).unwrap();
     let param_str = param.value().as_str().unwrap();
-    if matches!(param_str.replace("[]", "").as_str(), "string" | "integer" | "float" | "boolean") { // ==  || param_str == "integer" || param_str == "float" || param_str == "boolean" {
+    if matches!(
+        param_str.replace("[]", "").as_str(),
+        "string" | "integer" | "float" | "boolean"
+    ) {
         out.write(&format!("`{0}`", param_str))?;
     } else {
         let split: Vec<_> = param_str.split(".").collect();
@@ -30,6 +34,8 @@ fn main() {
     let doc_template = include_str!("./doc_item.handlebars");
     let mut handlebars = Handlebars::new();
     handlebars.register_helper("linktype", Box::new(link_type));
+    handlebars_helper!(isdefined: |v: Value| !v.is_null());
+    handlebars.register_helper("isdefined", Box::new(isdefined));
     handlebars.register_escape_fn(|x| x.to_string());
 
     let _ = std::fs::remove_dir_all("../website/model-reference/Common");
