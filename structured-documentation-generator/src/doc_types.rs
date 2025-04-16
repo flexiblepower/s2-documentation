@@ -13,7 +13,7 @@ pub struct ObjectDocumentation {
     pub type_name: String,
     pub sent_by: Option<Vec<String>>,
     pub description: String,
-    pub see_also: Vec<String>,
+    pub see_also: Vec<SeeAlso>,
     pub fields: IndexMap<String, FieldDocumentation>,
 }
 
@@ -29,7 +29,7 @@ pub struct FieldDocumentation {
 pub struct EnumDocumentation {
     pub type_name: String,
     pub description: String,
-    pub see_also: Vec<String>,
+    pub see_also: Vec<SeeAlso>,
     pub variants: IndexMap<String, VariantDocumentation>,
 }
 
@@ -37,6 +37,12 @@ pub struct EnumDocumentation {
 pub struct VariantDocumentation {
     pub variant_name: String,
     pub description: String,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct SeeAlso {
+    pub name: String,
+    pub link: String,
 }
 
 impl GenericDocumentation {

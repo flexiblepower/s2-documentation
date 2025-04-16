@@ -1,5 +1,5 @@
 type_name = "InstructionStatusUpdate"
-sent_by = []
+sent_by = ["RM"]
 description = """
 Message sent to indicate the status of an instruction.
 

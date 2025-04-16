@@ -1,8 +1,10 @@
 type_name = "ControlType"
 description = """
-TODO
+Describes a resource's control type(s).
+
+Control types describe how a resource is flexible. Typically, an RM will implement one control type, while a CEM will implement all five control types.
 """
-see_also = []
+see_also = [{ name = "Guide to S2 control types", link = "https://docs.s2standard.org/docs/concepts/control-types/" }]
 
 [variants.POWER_ENVELOPE_BASED_CONTROL]
 variant_name = "POWER_ENVELOPE_BASED_CONTROL"
@@ -37,7 +39,7 @@ Identifier for the Fill Rate Based Control type
 [variants.NOT_CONTROLABLE]
 variant_name = "NOT_CONTROLABLE"
 description = """
-Identifier that is to be used if no control is possible. Resources of this type can still provide measurements and forecast
+`NOT_CONTROLABLE` is used when no control is possible. Resources of this type can still provide measurements and forecast.
 """
 
 [variants.NO_SELECTION]
