@@ -9,31 +9,31 @@ see_also = [{ name = "Guide to S2 control types", link = "https://docs.s2standar
 [variants.POWER_ENVELOPE_BASED_CONTROL]
 variant_name = "POWER_ENVELOPE_BASED_CONTROL"
 description = """
-Identifier for the Power Envelope Based Control type
+Power Envelope Base Control, used for devices of which the power producing or consuming behavior cannot be controlled, but can be limited in some way.
 """
 
 [variants.POWER_PROFILE_BASED_CONTROL]
 variant_name = "POWER_PROFILE_BASED_CONTROL"
 description = """
-Identifier for the Power Profile Based Control type
+Power Profile Based Control, used for devices which have to perform a certain tasks, but that are flexible in when their tasks can be executed.
 """
 
 [variants.OPERATION_MODE_BASED_CONTROL]
 variant_name = "OPERATION_MODE_BASED_CONTROL"
 description = """
-Identifier for the Operation Mode Based Control type
+Operation Mode Based Control, used for devices which can adjust their power producing or consuming behavior, without constraints regarding the duration of the adjustment.
 """
 
 [variants.FILL_RATE_BASED_CONTROL]
 variant_name = "FILL_RATE_BASED_CONTROL"
 description = """
-Identifier for the Demand Driven Based Control type
+Fill Rate Based Control, used for devices which can store or buffer energy in some form.
 """
 
 [variants.DEMAND_DRIVEN_BASED_CONTROL]
 variant_name = "DEMAND_DRIVEN_BASED_CONTROL"
 description = """
-Identifier for the Fill Rate Based Control type
+Demand Driven Based Control, used for devices which need to match a given demand of something, but are flexible in which way they satisfy this demand.
 """
 
 [variants.NOT_CONTROLABLE]

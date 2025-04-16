@@ -1,6 +1,6 @@
 type_name = "Role"
 description = """
-TODO
+Describes that a resource can consume, produce or store a commodity.
 """
 see_also = []
 
@@ -9,7 +9,7 @@ field_name = "commodity"
 field_type = "Commodity"
 optional = false
 description = """
-Commodity the role refers to.
+The commodity being referred to.
 """
 
 [fields.role]
@@ -17,5 +17,5 @@ field_name = "role"
 field_type = "RoleType"
 optional = false
 description = """
-Role type of the Resource Manager for the given commodity
+Indicates whether the resourse can consume, produce or store the specified commodity.
 """

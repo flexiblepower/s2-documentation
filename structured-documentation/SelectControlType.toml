@@ -1,16 +1,18 @@
 type_name = "SelectControlType"
-sent_by = []
+sent_by = ["CEM"]
 description = """
-TODO
+Activates a Control Type for this session.
+
+This message is sent by the CEM to activate a Control Type for this session. The activated control type must be supported by the Resource Manager (as indicated in `ResourceManagerDetails` received by the CEM).
 """
-see_also = []
+see_also = [{ name = "Guide to S2 control types", link = "https://docs.s2standard.org/docs/concepts/control-types/" }]
 
 [fields.control_type]
 field_name = "control_type"
 field_type = "ControlType"
 optional = false
 description = """
-The ControlType to activate. Must be one of the available ControlTypes as defined in the ResourceManagerDetails
+The Control Type to activate.
 """
 
 [fields.message_id]
@@ -18,7 +20,7 @@ field_name = "message_id"
 field_type = "ID"
 optional = false
 description = """
-ID of this message
+ID of this message.
 """
 
 [fields.message_type]
@@ -26,5 +28,5 @@ field_name = "message_type"
 field_type = "string"
 optional = false
 description = """
-TODO
+The string `"SelectControlType"`.
 """

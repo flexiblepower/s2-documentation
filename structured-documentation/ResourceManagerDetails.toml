@@ -1,7 +1,9 @@
 type_name = "ResourceManagerDetails"
-sent_by = []
+sent_by = ["RM"]
 description = """
-TODO
+Describes various properties of an RM.
+
+The RM sends this message after the handshaking process has taken place to let the CEM know about its various property. Importantly, `available_control_types` lets the CEM know what control types the RM supports. The CEM will then usually respond with a `SelectControlType` message to select one of the supported control types.
 """
 see_also = []
 
@@ -42,7 +44,7 @@ field_name = "manufacturer"
 field_type = "string"
 optional = true
 description = """
-Name of Manufacturer
+The name of this resource's manufacturer.
 """
 
 [fields.message_id]
@@ -50,7 +52,7 @@ field_name = "message_id"
 field_type = "ID"
 optional = false
 description = """
-ID of this message
+ID of this message.
 """
 
 [fields.message_type]
@@ -58,7 +60,7 @@ field_name = "message_type"
 field_type = "string"
 optional = false
 description = """
-TODO
+The string `"ResourceManagerDetails"`.
 """
 
 [fields.model]
@@ -66,7 +68,7 @@ field_name = "model"
 field_type = "string"
 optional = true
 description = """
-Name of the model of the device (provided by the manufacturer)
+The name of the model of the device (provided by the manufacturer).
 """
 
 [fields.name]
@@ -74,7 +76,7 @@ field_name = "name"
 field_type = "string"
 optional = true
 description = """
-Human readable name given by user
+A human readable name given by the user of the resource.
 """
 
 [fields.provides_forecast]
@@ -82,7 +84,7 @@ field_name = "provides_forecast"
 field_type = "boolean"
 optional = false
 description = """
-Indicates whether the ResourceManager is able to provide PowerForecasts
+Indicates whether the ResourceManager is able to provide `PowerForecast`s.
 """
 
 [fields.provides_power_measurement_types]
@@ -90,7 +92,7 @@ field_name = "provides_power_measurement_types"
 field_type = "CommodityQuantity[]"
 optional = false
 description = """
-Array of all CommodityQuantities that this Resource Manager can provide measurements for. 
+Indicates for which CommodityQuantities this Resource Manager can provide measurements. 
 """
 
 [fields.resource_id]
@@ -98,7 +100,7 @@ field_name = "resource_id"
 field_type = "ID"
 optional = false
 description = """
-Identifier of the Resource Manager. Must be unique within the scope of the CEM.
+Unique identifier of the Resource Manager.
 """
 
 [fields.roles]
@@ -106,7 +108,7 @@ field_name = "roles"
 field_type = "Role[]"
 optional = false
 description = """
-Each Resource Manager provides one or more energy Roles
+Describes which commodities the resource can consume, produce and/or store.
 """
 
 [fields.serial_number]
@@ -114,5 +116,5 @@ field_name = "serial_number"
 field_type = "string"
 optional = true
 description = """
-Serial number of the device (provided by the manufacturer)
+The serial number of the device (provided by the manufacturer).
 """
