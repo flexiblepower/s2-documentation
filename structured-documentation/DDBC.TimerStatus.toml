@@ -1,7 +1,7 @@
 type_name = "DDBC.TimerStatus"
 sent_by = []
 description = """
-TODO
+
 """
 see_also = []
 
@@ -34,7 +34,7 @@ field_name = "message_type"
 field_type = "string"
 optional = false
 description = """
-TODO
+
 """
 
 [fields.timer_id]
