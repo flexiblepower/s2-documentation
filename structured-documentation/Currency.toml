@@ -7,599 +7,599 @@ see_also = []
 [variants.AED]
 variant_name = "AED"
 description = """
-TODO
+United Arab Emirates Dirham, the official currency of the United Arab Emirates.
 """
 
 [variants.ANG]
 variant_name = "ANG"
 description = """
-TODO
+Netherlands Antillean Guilder, used in Curaçao and Sint Maarten.
 """
 
 [variants.AUD]
 variant_name = "AUD"
 description = """
-TODO
+Australian Dollar, the official currency of Australia and its territories.
 """
 
 [variants.CHE]
 variant_name = "CHE"
 description = """
-TODO
+WIR Euro, a complementary currency used in Switzerland.
 """
 
 [variants.CHF]
 variant_name = "CHF"
 description = """
-TODO
+Swiss Franc, the official currency of Switzerland and Liechtenstein.
 """
 
 [variants.CHW]
 variant_name = "CHW"
 description = """
-TODO
+WIR Franc, a complementary currency used in Switzerland.
 """
 
 [variants.EUR]
 variant_name = "EUR"
 description = """
-TODO
+Euro, the official currency of the Eurozone, used by 20 European Union countries.
 """
 
 [variants.GBP]
 variant_name = "GBP"
 description = """
-TODO
+Pound Sterling, the official currency of the United Kingdom.
 """
 
 [variants.LBP]
 variant_name = "LBP"
 description = """
-TODO
+Lebanese Pound, the official currency of Lebanon.
 """
 
 [variants.LKR]
 variant_name = "LKR"
 description = """
-TODO
+Sri Lankan Rupee, the official currency of Sri Lanka.
 """
 
 [variants.LRD]
 variant_name = "LRD"
 description = """
-TODO
+Liberian Dollar, the official currency of Liberia.
 """
 
 [variants.LSL]
 variant_name = "LSL"
 description = """
-TODO
+Lesotho Loti, the official currency of Lesotho.
 """
 
 [variants.LYD]
 variant_name = "LYD"
 description = """
-TODO
+Libyan Dinar, the official currency of Libya.
 """
 
 [variants.MAD]
 variant_name = "MAD"
 description = """
-TODO
+Moroccan Dirham, the official currency of Morocco.
 """
 
 [variants.MDL]
 variant_name = "MDL"
 description = """
-TODO
+Moldovan Leu, the official currency of Moldova.
 """
 
 [variants.MGA]
 variant_name = "MGA"
 description = """
-TODO
+Malagasy Ariary, the official currency of Madagascar.
 """
 
 [variants.MKD]
 variant_name = "MKD"
 description = """
-TODO
+Macedonian Denar, the official currency of North Macedonia.
 """
 
 [variants.MMK]
 variant_name = "MMK"
 description = """
-TODO
+Myanmar Kyat, the official currency of Myanmar.
 """
 
 [variants.MNT]
 variant_name = "MNT"
 description = """
-TODO
+Mongolian Tögrög, the official currency of Mongolia.
 """
 
 [variants.MOP]
 variant_name = "MOP"
 description = """
-TODO
+Macanese Pataca, the official currency of Macau.
 """
 
 [variants.MRO]
 variant_name = "MRO"
 description = """
-TODO
+Mauritanian Ouguiya, the former currency of Mauritania (replaced by MRU).
 """
 
 [variants.MUR]
 variant_name = "MUR"
 description = """
-TODO
+Mauritian Rupee, the official currency of Mauritius.
 """
 
 [variants.MVR]
 variant_name = "MVR"
 description = """
-TODO
+Maldivian Rufiyaa, the official currency of the Maldives.
 """
 
 [variants.MWK]
 variant_name = "MWK"
 description = """
-TODO
+Malawian Kwacha, the official currency of Malawi.
 """
 
 [variants.MXN]
 variant_name = "MXN"
 description = """
-TODO
+Mexican Peso, the official currency of Mexico.
 """
 
 [variants.MXV]
 variant_name = "MXV"
 description = """
-TODO
+Mexican Unidad de Inversion (UDI), a unit of account used in Mexico.
 """
 
 [variants.MYR]
 variant_name = "MYR"
 description = """
-TODO
+Malaysian Ringgit, the official currency of Malaysia.
 """
 
 [variants.MZN]
 variant_name = "MZN"
 description = """
-TODO
+Mozambican Metical, the official currency of Mozambique.
 """
 
 [variants.NAD]
 variant_name = "NAD"
 description = """
-TODO
+Namibian Dollar, the official currency of Namibia.
 """
 
 [variants.NGN]
 variant_name = "NGN"
 description = """
-TODO
+Nigerian Naira, the official currency of Nigeria.
 """
 
 [variants.NIO]
 variant_name = "NIO"
 description = """
-TODO
+Nicaraguan Córdoba, the official currency of Nicaragua.
 """
 
 [variants.NOK]
 variant_name = "NOK"
 description = """
-TODO
+Norwegian Krone, the official currency of Norway.
 """
 
 [variants.NPR]
 variant_name = "NPR"
 description = """
-TODO
+Nepalese Rupee, the official currency of Nepal.
 """
 
 [variants.NZD]
 variant_name = "NZD"
 description = """
-TODO
+New Zealand Dollar, the official currency of New Zealand and its territories.
 """
 
 [variants.OMR]
 variant_name = "OMR"
 description = """
-TODO
+Omani Rial, the official currency of Oman.
 """
 
 [variants.PAB]
 variant_name = "PAB"
 description = """
-TODO
+Panamanian Balboa, one of the official currencies of Panama (alongside USD).
 """
 
 [variants.PEN]
 variant_name = "PEN"
 description = """
-TODO
+Peruvian Sol, the official currency of Peru.
 """
 
 [variants.PGK]
 variant_name = "PGK"
 description = """
-TODO
+Papua New Guinean Kina, the official currency of Papua New Guinea.
 """
 
 [variants.PHP]
 variant_name = "PHP"
 description = """
-TODO
+Philippine Peso, the official currency of the Philippines.
 """
 
 [variants.PKR]
 variant_name = "PKR"
 description = """
-TODO
+Pakistani Rupee, the official currency of Pakistan.
 """
 
 [variants.PLN]
 variant_name = "PLN"
 description = """
-TODO
+Polish Złoty, the official currency of Poland.
 """
 
 [variants.PYG]
 variant_name = "PYG"
 description = """
-TODO
+Paraguayan Guaraní, the official currency of Paraguay.
 """
 
 [variants.QAR]
 variant_name = "QAR"
 description = """
-TODO
+Qatari Riyal, the official currency of Qatar.
 """
 
 [variants.RON]
 variant_name = "RON"
 description = """
-TODO
+Romanian Leu, the official currency of Romania.
 """
 
 [variants.RSD]
 variant_name = "RSD"
 description = """
-TODO
+Serbian Dinar, the official currency of Serbia.
 """
 
 [variants.RUB]
 variant_name = "RUB"
 description = """
-TODO
+Russian Ruble, the official currency of Russia.
 """
 
 [variants.RWF]
 variant_name = "RWF"
 description = """
-TODO
+Rwandan Franc, the official currency of Rwanda.
 """
 
 [variants.SAR]
 variant_name = "SAR"
 description = """
-TODO
+Saudi Riyal, the official currency of Saudi Arabia.
 """
 
 [variants.SBD]
 variant_name = "SBD"
 description = """
-TODO
+Solomon Islands Dollar, the official currency of the Solomon Islands.
 """
 
 [variants.SCR]
 variant_name = "SCR"
 description = """
-TODO
+Seychellois Rupee, the official currency of Seychelles.
 """
 
 [variants.SDG]
 variant_name = "SDG"
 description = """
-TODO
+Sudanese Pound, the official currency of Sudan.
 """
 
 [variants.SEK]
 variant_name = "SEK"
 description = """
-TODO
+Swedish Krona, the official currency of Sweden.
 """
 
 [variants.SGD]
 variant_name = "SGD"
 description = """
-TODO
+Singapore Dollar, the official currency of Singapore.
 """
 
 [variants.SHP]
 variant_name = "SHP"
 description = """
-TODO
+Saint Helena Pound, the official currency of Saint Helena.
 """
 
 [variants.SLL]
 variant_name = "SLL"
 description = """
-TODO
+Sierra Leonean Leone, the official currency of Sierra Leone.
 """
 
 [variants.SOS]
 variant_name = "SOS"
 description = """
-TODO
+Somali Shilling, the official currency of Somalia.
 """
 
 [variants.SRD]
 variant_name = "SRD"
 description = """
-TODO
+Surinamese Dollar, the official currency of Suriname.
 """
 
 [variants.SSP]
 variant_name = "SSP"
 description = """
-TODO
+South Sudanese Pound, the official currency of South Sudan.
 """
 
 [variants.STD]
 variant_name = "STD"
 description = """
-TODO
+São Tomé and Príncipe Dobra, the former currency of São Tomé and Príncipe (replaced by STN).
 """
 
 [variants.SYP]
 variant_name = "SYP"
 description = """
-TODO
+Syrian Pound, the official currency of Syria.
 """
 
 [variants.SZL]
 variant_name = "SZL"
 description = """
-TODO
+Swazi Lilangeni, the official currency of Eswatini.
 """
 
 [variants.THB]
 variant_name = "THB"
 description = """
-TODO
+Thai Baht, the official currency of Thailand.
 """
 
 [variants.TJS]
 variant_name = "TJS"
 description = """
-TODO
+Tajikistani Somoni, the official currency of Tajikistan.
 """
 
 [variants.TMT]
 variant_name = "TMT"
 description = """
-TODO
+Turkmenistani Manat, the official currency of Turkmenistan.
 """
 
 [variants.TND]
 variant_name = "TND"
 description = """
-TODO
+Tunisian Dinar, the official currency of Tunisia.
 """
 
 [variants.TOP]
 variant_name = "TOP"
 description = """
-TODO
+Tongan Paʻanga, the official currency of Tonga.
 """
 
 [variants.TRY]
 variant_name = "TRY"
 description = """
-TODO
+Turkish Lira, the official currency of Turkey.
 """
 
 [variants.TTD]
 variant_name = "TTD"
 description = """
-TODO
+Trinidad and Tobago Dollar, the official currency of Trinidad and Tobago.
 """
 
 [variants.TWD]
 variant_name = "TWD"
 description = """
-TODO
+New Taiwan Dollar, the official currency of Taiwan.
 """
 
 [variants.TZS]
 variant_name = "TZS"
 description = """
-TODO
+Tanzanian Shilling, the official currency of Tanzania.
 """
 
 [variants.UAH]
 variant_name = "UAH"
 description = """
-TODO
+Ukrainian Hryvnia, the official currency of Ukraine.
 """
 
 [variants.UGX]
 variant_name = "UGX"
 description = """
-TODO
+Ugandan Shilling, the official currency of Uganda.
 """
 
 [variants.USD]
 variant_name = "USD"
 description = """
-TODO
+United States Dollar, the official currency of the United States and several other countries.
 """
 
 [variants.USN]
 variant_name = "USN"
 description = """
-TODO
+United States Dollar (Next day), a financial instrument used in the US banking system.
 """
 
 [variants.UYI]
 variant_name = "UYI"
 description = """
-TODO
+Uruguayan Peso en Unidades Indexadas, a unit of account used in Uruguay.
 """
 
 [variants.UYU]
 variant_name = "UYU"
 description = """
-TODO
+Uruguayan Peso, the official currency of Uruguay.
 """
 
 [variants.UZS]
 variant_name = "UZS"
 description = """
-TODO
+Uzbekistani Som, the official currency of Uzbekistan.
 """
 
 [variants.VEF]
 variant_name = "VEF"
 description = """
-TODO
+Venezuelan Bolívar, the former currency of Venezuela (replaced by VES).
 """
 
 [variants.VND]
 variant_name = "VND"
 description = """
-TODO
+Vietnamese Đồng, the official currency of Vietnam.
 """
 
 [variants.VUV]
 variant_name = "VUV"
 description = """
-TODO
+Vanuatu Vatu, the official currency of Vanuatu.
 """
 
 [variants.WST]
 variant_name = "WST"
 description = """
-TODO
+Samoan Tala, the official currency of Samoa.
 """
 
 [variants.XAG]
 variant_name = "XAG"
 description = """
-TODO
+Silver (one troy ounce), a precious metal used as a financial instrument.
 """
 
 [variants.XAU]
 variant_name = "XAU"
 description = """
-TODO
+Gold (one troy ounce), a precious metal used as a financial instrument.
 """
 
 [variants.XBA]
 variant_name = "XBA"
 description = """
-TODO
+European Composite Unit (EURCO), a bond market unit.
 """
 
 [variants.XBB]
 variant_name = "XBB"
 description = """
-TODO
+European Monetary Unit (E.M.U.-6), a bond market unit.
 """
 
 [variants.XBC]
 variant_name = "XBC"
 description = """
-TODO
+European Unit of Account 9 (E.U.A.-9), a bond market unit.
 """
 
 [variants.XBD]
 variant_name = "XBD"
 description = """
-TODO
+European Unit of Account 17 (E.U.A.-17), a bond market unit.
 """
 
 [variants.XCD]
 variant_name = "XCD"
 description = """
-TODO
+East Caribbean Dollar, the official currency of eight Caribbean nations.
 """
 
 [variants.XOF]
 variant_name = "XOF"
 description = """
-TODO
+West African CFA Franc, used by eight West African countries.
 """
 
 [variants.XPD]
 variant_name = "XPD"
 description = """
-TODO
+Palladium (one troy ounce), a precious metal used as a financial instrument.
 """
 
 [variants.XPF]
 variant_name = "XPF"
 description = """
-TODO
+CFP Franc, used in French Polynesia, New Caledonia, and Wallis and Futuna.
 """
 
 [variants.XPT]
 variant_name = "XPT"
 description = """
-TODO
+Platinum (one troy ounce), a precious metal used as a financial instrument.
 """
 
 [variants.XSU]
 variant_name = "XSU"
 description = """
-TODO
+SUCRE, a regional currency used by the ALBA trade bloc.
 """
 
 [variants.XTS]
 variant_name = "XTS"
 description = """
-TODO
+Code reserved for testing purposes.
 """
 
 [variants.XUA]
 variant_name = "XUA"
 description = """
-TODO
+ADB Unit of Account, used by the African Development Bank.
 """
 
 [variants.XXX]
 variant_name = "XXX"
 description = """
-TODO
+No currency, used in cases where no currency is involved.
 """
 
 [variants.YER]
 variant_name = "YER"
 description = """
-TODO
+Yemeni Rial, the official currency of Yemen.
 """
 
 [variants.ZAR]
 variant_name = "ZAR"
 description = """
-TODO
+South African Rand, the official currency of South Africa.
 """
 
 [variants.ZMW]
 variant_name = "ZMW"
 description = """
-TODO
+Zambian Kwacha, the official currency of Zambia.
 """
 
 [variants.ZWL]
 variant_name = "ZWL"
 description = """
-TODO
+Zimbabwean Dollar, the former currency of Zimbabwe.
 """
