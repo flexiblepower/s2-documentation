@@ -1,7 +1,7 @@
 type_name = "OMBC.Instruction"
 sent_by = []
 description = """
-TODO
+
 """
 see_also = []
 
@@ -42,7 +42,7 @@ field_name = "message_type"
 field_type = "string"
 optional = false
 description = """
-TODO
+
 """
 
 [fields.operation_mode_factor]
