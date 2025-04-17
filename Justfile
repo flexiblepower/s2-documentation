@@ -6,6 +6,3 @@ generate-structured-documentation:
 
 generate-website:
     cd website-generator && cargo run --release
-
-deploy:
-    cd website && npm run deploy
