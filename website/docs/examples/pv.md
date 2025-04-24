@@ -261,8 +261,8 @@ This can be expressed in Json as follows:
       "commodity_quantity": "ELECTRIC.POWER.L1",
       "limit_type": "LOWER_LIMIT",
       "range_boundary": {
-        "start_of_range": 0,
-        "end_of_range": -4000
+        "start_of_range": -4000,
+        "end_of_range": 0
       },
       "abnormal_condition_only": false
     },
