@@ -27,7 +27,7 @@ Electric power, described in Watt on phase 3. Only applicable for 3 phase device
 [variants."ELECTRIC.POWER.3_PHASE_SYMMETRIC"]
 variant_name = "ELECTRIC.POWER.3_PHASE_SYMMETRIC"
 description = """
-Electric power, described in Watt when power is equally shared among the three phases. Only applicable for 3 phase devices.
+Electric power, described in Watt when power is equally shared among the three phases. Only applicable for 3 phase devices. A value refers to the total power on the three phases.
 """
 
 [variants."NATURAL_GAS.FLOW_RATE"]
