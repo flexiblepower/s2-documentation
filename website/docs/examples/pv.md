@@ -11,7 +11,7 @@ This page serves as a guide for implementing an S2 RM for a PV installation. It 
 ## Flexibility of a PV installation
 A PV installation produces electricity by converting solar energy into electricity. This electricity can be used for several purposes, such as self-consumption or earning money by delivering electricity to the grid. 
 
-Usually a PV installation is not flexible at all, as it only produces electricity when there is sun and depending on weather circumstances (e.g. such as cloud coverage) it will produce more or less, i.e. its production is intermittent. But many PV inverters also allow to control the maximum output power of the PV installation, also known as curtailment. This curtailment is for example needed when too much installations are connected to the same local grid and produce at high power, pushing the voltage of the network above its acceptable limits, or when prices for delivering electricity back to the grid become to low (or even negative) to be profitable.
+Usually a PV installation is not flexible at all, as it only produces electricity when there is sun and depending on weather circumstances (e.g. such as cloud coverage) it will produce more or less, i.e. its production is intermittent. But many PV inverters also allow to control the maximum output power of the PV installation, also known as curtailment. This curtailment is for example needed when too many installations are connected to the same local grid and produce at high power, pushing the voltage of the network above its acceptable limits, or when prices for delivering electricity back to the grid become to low (or even negative) to be profitable.
 
 ## Choosing the S2 control type
 S2 supports five different control types for flexibility (and one for no control possibility), each supporting a different way of modelling flexibility of a device. For PV installations the choice is somehow simple, as the capabilities of these installations are limited:
@@ -67,7 +67,7 @@ end loop
 
 As shown, the RM needs to know what the maximum output power of the inverter is and how it can get measurements that can be sent to the CEM.
 
-### Communication between de RM of the PV installation and a CEM
+### Communication between the RM of the PV installation and a CEM
 
 In the picture below the S2 message exchange is depicted as a sequence diagram. It can be split up in five parts:
 1. Setup of the connection between the CEM and the RM
