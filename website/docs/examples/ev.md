@@ -247,7 +247,7 @@ Our actuator has two operation modes. One to turn off the EV charging and one to
           ]
         }
       ],
-      "abnormal_condition_only": true
+      "abnormal_condition_only": false 
     },
     {
       "id": "om2",
@@ -271,7 +271,7 @@ Our actuator has two operation modes. One to turn off the EV charging and one to
           ]
         }
       ],
-      "abnormal_condition_only": true
+      "abnormal_condition_only": false
     }
   ],
   "transitions": [
@@ -282,7 +282,7 @@ Our actuator has two operation modes. One to turn off the EV charging and one to
       "start_timers": [],
       "blocking_timers": [],
       "transition_duration": 3000,
-      "abnormal_condition_only": true
+      "abnormal_condition_only": false
     },
     {
       "id": "transition2",
@@ -291,7 +291,7 @@ Our actuator has two operation modes. One to turn off the EV charging and one to
       "start_timers": [],
       "blocking_timers": [],
       "transition_duration": 3000,
-      "abnormal_condition_only": true
+      "abnormal_condition_only": false
     }
   ],
   "timers": []
@@ -335,7 +335,7 @@ And finally, putting everything together in one message:
           ]
         }
       ],
-      "abnormal_condition_only": true
+      "abnormal_condition_only": false
     },
     {
       "id": "om2",
@@ -359,7 +359,7 @@ And finally, putting everything together in one message:
           ]
         }
       ],
-      "abnormal_condition_only": true
+      "abnormal_condition_only": false
     }
   ],
   "transitions": [
@@ -370,7 +370,7 @@ And finally, putting everything together in one message:
       "start_timers": [],
       "blocking_timers": [],
       "transition_duration": 3000,
-      "abnormal_condition_only": true
+      "abnormal_condition_only": false
     },
     {
       "id": "transition2",
@@ -379,7 +379,7 @@ And finally, putting everything together in one message:
       "start_timers": [],
       "blocking_timers": [],
       "transition_duration": 3000,
-      "abnormal_condition_only": true
+      "abnormal_condition_only": false
     }
   ],
   "timers": []

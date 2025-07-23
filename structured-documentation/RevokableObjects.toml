@@ -64,6 +64,24 @@ description = """
 Object type `FRBC.SystemDescription`
 """
 
+[variants."FRBC.LeakageBehaviour"]
+variant_name = "FRBC.LeakageBehaviour"
+description = """
+Object type `FRBC.LeakageBehaviour`
+"""
+
+[variants."FRBC.UsageForecast"]
+variant_name = "FRBC.UsageForecast"
+description = """
+Object type `FRBC.UsageForecast`
+"""
+
+[variants."FRBC.FillLevelTargetProfile"]
+variant_name = "FRBC.FillLevelTargetProfile"
+description = """
+Object type `FRBC.FillLevelTargetProfile`
+"""
+
 [variants."FRBC.Instruction"]
 variant_name = "FRBC.Instruction"
 description = """
@@ -74,6 +92,12 @@ Object type `FRBC.Instruction`
 variant_name = "DDBC.SystemDescription"
 description = """
 Object type `DDBC.SystemDescription`
+"""
+
+[variants."DDBC.AverageDemandRateForecast"]
+variant_name = "DDBC.AverageDemandRateForecast"
+description = """
+Object type `DDBC.AverageDemandRateForecast`
 """
 
 [variants."DDBC.Instruction"]

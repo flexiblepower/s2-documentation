@@ -3,7 +3,7 @@ title: "S2 Design Principles"
 ---
 
 # Why the S2 approach?
-There any many methods and models you could use for utilizing energy flexibility. Why do it the S2 way instead of some other way?
+There are many methods and models you could use for utilizing energy flexibility. Why do it the S2 way instead of some other way?
 
 Energy flexibility isn't some physical phenomenon that needed to be modeled. If that were the case, all protocols for energy flexibility probably would have looked very similar. Instead, coming up with a solution for energy flexibility requires a lot of creativity. If you start with different requirements, or even prioritize them in a different way, you will end up with wildly different models, mechanisms and protocols for energy flexibility.
 
@@ -25,9 +25,9 @@ However...
 The energy transition will introduce a huge need for energy flexibility. A need that is currently not fulfilled. If we go through the trouble of unlocking energy flexibility, we need to make it count. For the power grid, and for the consumer. That is why S2 doesn't oversimplify things and uses models that are maybe easy to implement, but also lose most of its power. S2 is the result of many years of experimenting, and a lot of care has been spent on making S2 not too complex, but not too simple as well.
 
 ### We won't settle on one energy flexibility utilization mechanism
-There any many things you could do with energy flexibility, with a huge variety in complexity. Increase self-consumption, participate in a Virtual Power Plant, participate in a Peer-2-peer energy market... S2 was designed with the assumption that the mechanisms we use for unlocking energy flexibility will keep on changing while we go through the energy transition. New use case will pop-up, new business models we be created, new contracts will be offered to consumers. In addition, new technologies will be developed. Technologies as blockchain and AI might have a huge impact on the use cases we will have for energy flexibility in the future.
+There any many things you could do with energy flexibility, with a huge variety in complexity. Increase self-consumption, participate in a Virtual Power Plant, participate in a Peer-2-peer energy market... S2 was designed with the assumption that the mechanisms we use for unlocking energy flexibility will keep on changing while we go through the energy transition. New use case will pop-up, new business models we be created, new contracts will be offered to consumers. In addition, new technologies will be developed. Technologies such as blockchain and AI might have a huge impact on the use cases we will have for energy flexibility in the future.
 
-The only way we can make all these innovation reality, without requiring the consumer to buy new hardware every time something changes, is if we have a solid basis on which we could implement every step in the evolution of energy flexibility. S2 was designed to be that solid basis, by not making any assumptions on the mechanism that will be used or the use cases it will be used for.
+The only way we can make all these innovations a reality, without requiring the consumer to buy new hardware every time something changes, is if we have a solid basis on which we could implement every step in the evolution of energy flexibility. S2 was designed to be that solid basis, by not making any assumptions on the mechanism that will be used or the use cases it will be used for.
 
 ### A protocol can only be successful if it is easy to understand
 S2 was carefully designed to be not too complex to understand and implement, but at the same time to be powerful enough to communicate as much as possible energy flexibility to the EMS. S2 is the result of years of experimentation and making adjustments, until a level of complexity was reached that felt juuust right.
