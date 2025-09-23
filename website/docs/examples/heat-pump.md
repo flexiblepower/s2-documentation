@@ -107,7 +107,7 @@ The CEM informs the RM that it is a CEM and which versions of s2-ws-json it supp
 ```json
 {
   "message_type": "Handshake",
-  "message_id": "xxx",
+  "message_id": "4834583e-5d8a-4fb2-a955-c99fc4583b7a",
   "role": "CEM",
   "supported_protocol_versions": [
     "0.0.2-beta"
@@ -120,7 +120,7 @@ The RM informs the CEM that it is a RM and which versions of s2-ws-json it suppo
 ```json
 {
   "message_type": "Handshake",
-  "message_id": "xxx",
+  "message_id": "164deb3f-952f-42d4-bebb-4666e8baa62e",
   "role": "RM",
   "supported_protocol_versions": [
     "0.0.2-beta"
@@ -133,7 +133,7 @@ The CEM informs the RM which version of s2-ws-json it has selected for this sess
 ```json
 {
   "message_type": "HandshakeResponse",
-  "message_id": "xxx",
+  "message_id": "7fd890a4-766e-4c66-9859-470daec3cdf9",
   "selected_protocol_version": "0.0.2-beta"
 }
 ```
@@ -151,7 +151,7 @@ The RM informs the CEM about several static properties of the RM/heat pump:
 ```json
 {
   "message_type": "ResourceManagerDetails",
-  "message_id": "xxx",
+  "message_id": "a348da35-eb0c-456c-9099-cdcc22e030a0",
   "resource_id": "acme_heat_pump",
   "name": "my_heat_pump",
   "roles": [
@@ -180,7 +180,7 @@ The CEM informs the RM that it wants to use FRBC ControlType (the RM defined in 
 ```json
 {
   "message_type": "SelectControlType",
-  "message_id": "xxx",
+  "message_id": "b44a8e22-ede6-4b1d-908f-72dd45c69106",
   "control_type": "FILL_RATE_BASED_CONTROL"
 }
 ```
@@ -208,14 +208,133 @@ For debugging purposes (so for humans, not for algorithms) a label is provided f
 
 Secondly we'll define the heat pump itself. In FRBC this is referred to as an actuator. An actuator is something that the CEM can control, affects the fill level of the storage and exchanges power with the power grid (in our case, consuming electricity).
 
-TODO
+An actuator consists of operation modes, transitions (between operation modes) and timers (associated with transitions). An operation mode is defined for  fill_level_range. This allows for modeling non-linear behavior of the actuator. Furthermore, the operation mode contains a fill_rate which expresses how much the fill level changes in that operation mode, at a certain power consumption, which is defined in the power_range. This is used to model the relation between the actuator's consumed power and the effect on the fill level.
+
+The actuator also defines the possible transitions between operation modes. Finally, it contains timers that can be used to model temporal prohibition of operation mode transitions. 
+
+Our heat pump has two operation modes. One for a heat pump that is idle and one for a running heat pump.
+
+The operation mode 'running' is the most interesting. We have heat pump with a minimum operation power of 500 W and a maximum of 2000 W, and a fixed COP of 3.5 With a delta T of 10 degrees Celsius and a buffer that contain 200 L of water, the total energy to store is: 8380000 J. This means that the fill_rate at minimum power is: 10\*500\*3.5/8380000=0.00209 and at maximum power: 10\*2000\*3.5/8380000=0.00835. This means that the CEM has control over de modulation of the heat pump between its minimum and maximum power.
+
+It is possible in S2 to associate cost to an operation mode or transition (for example to account for tear and wear associated with running or starting an appliance) but that does not apply to our simple heat pump model.
+
+So, the actuator of our example heat pump looks as follows: 
+```json
+{
+  "id": "actuator1",
+  "diagnostic_label": "heat pump",
+  "supported_commodities": [
+    "ELECTRICITY"
+  ],
+  "operation_modes": [
+    {
+      "id": "om0",
+      "diagnostic_label": "running",
+      "elements": [
+        {
+          "fill_level_range": {
+            "start_of_range": 45,
+            "end_of_range": 55
+          },
+          "fill_rate": {
+            "start_of_range": 0.00209,
+            "end_of_range": 0.00835
+          },
+          "power_ranges": [
+            {
+              "start_of_range": 500,
+              "end_of_range": 2000,
+              "commodity_quantity": "ELECTRIC.POWER.L1"
+            }
+          ],
+          "running_costs": {
+            "start_of_range": 0,
+            "end_of_range": 0
+          }
+        }
+      ],
+      "abnormal_condition_only": false
+    },
+    {
+      "id": "om1",
+      "diagnostic_label": "Off",
+      "elements": [
+        {
+          "fill_level_range": {
+            "start_of_range": 45,
+            "end_of_range": 55
+          },
+          "fill_rate": {
+            "start_of_range": 0,
+            "end_of_range": 0
+          },
+          "power_ranges": [
+            {
+              "start_of_range": 0,
+              "end_of_range": 0,
+              "commodity_quantity": "ELECTRIC.POWER.L1"
+            }
+          ],
+          "running_costs": {
+            "start_of_range": 0,
+            "end_of_range": 0
+          }
+        }
+      ],
+      "abnormal_condition_only": false
+    }
+  ],
+  "transitions": [
+    {
+      "id": "trans0",
+      "from": "om0",
+      "to": "om1",
+      "start_timers": [
+        "timer0"
+      ],
+      "blocking_timers": [
+        "timer1"
+      ],
+      "transition_costs": 0,
+      "transition_duration": 0,
+      "abnormal_condition_only": false
+    },
+    {
+      "id": "trans1",
+      "from": "om1",
+      "to": "om0",
+      "start_timers": [
+        "timer1"
+      ],
+      "blocking_timers": [
+        "timer0"
+      ],
+      "transition_costs": 0,
+      "transition_duration": 0,
+      "abnormal_condition_only": false
+    }
+  ],
+  "timers": [
+    {
+      "id": "timer0",
+      "diagnostic_label": "Minimum run time",
+      "duration": 7200
+    },
+    {
+      "id": "timer1",
+      "diagnostic_label": "Minimum off time",
+      "duration": 3600
+    }
+  ]
+}
+```
 
 And finally, putting everything together in one message:
 
 ```json
 {
   "message_type": "FRBC.SystemDescription",
-  "message_id": "xxx",
+  "message_id": "0f9063c5-ceb9-4ab9-8a4b-96b6d38dff8a",
   "valid_from": "2019-08-24T14:15:22Z",
   "actuators": [
     {
@@ -226,13 +345,41 @@ And finally, putting everything together in one message:
       ],
       "operation_modes": [
         {
+          "id": "om0",
+          "diagnostic_label": "running",
+          "elements": [
+            {
+              "fill_level_range": {
+                "start_of_range": 45,
+                "end_of_range": 55
+              },
+              "fill_rate": {
+                "start_of_range": 0.00209,
+                "end_of_range": 0.00835
+              },
+              "power_ranges": [
+                {
+                  "start_of_range": 500,
+                  "end_of_range": 2000,
+                  "commodity_quantity": "ELECTRIC.POWER.L1"
+                }
+              ],
+              "running_costs": {
+                "start_of_range": 0,
+                "end_of_range": 0
+              }
+            }
+          ],
+          "abnormal_condition_only": false
+        },
+        {
           "id": "om1",
           "diagnostic_label": "Off",
           "elements": [
             {
               "fill_level_range": {
-                "start_of_range": 0,
-                "end_of_range": 0
+                "start_of_range": 45,
+                "end_of_range": 55
               },
               "fill_rate": {
                 "start_of_range": 0,
@@ -251,30 +398,49 @@ And finally, putting everything together in one message:
               }
             }
           ],
-          "abnormal_condition_only": true
+          "abnormal_condition_only": false
         }
       ],
       "transitions": [
         {
-          "id": "string",
-          "from": "string",
-          "to": "string",
+          "id": "trans0",
+          "from": "om0",
+          "to": "om1",
           "start_timers": [
-            "string"
+            "timer0"
           ],
           "blocking_timers": [
-            "string"
+            "timer1"
           ],
           "transition_costs": 0,
           "transition_duration": 0,
-          "abnormal_condition_only": true
+          "abnormal_condition_only": false
+        },
+        {
+          "id": "trans1",
+          "from": "om1",
+          "to": "om0",
+          "start_timers": [
+            "timer1"
+          ],
+          "blocking_timers": [
+            "timer0"
+          ],
+          "transition_costs": 0,
+          "transition_duration": 0,
+          "abnormal_condition_only": false
         }
       ],
       "timers": [
         {
-          "id": "string",
-          "diagnostic_label": "string",
-          "duration": 0
+          "id": "timer0",
+          "diagnostic_label": "Minimum run time",
+          "duration": 7200
+        },
+        {
+          "id": "timer1",
+          "diagnostic_label": "Minimum off time",
+          "duration": 3600
         }
       ]
     }
@@ -294,7 +460,8 @@ And finally, putting everything together in one message:
 ```
 
 ### RM -> CEM: FRBC.LeakageBehaviour
-TODO
+The leakage behavior informs the CEM about the standing losses of the buffer, i.e. all the changes in the fill level that are not associated with the user demand for energy or an actuator. It can be expressed as being dependent on the fill level, such that non-linear leakage can be modelled. A constant leakage rate (in fill_level per second) is defined per fill_level_range. Our buffer has standing losses of 50 W over range of our fill level.
+
 ```json
 {
   "message_type": "FRBC.LeakageBehaviour",
@@ -303,10 +470,10 @@ TODO
   "elements": [
     {
       "fill_level_range": {
-        "start_of_range": 0,
-        "end_of_range": 0
+        "start_of_range": 45,
+        "end_of_range": 55
       },
-      "leakage_rate": 0
+      "leakage_rate": 0.00005
     }
   ]
 }

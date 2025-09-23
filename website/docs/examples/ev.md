@@ -66,7 +66,6 @@ The following sequence diagram is an example of what a message exchange between 
 
 ![cem_rm_interactions](https://www.plantuml.com/plantuml/png/VP7DJiCm3CVlUOey0F007D1W0x539TI2E9lKWcYf7MndQ3mzeI0HMCNLF_y_BA_KGAnCoH4RUjwZ-FLrT-Bxxjm_ujF0OOVc0nDXC1oTgzIVNipy5cZK5zYXw-TPHUrmQRD7pKoARYblIz4YfFXUSrhBAk8Y0JiWU4RPe45CsleFc33Ocic4q_qXB_itt4Emk0VxatJJNwtFXeCQJXlK835RP78kCMSVoHFx368nb0JYMKQKLdx7RoWTWXR12ScElI-35J2MmS2A7aTNL4_yfks5CzwIcfGmTsgapVXB-P17C7H8e_zi_gl6WAfriSVNWchk_x-FKNzUlwf-PKeV)
 <details>
-
 Image generated using the following PlantUML code:
 
 ```
@@ -111,7 +110,7 @@ The CEM informs the RM that it is a CEM and which versions of s2-ws-json it supp
 ```json
 {
   "message_type": "Handshake",
-  "message_id": "xxx",
+  "message_id": "eab48b05-99be-4c34-899d-30edaf5626db",
   "role": "CEM",
   "supported_protocol_versions": [
     "0.0.2-beta"
@@ -124,7 +123,7 @@ The RM informs the CEM that it is a RM and which versions of s2-ws-json it suppo
 ```json
 {
   "message_type": "Handshake",
-  "message_id": "xxx",
+  "message_id": "ea2e0f4f-5294-4578-a050-73fdd6110eec",
   "role": "RM",
   "supported_protocol_versions": [
     "0.0.2-beta"
@@ -137,7 +136,7 @@ The CEM informs the RM which version of s2-ws-json it has selected for this sess
 ```json
 {
   "message_type": "HandshakeResponse",
-  "message_id": "xxx",
+  "message_id": "04f2d3a7-f018-46d5-b769-c62393e02804",
   "selected_protocol_version": "0.0.2-beta"
 }
 ```
@@ -155,7 +154,7 @@ The RM informs the CEM about several static properties of the EV:
 ```json
 {
   "message_type": "ResourceManagerDetails",
-  "message_id": "xxx",
+  "message_id": "0c41efc2-771d-468f-afdc-fb69255dad33",
   "resource_id": "acme_ev_xxxxxx",
   "name": "My Electric Vehicle RM",
   "roles": [
@@ -184,7 +183,7 @@ The CEM informs the RM that it wants to use FRBC ControlType (the RM defined in 
 ```json
 {
   "message_type": "SelectControlType",
-  "message_id": "xxx",
+  "message_id": "fe9f4f07-c731-4f91-8801-3b53a9fecaaf",
   "control_type": "FILL_RATE_BASED_CONTROL"
 }
 ```
@@ -304,7 +303,7 @@ And finally, putting everything together in one message:
 ```json
 {
   "message_type": "FRBC.SystemDescription",
-  "message_id": "xxx",
+  "message_id": "0c84b415-4e5e-429c-b5b6-116a5de6bfbf",
   "valid_from": "2019-08-24T14:15:22Z",
   "actuators": [
     {
@@ -407,7 +406,7 @@ Below is given an example of a power measurement message:
 ```json
 {
   "message_type": "PowerMeasurement",
-  "message_id": "xxx",
+  "message_id": "72355bab-e58e-47c7-bada-acf0dc893218",
   "measurement_timestamp": "2019-08-24T14:15:22Z",
   "values": [
     {
@@ -423,7 +422,7 @@ In S2, the RM is in charge of the control of a device. It receives instructions 
 ```json
 {
   "message_type": "FRBC.ActuatorStatus",
-  "message_id": "xxx",
+  "message_id": "f0e229b3-ebbf-4ba2-829c-4e2f854a1d1d",
   "actuator_id": "actuator1",
   "active_operation_mode_id": "string",
   "operation_mode_factor": 0,
@@ -448,7 +447,7 @@ After the CEM has determined how to use the energy flexibility provided by the R
 ```json
 {
   "message_type": "FRBC.Instruction",
-  "message_id": "xxx",
+  "message_id": "5bc49243-edee-4884-99b3-65a62766949c",
   "id": "instruction1",
   "actuator_id": "actuator1",
   "operation_mode": "om1",
@@ -463,7 +462,7 @@ After the RM has received an instruction, it handles it internally. To inform th
 ```json
 {
   "message_type": "InstructionStatusUpdate",
-  "message_id": "xxx",
+  "message_id": "84522a12-7960-48b1-abf3-b7694dac80e6",
   "instruction_id": "instruction1",
   "status_type": "NEW",
   "timestamp": "2019-08-24T14:15:22Z"
@@ -475,7 +474,7 @@ When the RM or CEM wants close the current connection and possibly initiate a ne
 ```json
 {
   "message_type": "SessionRequest",
-  "message_id": "xxx",
+  "message_id": "4f93f58f-0d6c-44b5-b35a-bf6dcb845c5f",
   "request": "RECONNECT",
   "diagnostic_label": "string"
 }
