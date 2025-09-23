@@ -208,7 +208,7 @@ For debugging purposes (so for humans, not for algorithms) a label is provided f
 
 Secondly we'll define the heat pump itself. In FRBC this is referred to as an actuator. An actuator is something that the CEM can control, affects the fill level of the storage and exchanges power with the power grid (in our case, consuming electricity).
 
-An actuator consists of operation modes, transitions (between operation modes) and timers (associated with transitions). An operation mode is defined for  fill_level_range. This allows for modeling non-linear behavior of the actuator. Furthermore, the operation mode contains a fill_rate which expresses how much the fill level changes in that operation mode, at a certain power consumption, which is defined in the power_range. This is used to model the relation between the actuator's consumed power and the effect on the fill level.
+An actuator consists of operation modes, transitions (between operation modes) and timers (associated with transitions). An operation mode is defined for a fill_level_range. This allows for modeling non-linear behavior of the actuator. Furthermore, the operation mode contains a fill_rate which expresses how much the fill level changes in that operation mode, at a certain power consumption, which is defined in the power_range. This is used to model the relation between the actuator's consumed power and the effect on the fill level.
 
 The actuator also defines the possible transitions between operation modes. Finally, it contains timers that can be used to model temporal prohibition of operation mode transitions. 
 
@@ -460,12 +460,12 @@ And finally, putting everything together in one message:
 ```
 
 ### RM -> CEM: FRBC.LeakageBehaviour
-The leakage behavior informs the CEM about the standing losses of the buffer, i.e. all the changes in the fill level that are not associated with the user demand for energy or an actuator. It can be expressed as being dependent on the fill level, such that non-linear leakage can be modelled. A constant leakage rate (in fill_level per second) is defined per fill_level_range. Our buffer has standing losses of 50 W over range of our fill level.
+The leakage behavior informs the CEM about the standing losses of the buffer, i.e. all the changes in the fill level that are not associated with the user demand or an actuator. It can be expressed as being dependent on the fill level, such that non-linear leakage can be modelled. A constant leakage rate (in fill_level per second) is defined per fill_level_range. Our buffer has standing losses of 50 W over the range of our fill level.
 
 ```json
 {
   "message_type": "FRBC.LeakageBehaviour",
-  "message_id": "string",
+  "message_id": "82861374-7653-4094-9153-8c59b4fffed4",
   "valid_from": "2019-08-24T14:15:22Z",
   "elements": [
     {
@@ -480,11 +480,12 @@ The leakage behavior informs the CEM about the standing losses of the buffer, i.
 ```
 
 ### RM -> CEM: PowerMeasurement
-TODO
+The RM can provide the CEM with real time power values that the appliance consumes. In this case these measurements refer to the electricity consumption of the heat pump.
+
 ```json
 {
   "message_type": "PowerMeasurement",
-  "message_id": "string",
+  "message_id": "8db515c2-1ee0-40bb-8820-15c5ddc4bbd3",
   "measurement_timestamp": "2019-08-24T14:15:22Z",
   "values": [
     {
@@ -496,47 +497,55 @@ TODO
 ```
 
 ### RM -> CEM: FRBC.ActuatorStatus
-TODO
+The ActuatorStatus message is meant to communicate the state of the actuator to the CEM. For every actuator, the RM inform the CEM about the operation mode the actuator is in and the factor is uses.
+
+The previous operation mode is also contained in the ActuatorStatus to determine if the actuator is still in the transition phase from the previous operation mode (as specified by the transition_duration in the actuator's transition definition).
+
 ```json
 {
   "message_type": "FRBC.ActuatorStatus",
-  "message_id": "string",
-  "actuator_id": "string",
-  "active_operation_mode_id": "string",
+  "message_id": "2d553846-8023-45c4-8e6c-b0e161e60c34",
+  "actuator_id": "actuator0",
+  "active_operation_mode_id": "om0",
   "operation_mode_factor": 0,
-  "previous_operation_mode_id": "string",
+  "previous_operation_mode_id": "om1",
   "transition_timestamp": "2019-08-24T14:15:22Z"
 }
 ```
 
 ### RM -> CEM: FRBC.StorageStatus
-TODO
+With the StorageStatus message the RM updates the CEM about the current fill level.
+
 ```json
 {
   "message_type": "FRBC.StorageStatus",
   "message_id": "string",
-  "present_fill_level": 0
+  "present_fill_level": 52
 }
 ```
 
 ### RM -> CEM: FRBC.TimerStatus
-TODO
+The moment that a timer elapses after a transition that has been made is communicated via the TimerStatus message. For every timer of all actuators this message is sent from the RM to the CEM.
+
 ```json
 {
   "message_type": "FRBC.TimerStatus",
-  "message_id": "string",
-  "timer_id": "string",
-  "actuator_id": "string",
+  "message_id": "2ebec2c8-5cd4-46bc-9784-ea125543b544",
+  "timer_id": "timer0",
+  "actuator_id": "actuator",
   "finished_at": "2019-08-24T14:15:22Z"
 }
 ```
 
 ### RM -> CEM: FRBC.UsageForecast
-TODO
+With the UsageForecast, the predicted demand from buffer by the user can be communicated to the CEM. One could think of activities like taking a shower and using hot water for doing the dishes that create the user demand.
+
+The usage forecast is expressed as sequence of expected demand and some statistical values that express the uncertainty of demand on a time slot basis (defined by the duration).
+
 ```json
 {
   "message_type": "FRBC.UsageForecast",
-  "message_id": "string",
+  "message_id": "9616e431-5035-404a-bd93-d673a08ebb44",
   "start_time": "2019-08-24T14:15:22Z",
   "elements": [
     {
@@ -554,45 +563,42 @@ TODO
 ```
 
 ### CEM -> RM: FRBC.Instruction
-TODO
+Message that instructs the resource manager to change the actuator state, i.e. change the operation mode and/or operation mode factor. In this example, we change the operation mode of actuator0 (the heat pump) to om0, which is the running operation mode, with factor 1 which means run at maximum power.
+
 ```json
 {
   "message_type": "FRBC.Instruction",
-  "message_id": "string",
-  "id": "string",
-  "actuator_id": "string",
-  "operation_mode": "string",
-  "operation_mode_factor": 0,
+  "message_id": "795f10a7-2f5e-4052-90f6-832eecd33dad",
+  "id": "instr0",
+  "actuator_id": "actuator0",
+  "operation_mode": "om0",
+  "operation_mode_factor": 1,
   "execution_time": "2019-08-24T14:15:22Z",
-  "abnormal_condition": true
+  "abnormal_condition": false
 }
 ```
 
 ### RM -> CEM: InstructionStatusUpdate
-TODO
+The InstructionStatusUpdate is used by the RM to let the CEM know about the handling of the instruction.
+
 ```json
 {
   "message_type": "InstructionStatusUpdate",
-  "message_id": "string",
+  "message_id": "214b4dea-c93c-4567-9b42-6f82ff413ffc",
   "instruction_id": "string",
   "status_type": "NEW",
   "timestamp": "2019-08-24T14:15:22Z"
 }
 ```
 
-### RM -> CEM: SessionRequest
-TODO
+### RM -> CEM, CEM -> RM: SessionRequest
+Both the RM and the CEM can send a connection life cycle management message, i.e. a SessionRequest message in order to let the other side know to gracefully shut down and if there is a request for a reconnect.
+
 ```json
 {
   "message_type": "SessionRequest",
-  "message_id": "string",
+  "message_id": "9b360341-933e-4b83-9128-4ee1c3acfe47",
   "request": "TERMINATE",
   "diagnostic_label": "string"
 }
 ```
-
-
-
-
-## Example: Hybrid heat pump without buffering using DDBC
-TODO
