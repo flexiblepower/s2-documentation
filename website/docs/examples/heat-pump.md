@@ -1,8 +1,9 @@
 ---
 title: "Example: Heat Pump"
+hide_title: true
 ---
 
-# S2 examples for heat pumps
+![image not found](/img/example-heat-pumps-header.png)
 
 This page serves as a guide for implementing an S2 RM for a heat pump, or to give a CEM developer a better understanding of what to expect when controlling the energy flexibility of a heat pump. It provides some example S2 messages for same (fictional) heat pumps.
 
