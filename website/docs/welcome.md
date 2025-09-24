@@ -1,6 +1,6 @@
 ---
 title: "Introduction"
-sidebar_position: 0
+sidebar_position: 1
 pagination_next: null
 pagination_prev: null
 ---
@@ -24,6 +24,6 @@ If you want to know more about the design principles of S2, you can continue rea
 
 Before starting to implement S2, make sure to familiarize yourself with the [concepts](/docs/concepts/architecture.md).
 
-More information about the implementing protocol specification is provided [here](docs/s2-json-over-websockets/introduction.md).
+More information about the implementing protocol specification is provided [here](docs/communication-layer/introduction.md).
 
 If you want to read about how to model energy flexibility from some typical devices, head over to the [examples](/docs/examples/ev.md).
