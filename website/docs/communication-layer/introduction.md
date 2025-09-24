@@ -1,3 +1,8 @@
+---
+title: "Introduction"
+sidebar_position: 1
+---
+
 # Introduction
 S2 was designed as a semantic protocol, which can have multiple, mutually compatible, implementing protocols. Different devices might prefer a different form of communication. For example, you can have a version of S2 which uses bluetooth, and another version which uses KNX. These versions differ in the transport protocol they use, but typically also in the way they encode data. Since both protocols are based upon the same S2 specification, one S2 implementing protocol can easily be translated into the other version using a simple software adapter.
 
