@@ -1,5 +1,6 @@
 ---
 title: Security Considerations
+sidebar_position: 3
 ---
 
 ## Crypto requirements

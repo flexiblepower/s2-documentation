@@ -371,20 +371,20 @@ An exponential back-off strategy **SHOULD** be used, increasing the time between
 
 ## Security
 
-Please refer to an extensive description of the security specifications to [Security considerations](Security-Considerations).
+Please refer to an extensive description of the security specifications to [Security considerations](./security-considerations.md).
 
 ### Certificates
 
 For each S2 connection the server authenticates using a certificate. The cloud implementation certificates **MUST** be PKI certificates which are not self-signed. Only local servers can use a self-signed CA certificate, which is used to sign a server certificate.
 If the S2 protocol is used in a local-local configuration, the server **CAN** use a self-signed CA certificate. In this case, the pairingInfo **MUST** include the first 9 bytes, encodes as 12 base64 encoded characters, of the fingerprint of this self-signed CA certificate and the client **MUST** check this fingerprint.
 
-Note that all communication use TLS. This is further explained in [Security considerations](Security-Considerations).
+Note that all communication use TLS. This is further explained in [Security considerations](./security-considerations.md).
 
 The server certificates **MUST** be exchanged and validated during the initiation of the connection (REST and WSS). This is default usage of most networking libraries.
 
 ### Cipher suites
 
-Security levels of cipher suites will change over time. To stay secure, the used cipher suites should be updates regularly and adhere to regular updates. All S2Nodes **MUST** follow **ONLY** the accepted crypto libraries as defined in [Accepted crypto algorithms](Accepted_crypto_algorithms). This list will be kept up-to-date. When changes are made to the list of accepted crypto libraries, all S2Nodes **MUST** follow these changes within half a year.
+Security levels of cipher suites will change over time. To stay secure, the used cipher suites should be updates regularly and adhere to regular updates. All S2Nodes **MUST** follow **ONLY** the accepted crypto libraries as defined in [Accepted crypto algorithms](./accepted-crypto.md). This list will be kept up-to-date. When changes are made to the list of accepted crypto libraries, all S2Nodes **MUST** follow these changes within half a year.
 
 ## Communication - JSON messages
 
