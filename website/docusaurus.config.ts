@@ -1,5 +1,5 @@
-import {themes as prismThemes} from 'prism-react-renderer';
-import type {Config} from '@docusaurus/types';
+import { themes as prismThemes } from 'prism-react-renderer';
+import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
@@ -9,7 +9,7 @@ const config: Config = {
 
   tagline: 'The place to learn everything about creating interoperable energy management solutions.',
   favicon: 'img/Logo-S2-no-text.svg',
-  
+
   // Set the production url of your site here
   url: 'https://docs.s2standard.org/',
   baseUrl: '/',
@@ -51,16 +51,16 @@ const config: Config = {
       } satisfies Preset.Options,
     ],
   ],
-  
-  plugins:[
-    ['@docusaurus/plugin-content-docs',{
+
+  plugins: [
+    ['@docusaurus/plugin-content-docs', {
       id: "api",
       path: "model-reference",
       routeBasePath: "model-reference",
       breadcrumbs: false,
     }]
   ],
-  
+
   themeConfig: {
     // Replace with your project's social card
     image: 'img/docusaurus-social-card.jpg',
@@ -119,6 +119,17 @@ const config: Config = {
       darkTheme: prismThemes.dracula,
     },
   } satisfies Preset.ThemeConfig,
+
+  scripts: [
+    {
+      src: "https://www.googletagmanager.com/gtag/js?id=G-1T0FLTHM3C",
+      async: true
+    },
+    {
+      src: '/js/load_tag.js',
+      async: true
+    },
+  ],
 };
 
 export default config;
