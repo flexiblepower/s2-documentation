@@ -105,6 +105,15 @@ const config: Config = {
               href: 'https://pypi.org/project/s2-python/',
             }
           ],
+        }, 
+        {
+          title: 'Community',
+          items: [
+            {
+              label: 'Discord',
+              href: 'https://discord.com/invite/NyFMEPmuDw',
+            },
+          ],
         },
       ],
       copyright: `Copyright © ${new Date().getFullYear()} Flexiblepower Alliance Network (FAN).`,
