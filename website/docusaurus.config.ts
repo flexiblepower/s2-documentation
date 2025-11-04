@@ -130,14 +130,6 @@ const config: Config = {
   } satisfies Preset.ThemeConfig,
 
   scripts: [
-    {
-      src: "https://www.googletagmanager.com/gtag/js?id=G-1T0FLTHM3C",
-      async: true
-    },
-    {
-      src: '/js/load_tag.js',
-      async: true
-    },
   ],
 };
 
