@@ -21,18 +21,18 @@ The protocol is designed to specify communication between two devices, a resourc
 | LAN | Local Area Network (i.e. a local network, typically contstrained to the building) |
 | WAN | Wide Area Network (i.e. the public internet) |
 
-# Background
+# Background (informative)
 
 ## Requirements
+TODO beter uitleggen wat doelen van deze oplossing zijn (bijv. afweging univormiteit vs. complexiteit)
+
 The communication layer meets the following requirements:
 
 The Customer Energy Manager (CEM) and Resource Manager (RM) are logical concepts within the S2 architecture, therefore the S2 standard does not make any assumptions on how and where the CEM and RM are deployed in a real life situation. In practice, the CEM could be deployed on a local gateway in a LAN or as a server somewhere on the internet (WAN), while the RM could be part of the device itself, deployed on an add-on module or on the internet as well. This means that the S2 communication layer **MUST** be able to deal with multiple scenarios that are depicted in the figure below.
 
-*TODO update image with LAN/WAN terminology*
-
-![Deployment_options](/img/communication-layer/deployment-options.png)
-
 In addition to - and partly because of - supporting the various deployment options, the S2 communication layer has the following generic requirements:
+
+TODO cleanup
 
 - Support for full duplex communication. Both sides **MUST** be able to send and receive data simultaneously.
 - Communication **MUST** be IP based.
@@ -41,6 +41,9 @@ In addition to - and partly because of - supporting the various deployment optio
 - Communication **MUST** work without additional firewall configuration by the end user.
 - Implementation of the communication layer **MUST** be based on a widely accepted technology and must be relatively easy to implement.
 - The pairing process **SHOULD** support extensibility for other application layer communication protocols.
+- Provide a relatively consistent user experince regardless of the deployment of the S2 node
+- Run a local RM on a device with constrained hardware
+- A RM could not have a UI
 
 ## Technical decisions
 Given the requirements, this specification is build on the following high-level technical choices:
@@ -81,7 +84,7 @@ An S2 node that implemented a WebSocket Secure server that can be used for estab
 
 **S2 pairing client (S2PairingClient)**
 
-A S2 Node that implemented a WebSocket Secure client that can be used for establishing S2 communication between itself and another S2 node. The other S2 node must act as an S2 server node.
+An S2 Node that implemented a WebSocket Secure client that can be used for establishing S2 communication between itself and another S2 node. The other S2 node must act as an S2 server node.
 
 **S2 communication server (S2CommunicationServer)**
 
@@ -89,15 +92,7 @@ An S2 node that implemented a WebSocket Secure server that can be used for estab
 
 **S2 communication client (S2CommunicationClient)**
 
-A S2 Node that implemented a WebSocket Secure client that can be used for establishing S2 communication between itself and another S2 node. The other S2 node must act as an S2 server node.
-
-**S2 server node endpoint (S2ServerNodeWSSEndpoint)**
-
-This is the endpoint of the WebSocket Secure server which can be addressed through its corresponding URL.
-
-**S2 client node endpoint (S2ClientNodeEndpoint)**
-
-This is used to denote the endpoint of both the REST API client and the WebSocket Secure client.
+An S2 Node that implemented a WebSocket Secure client that can be used for establishing S2 communication between itself and another S2 node. The other S2 node must act as an S2 server node.
 
 **End user (EndUser)**
 
@@ -111,31 +106,108 @@ TODO
 
 TODO
 
-# Architecture
+**Pairing attempt**
+
+The process of pairing two S2 nodes. The process can be completed successfully or unsuccessfully.
+
+**Iniator S2 Node**
+
+TODO
+
+**Responder S2 Node**
+
+TODO
+
+**End user environment**
+
+TODO
+
+
+
+# Architecture (informative)
+This section explains the over architecture and deployment options for CEM and RM instances.
 
 ## Deployment of S2 nodes
 
-TODO uitleggen LAN/WAN
+This specification is concerned with connecting an instance of a CEM with an instance of a RM. Either of these instances are refered to as *S2 nodes*, which either have the CEM *role* or the RM *role*. Obivously, it is only possible to pair an S2 node with the CEM role to an S2 node with the RM role.
+
+S2 Nodes can be deployed locally within the LAN, or somewhere on a server in the WAN. Although their deploymend doesn't significantly affect the working of these S2 Nodes, there are some key differences between these types of deployment.
+
+* **WAN** S2 nodes are typically part of a large application that run on many servers and/or on some kind of cloud computing platform. A single application usually serves many users. Each user could have one or multiple S2 nodes. This could for example be a cloud-based energy management system that can connect to many devices. It could also be a cloud enviroment of a device manufacturer that hosts the RM instances in the cloud. An end user could own multiple devices from this manufacturer, thus the application could host multipse RM instances for this particual user. We call a group of S2 nodes that a single user can manage within one application an *end user environment*. It is also possible that an end user environment contains both CEM and RM instances. The user interface is typically a web interface or a smartphone app.
+* **LAN** S2 nodes are typically part of an application that runs on an embedded computer device somewhere in the building. Such a device could be a physical energy management system, an energy flexible device such as a home battery, heat pump or EV charger, or a gateway device which connects to an energy flexibel device through some kind of protocol. Often an application will only host a single S2 node, but it is also possible that an application hosts multiple S2 nodes. A device could function completely on its own, but it cloud also be connected to an internet based application of the manufacturer. The user interface could be a physical human-machine interface on the device, but also be a smartphone app that connects directly to the device (e.g. via bluetooth), or a smartphone app or web interface that connects to an internet based application of the manufacturer. For energy flexible devices, it is assumed that they could also have no user interface at all, or that they are very constrained when it comes to comuting power. It is assumed that a CEM always has a user interface.
+
+![Deployment_options](/img/communication-layer/deployment_options.png)
+
+There are three types of S2 connections between S2 nodes possible:
+
+* **WAN-WAN**: A connection between two S2 nodes deployed in a WAN. Connecting between them is straitforward and can be done based on URLs, based on DNS domain names. It is possible to rely on common TLS certificates thanks to a public key infrastructure.
+* **WAN-LAN**: A connection between a LAN deplayed S2 node a WAN deployed S2 node. Since there is almost always a firewall and/or NAT between these two, it is assumed that it is only possible to set up a connection from the LAN to the WAN; not the other way around. Connecting from the LAN S2 node to the WAN S2 node can be done based on a URL, and common TLS certificates can be used thanks to public key infrastructure.
+* **LAN-LAN**: A connection between two LAN deployed S2 nodes. It is assumed that in this situation we cannot rely an internet connection, making it impossible to rely on a public key infrastructure for certificates. That is why for this type of connection self-signed TLS certificates are used. Connections are made based on hostnames that are resolved to IP-adresses using Multicast DNS (mDNS), since IP-adresses are not guarenteed to be stable. Discovering another node could be done using DNS Service Discovery (DNS-SD).
 
 ## Pairing and unpairing from the perspective of the end user
-The end user can take the initiative to *pair* a CEM instance with a RM instance. In order to pair a CEM with an RM two things must happen:
+The end user can take the initiative to *pair* a CEM instance with a RM instance. This process has to be started with one of the S2 nodes. Which node this is depends on the deployment and implementation decisions of the S2 node, but ideally it could be either one. The S2 node however needs to have a user interface. We'll call the S2 node that user uses to start the pairing proces the *initator*. We'll call the other S2 node the *responder*.
 
-1. The CEM and the RM must be able to find each other on an IP-based network
-2. The end user must retrieve a *pairing token* from either the CEM or the RM (depending on the specific situation) and enter this token in the other S2 node
+The first step of pairing is esteblishing a connection from the iniator S2 node to the responder S2 node. This can be done in serveral ways (for more details see [Discovery](#discovery)).
+* If the responder S2 node is deployed in the WAN, this could either be done by manually entering the URL of the pairing endpoint, or finding the endpoint through the S2 pairing endpoint registry. The latter provides a more user friendly way of retrieving the URL of the pairing endpoint.
+* If both S2 nodes are deployed in the LAN however, connecting can also be done by manually entering an URL of the pairing endpoint of the responder S2 node, or by finding the responder S2 node through a process based on DNS-SD. This way the user only has to select the desired S2 node to connect to from a list of S2 nodes which were discovered in the LAN. Again, the latter is a more user friendly approach.
 
-If pairing is performed sucessfully, the CEM and RM instances should esteblish a connection with each other and communicate through S2. If the connection is interrupted, the instances must automatically try to reestablish the connection.
+The second step is entering the pairing token of the responder S2 node. This is a means for the end user to confirm that these two S2 nodes are allowed to send control signals through S2 to each other. The pairing token can be obtained from the responder S2 node. The pairing token is a (seemingly) random string of characters. This pairing token is typically displayed somewhere in the user interface of the other S2 node. We recommend to use a dynamic token which expires after 5 minutes. However, if the S2 node has a physical precense in the building and doesn't have user interface, there is also the option to have a static pairing token which can be printed on the device.
 
-Once a CEM is paired, the user has to possibility to command the CEM or the RM to *unpair*. After unpairing the CEM and RM instances can no longer communicate through S2.
+Optionally, the initiator S2 node can send a signal to the responder S2 node to indicate that the end user has started the pairing process and has selected the responder S2 node. This could trigger the user interface of the responder S2 node to proactively show the pairing token (e.g. through a pop-up) to improve the user experince.
 
-## Working of pairing and communication
+Once the pairing token is known to the initiator S2 node, the pairing process is started. It is esteblished that both S2 nodes are compatible and it is verified that the entered pairing token is correct. Pairing could either fail or succeed.
 
-TODO Uitleggen http server/client, openapi, websockets, certificaten
+If pairing is performed sucessfully, the CEM and RM instances should esteblish a connection with each other and communicate through S2. If the connection is interrupted, the instances will automatically try to reestablish the connection.
 
-## Types of S2 eindpoint implementations
+Once a CEM is paired, the user has to possibility to command either of the S2 nodes to *unpair*. After unpairing the CEM and RM instances can no longer communicate through S2 (unless the end user pairs them again).
+
+TODO plaatje invoegen
+
+<details>
+<summary>Image generated using the following PlantUML code:</summary>
+
+```
+@startuml
+actor EndUser as e
+participant InitiatorS2Node as i
+participant ResponderS2Node as r
+
+e->i: Provide identity of ResponderS2Node (e.g. URL)
+r->e: Provide pairing token
+e->i: Provide pairing token
+i->r: Attempt pairing
+r->i: Pairing result (success or failure)
+i->e: Pairing result (success or failure)
+@enduml
+```
+</details>
+
+## Pairing details for different deployments
+
+The pairing process is based on HTTP REST calls. That means that for every pairing attempt, one S2 node behaves as the HTTP server, and one HTTP node behaves as the pairing client. The logical solution would be to make the initiator S2 node the HTTP client and the responder S2 node the HTTP server. After all, it is the HTTP client that takes the initiative to contact the HTTP server. The HTTP server cannot take the initiative to contact the HTTP client.
+
+The objective is to have all S2 nodes be able to be the initiator S2 node, as well as the responder S2 Node. This is necessery to provide a consistent user experience. The end user might not be aware which S2 node is deployed in the LAN or in the WAN, and then it might be confusing that his energy management system both provides S2 pairing tokens and asks for S2 pairing tokens.
+
+If every S2 node must be able to be the initator S2 node in centain situations, and the responder S2 node in other situations, and the easiest solution is to implement teh initiator as HTTP client and the responder as HTTP server, you might come to the conclusion that every S2 node needs to be able to behave both as an HTTP server and as a HTTP client.
+
+* WAN initiator S2 node and LAN responder S2 node: TODO
+* LAN initiator RM and LAN responder RM: TODO
+
+
+![Pairing_direction](/img/communication-layer/pairing_direction.png)
+
+
+## Types of S2 applications
 
 TODO uitleggen user environment en endpoints (plaatje)
 
+## Working of pairing and communication
+
+TODO Uitleggen http server/client, openapi, websockets, certificaten, pairing proxies
+
 ## Mapping the CEM and RM to HTTP server or client
+
+TODO check
 
 The CEM and RM roles defined by the S2 protocol are distinct from the Server and Client roles of the S2 pairing process. The following rules apply to determine whether the RM or CEM acts as a Client or Server in the pairing process.
 
@@ -156,7 +228,7 @@ Note: A device developed solely for use as an RM in a local setup will never fun
 
 
 
-# The pairing process
+# Pairing process (normative)
 
 The pairing process is based on the trust relation that the end user has with both the CEM and the RM. That trust relation is out of scope for this specification and is up to CEM and RM providers to implement. Given the deployment scenario, it [follows](# Mapping the CEM and RM to S2 Server and Client Nodes) which of the RM and the CEM is server and which is the client in the pairing process.
 
@@ -185,7 +257,7 @@ A LAN scenario where both RM and CEM are running on the same local network. Disc
 
 ## The pairing token
 
-TODO
+TODO uitleggen geldigheidsduur en format van token
 
 ## Pairing interaction
 
@@ -239,7 +311,7 @@ TODO
 TODO
 
 
-# S2 Connection
+# S2 Connection (normative)
 
 After two nodes have been paired, the nodes exchange S2 messages over a secure connection. 
 
@@ -348,7 +420,7 @@ In order to reduce network traffic, S2 WebSocket implementations **SHOULD** not 
 
 ### Termination
 
-A S2 session can be terminated in different ways:
+An S2 session can be terminated in different ways:
 
 * In case an S2 node unexpectedly becomes unavailable, the WebSocket connection **CAN** timeout. This will cause an S2 session to be terminated. More details about the timeout can be found [in the heartbeat section](#keepalive--heartbeat-ping--pong)
 * an S2 node **CAN** terminate the S2 session by sending the S2 terminate message, including an optional earliest time that the session can be restored. The other S2 node can take this into account in planning and (in the case of a client) deciding when to attempt to reconnect.
@@ -401,7 +473,7 @@ WebSocketDisconnected --> [*]
 | ControlType FRBC activated | FRBC.Instruction<br/>SelectControlType<br/>SessionRequest<br/>ReceptionStatus | FRBC.ActuatorStatus<br/>FRBC.FillLevelTargetProfile<br/>FRBC.LeakageBehaviour<br/>FRBC.StorageStatus<br/>FRBC.SystemDescription<br/>FRBC.UsageForecast<br/>FRBC.TimerStatus<br/>RevokeObject<br/>InstructionStatusUpdate ResourceManagerDetails<br/>PowerMeasurement<br/>PowerForecast<br/>SessionRequest<br/>ReceptionStatus |
 | ControlType DDBC activated | DDBC.Instruction<br/>SelectControlType<br/>SessionRequest<br/>ReceptionStatus | DDBC.ActuatorStatus<br/>DDBC.AverageDemandRateForecast<br/>DDBC.SystemDescription<br/>DDBC.TimerStatus<br/>RevokeObject<br/>InstructionStatusUpdate<br/>ResourceManagerDetails<br/>PowerMeasurement PowerForecast<br/>SessionRequest<br/>ReceptionStatus |
 
-# The unpairing process
+# Unpairing process (normative)
 
 Unpairing can either be initiated by S2Node that runs the CEM or the RM.
 
@@ -413,7 +485,7 @@ If the server takes the initiative to unpair, first it **must** remove all secur
 
 Client and server **can** keep other (non-security) information for user experience purposes.
 
-# Security
+# Security (normative)
 
 Please refer to an extensive description of the security specifications to [Security considerations](./security-considerations.md).
 
