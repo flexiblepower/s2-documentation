@@ -15,10 +15,13 @@ The protocol is designed to specify communication between two devices, a resourc
 
 |Abbreviation | Meaning
 |---|---|
-| S2 | European standard on Energy Flexibility EN50491-12-2|
-| RM | Resource Manager |
 | CEM | Customer Energy Manager |
+| HTTP | HyperText Transfer Protocol |
 | LAN | Local Area Network (i.e. a local network, typically contstrained to the building) |
+| NAT | Network Address Translation |
+| REST | Representational state transfer |
+| RM | Resource Manager |
+| S2 | European standard on Energy Flexibility EN50491-12-2|
 | WAN | Wide Area Network (i.e. the public internet) |
 
 # Background (informative)
@@ -66,7 +69,7 @@ For the long answer, please refer to [this page](why-not-oauth.md).
 
 This specification uses the concepts that are defined below.
 
-**S2 node (S2Node)**
+**S2 node**
 
 Refers to an instance of either a CEM or a RM as defined in EN 50491-12-1 and implementing this specification. S2 communication between two S2 nodes can only be established if one of the S2 nodes is a CEM and the other a RM. These S2 nodes must also have the same end user.
 
@@ -74,27 +77,27 @@ Refers to an instance of either a CEM or a RM as defined in EN 50491-12-1 and im
 
 TODO
 
-**S2 node UI (S2NodeUI)**
+**S2 node UI**
 
 A user interface through which an end user can interact with an S2 node. Interaction between the end user and the user interface must be secure, but this is out of scope for this specification. Examples of a user interface are a web interface, an app or a physical interface (HMI) on a device.
 
-**S2 pairing server (S2PairingServer)**
+**S2 pairing server**
 
-An S2 node that implemented a WebSocket Secure server that can be used for establishing S2 communication between itself and another S2 node. The other S2 node must act as an S2 client node.
+TODO An S2 node that implemented a WebSocket Secure server that can be used for establishing S2 communication between itself and another S2 node. The other S2 node must act as an S2 client node.
 
-**S2 pairing client (S2PairingClient)**
+**S2 pairing client**
 
-An S2 Node that implemented a WebSocket Secure client that can be used for establishing S2 communication between itself and another S2 node. The other S2 node must act as an S2 server node.
+TODO An S2 Node that implemented a WebSocket Secure client that can be used for establishing S2 communication between itself and another S2 node. The other S2 node must act as an S2 server node.
 
-**S2 communication server (S2CommunicationServer)**
+**S2 communication server**
 
-An S2 node that implemented a WebSocket Secure server that can be used for establishing S2 communication between itself and another S2 node. The other S2 node must act as an S2 client node.
+TODO An S2 node that implemented a WebSocket Secure server that can be used for establishing S2 communication between itself and another S2 node. The other S2 node must act as an S2 client node.
 
-**S2 communication client (S2CommunicationClient)**
+**S2 communication client**
 
-An S2 Node that implemented a WebSocket Secure client that can be used for establishing S2 communication between itself and another S2 node. The other S2 node must act as an S2 server node.
+TODO An S2 Node that implemented a WebSocket Secure client that can be used for establishing S2 communication between itself and another S2 node. The other S2 node must act as an S2 server node.
 
-**End user (EndUser)**
+**End user**
 
 A person or entity that manages S2 nodes. For the purpose of this specification it is assumed that there is already a trust relationship in place between this person and the S2 nodes. The means that the way the trust relationship has been established is out of scope for this specification.
 
@@ -145,11 +148,12 @@ There are three types of S2 connections between S2 nodes possible:
 * **LAN-LAN**: A connection between two LAN deployed S2 nodes. It is assumed that in this situation we cannot rely an internet connection, making it impossible to rely on a public key infrastructure for certificates. That is why for this type of connection self-signed TLS certificates are used. Connections are made based on hostnames that are resolved to IP-adresses using Multicast DNS (mDNS), since IP-adresses are not guarenteed to be stable. Discovering another node could be done using DNS Service Discovery (DNS-SD).
 
 ## Pairing and unpairing from the perspective of the end user
-The end user can take the initiative to *pair* a CEM instance with a RM instance. This process has to be started with one of the S2 nodes. Which node this is depends on the deployment and implementation decisions of the S2 node, but ideally it could be either one. The S2 node however needs to have a user interface. We'll call the S2 node that user uses to start the pairing proces the *initator*. We'll call the other S2 node the *responder*.
+The end user can take the initiative to *pair* a single CEM instance with a single RM instance. This process has to be started with one of the S2 nodes. Which node this is depends on the deployment and implementation decisions of the S2 node, but ideally it could be either one. The S2 node however needs to have a user interface. We'll call the S2 node that user uses to start the pairing proces the *initator*. We'll call the other S2 node the *responder*.
 
-The first step of pairing is esteblishing a connection from the iniator S2 node to the responder S2 node. This can be done in serveral ways (for more details see [Discovery](#discovery)).
-* If the responder S2 node is deployed in the WAN, this could either be done by manually entering the URL of the pairing endpoint, or finding the endpoint through the S2 pairing endpoint registry. The latter provides a more user friendly way of retrieving the URL of the pairing endpoint.
-* If both S2 nodes are deployed in the LAN however, connecting can also be done by manually entering an URL of the pairing endpoint of the responder S2 node, or by finding the responder S2 node through a process based on DNS-SD. This way the user only has to select the desired S2 node to connect to from a list of S2 nodes which were discovered in the LAN. Again, the latter is a more user friendly approach.
+The first step of pairing is esteblishing a connection from the iniator S2 node to the responder S2 node. This can be done in serveral ways:
+* Enter the address manually.
+* If the responder S2 node is deployed in the WAN, the URL could be retrieved through a registry. The end user would have to select the type of S2 node from a list of known s2 node services in its region.
+* If both S2 nodes are deployed in the LAN however, s2 nodes can be automatically be detected. The end user would have to select the S2 node from a list of automatically discovered S2 nodes.
 
 The second step is entering the pairing token of the responder S2 node. This is a means for the end user to confirm that these two S2 nodes are allowed to send control signals through S2 to each other. The pairing token can be obtained from the responder S2 node. The pairing token is a (seemingly) random string of characters. This pairing token is typically displayed somewhere in the user interface of the other S2 node. We recommend to use a dynamic token which expires after 5 minutes. However, if the S2 node has a physical precense in the building and doesn't have user interface, there is also the option to have a static pairing token which can be printed on the device.
 
@@ -161,53 +165,92 @@ If pairing is performed sucessfully, the CEM and RM instances should esteblish a
 
 Once a CEM is paired, the user has to possibility to command either of the S2 nodes to *unpair*. After unpairing the CEM and RM instances can no longer communicate through S2 (unless the end user pairs them again).
 
-TODO plaatje invoegen
+![Pairing_process_user](/img/communication-layer/pairing_process_user.png)
 
 <details>
 <summary>Image generated using the following PlantUML code:</summary>
 
 ```
 @startuml
-actor EndUser as e
-participant InitiatorS2Node as i
-participant ResponderS2Node as r
+participant "Initiator S2 node" as i
+participant "Initiator S2 node UI" as iui
+actor "End user" as e
+participant "Responder S2 node UI" as rui
+participant "Responder S2 node" as r
 
-e->i: Provide identity of ResponderS2Node (e.g. URL)
-r->e: Provide pairing token
-e->i: Provide pairing token
+e->iui: Provide identity of Responder S2 node (e.g. URL)
+rui->e: Retrieve pairing token
+e->iui: Provide pairing token
 i->r: Attempt pairing
 r->i: Pairing result (success or failure)
-i->e: Pairing result (success or failure)
+iui->e: Pairing result (success or failure)
 @enduml
 ```
 </details>
 
+## The S2 node and the S2 endpoint
+
+TODO: Begrip endpoint ergens uitleggen
+
+## Used technology for pairing and communication
+
+An S2 connection basically consists of four steps: discovery, pairing, communication and unpairing. For these steps different types of technology are used.
+
+On of the main techologies the process relies on is HTTP REST. All interactions based on HTTP are formally described in OpenAPI specification files. [OpenAPI](https://swagger.io/specification/) is a formal language for specifying HTTP based API's. It can be used to generate reference documentation for developers, as well as stub code for many programming languages.
+
+### Discovery
+
+The first step is finding the responder S2 node from the initaitor S2 node. In principle this is done based on the URL of the responder S2 node. However, to improve user experince, two systems exist to find this URL in a more user frindely manner. For more details see [Discovery](#discovery).
+
+* If the responder S2 node is deployed in the WAN, the end user can find the endpoint through the S2 pairing endpoint registry. This would result in a list of vendors that offer S2 nodes.
+* If both S2 nodes are deployed in the LAN however, the responder S2 can be detected automatically through a process based on DNS-SD. This way the user only has to select the desired S2 node to connect to from a list of S2 nodes which were discovered in the LAN.
+
+### Pairing
+
+The pairing process itself is completely based on HTTP rest. One S2 node behaves as the HTTP server, and the other as the HTTP client. This process is described in an OpenAPI file. The process consists of multiple steps. If the pairing process is completed successfully, the S2 nodes will agree on an authentication token. This token is used to initiate communication or to unpair.
+
+We'll refer to the endpoint that behaves as the HTTP server during the pairing process as the *S2 pairing server*, and the client as the *S2 pairing client*.
+
+Pairing interaction is always TLS based (i.e. HTTPS is used). For WAN deployments, normal certificates (signed by a Certificate Authority) are being used. For LAN deployments self-signed certificates are used.
+
+### Communication
+
+Communication is setting up the actual session, where S2 messages are being exchanged.
+
+The process always starts with HTTP based communication, but then is handed over to a protocol which supports a two-way messages based communication channel. Currently the only protocol that is being used is WebSockets, but there are plans to add other options in the future. The HTTP interface is also specified in an OpenAPI file, together with the unpairing process.
+
+We'll refer to the endpoint that behaves as the HTTP server during the communication process as the *S2 communication server*, and the client as the *S2 communication client*.
+
+It should be noted that pairing and communication are two seperete HTTP interfaces, that don't have to be used in the same way. It could be that an S2 Node is an S2 pairing client, but then becomes an S2 communication server. This depends on the deployment of the s2 Nodes (see [Pairing details for different deployments](#pairing-details-for-different-deployments)).
+
+Communication interaction is always TLS based (i.e. HTTPS is used). For WAN deployments, normal certificates (signed by a Certificate Authority) are being used. For LAN deployments self-signed certificates are used.
+
+After the HTTP interaction a WebSocket is esteblished. The S2 communication server is always the WebSocket server. This server must use the same TLS certificate as the HTTP server.
+
+### Unpairing
+
+Either S2 node can take the initiative to unpair from the other S2 node. This is done using the same HTTP OpenAPI specification and the same HTTP server and client as the communication. The details for unpairing differ depending if it is the S2 communication server or if it is the S2 communication client that initiates the unpairing process.
+
 ## Pairing details for different deployments
 
-The pairing process is based on HTTP REST calls. That means that for every pairing attempt, one S2 node behaves as the HTTP server, and one HTTP node behaves as the pairing client. The logical solution would be to make the initiator S2 node the HTTP client and the responder S2 node the HTTP server. After all, it is the HTTP client that takes the initiative to contact the HTTP server. The HTTP server cannot take the initiative to contact the HTTP client.
+As explained, the pairing process is based on HTTP REST calls. That means that for every pairing attempt, one S2 node behaves as the HTTP server, and one HTTP node behaves as the pairing client. The logical solution would be to make the initiator S2 node the HTTP client and the responder S2 node the HTTP server. After all, it is the HTTP client that takes the initiative to contact the HTTP server. The HTTP server cannot take the initiative to contact the HTTP client.
 
-The objective is to have all S2 nodes be able to be the initiator S2 node, as well as the responder S2 Node. This is necessery to provide a consistent user experience. The end user might not be aware which S2 node is deployed in the LAN or in the WAN, and then it might be confusing that his energy management system both provides S2 pairing tokens and asks for S2 pairing tokens.
+The objective is to have all S2 nodes be able to be the initiator S2 node, as well as the responder S2 Node. This is necessery to provide a consistent user experience. The end user might not be aware which S2 node is deployed in the LAN or in the WAN, and then it might be confusing that, for example, his energy management system both provides S2 pairing tokens and asks for S2 pairing tokens.
 
-If every S2 node must be able to be the initator S2 node in centain situations, and the responder S2 node in other situations, and the easiest solution is to implement teh initiator as HTTP client and the responder as HTTP server, you might come to the conclusion that every S2 node needs to be able to behave both as an HTTP server and as a HTTP client.
+If every S2 node must be able to be the initator S2 node in certain situations, and the responder S2 node in other situations, and the easiest solution is to implement the initiator as HTTP client and the responder as HTTP server, you might come to the conclusion that every S2 node needs to be able to behave both as an HTTP server and as an HTTP client.
 
-* WAN initiator S2 node and LAN responder S2 node: TODO
-* LAN initiator RM and LAN responder RM: TODO
+There are however two situations where this is not possible:
 
+* **WAN initiator S2 node and LAN responder S2 node**: Since the LAN is usually shielded from the WAN through a firewall or NAT, it is assumed that it is not possible to approach a LAN HTTP server from a WAN client. This specifications offers two approaches to this problem:
+  * Accept this limitaiton and not allow the WAN S2 node to be the initiator S2 node. Pairing can only be performed when the LAN S2 node is the initiator S2 node and the WAN S2 node is the responder S2 node. Special care must be taken to explain this to the end user.
+  * Many modern devices or EMS systems are connected to a cloud backend managed by the OEM. If this is the case, it is possible to implement the pairing HTTP server in the cloud, even though the S2 node itself is in the WAN. If the pairing is performed successfully in the OEM backend, the result of the pairing must be communicated to the S2 node via the existing connection between device/EMS and the OEM backend.
+* **LAN initiator RM and LAN responder RM**: Since one of the requiremets is that a LAN RM instance can be implemented on restricted hardware, and a TLS enabled HTTP server is for more memory intensive than an HTTP client, there is an option to implement a LAN RM instance purely as an HTTP server. A long-polling mechanism is available to indicate to the HTTP Server that the S2 node is available for pairing. This mechanism is also used to initiate the pairing process from the HTTP server. In other words: in this specific situation the initiator S2 node behaves as the HTTP server, and the responder S2 node only has to be an HTTP client.
 
 ![Pairing_direction](/img/communication-layer/pairing_direction.png)
 
-
-## Types of S2 applications
-
-TODO uitleggen user environment en endpoints (plaatje)
-
-## Working of pairing and communication
-
-TODO Uitleggen http server/client, openapi, websockets, certificaten, pairing proxies
-
 ## Mapping the CEM and RM to HTTP server or client
 
-TODO check
+TODO update
 
 The CEM and RM roles defined by the S2 protocol are distinct from the Server and Client roles of the S2 pairing process. The following rules apply to determine whether the RM or CEM acts as a Client or Server in the pairing process.
 
@@ -501,3 +544,7 @@ The server certificates **MUST** be exchanged and validated during the initiatio
 ## Cipher suites
 
 Security levels of cipher suites will change over time. To stay secure, the used cipher suites should be updates regularly and adhere to regular updates. All S2Nodes **MUST** follow **ONLY** the accepted crypto libraries as defined in [Accepted crypto algorithms](./accepted-crypto.md). This list will be kept up-to-date. When changes are made to the list of accepted crypto libraries, all S2Nodes **MUST** follow these changes within half a year.
+
+# Versioning of specification files
+
+TODO
