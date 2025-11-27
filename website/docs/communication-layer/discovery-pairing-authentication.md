@@ -17,11 +17,12 @@ The protocol is designed to specify communication between two devices, a resourc
 |---|---|
 | CEM | Customer Energy Manager |
 | HTTP | HyperText Transfer Protocol |
-| LAN | Local Area Network (i.e. a local network, typically contstrained to the building) |
+| LAN | Local Area Network (i.e. a local network, typically constrained to the building) |
 | NAT | Network Address Translation |
 | REST | Representational state transfer |
 | RM | Resource Manager |
-| S2 | European standard on Energy Flexibility EN50491-12-2|
+| S2 | European standard on Energy Flexibility EN50491-12-2 |
+| UUID | Universally Unique IDentifier (see [RFC 9562](https://www.rfc-editor.org/rfc/rfc9562)) |
 | WAN | Wide Area Network (i.e. the public internet) |
 
 # Background (informative)
@@ -65,77 +66,32 @@ The short answer is: oAuth is mainly designed for accessing protected resources 
 For the long answer, please refer to [this page](why-not-oauth.md).
 
 
-# List of definitions
+# Terms and definitions (normative)
 
-TODO: omzetten naar tabel
+TODO waar handig linkjes toevoegen naar sections met meer uitleg
 
 This specification uses the concepts that are defined below.
 
-**S2 node**
-
-Refers to an instance of either a CEM or a RM as defined in EN 50491-12-1 and implementing this specification. S2 communication between two S2 nodes can only be established if one of the S2 nodes is a CEM and the other a RM. These S2 nodes must also have the same end user.
-
-**S2 endpoint**
-
-TODO
-
-**S2 node UI**
-
-A user interface through which an end user can interact with an S2 node. Interaction between the end user and the user interface must be secure, but this is out of scope for this specification. Examples of a user interface are a web interface, an app or a physical interface (HMI) on a device.
-
-**S2 pairing server**
-
-TODO An S2 node that implemented a WebSocket Secure server that can be used for establishing S2 communication between itself and another S2 node. The other S2 node must act as an S2 client node.
-
-**S2 pairing client**
-
-TODO An S2 Node that implemented a WebSocket Secure client that can be used for establishing S2 communication between itself and another S2 node. The other S2 node must act as an S2 server node.
-
-**S2 communication server**
-
-TODO An S2 node that implemented a WebSocket Secure server that can be used for establishing S2 communication between itself and another S2 node. The other S2 node must act as an S2 client node.
-
-**S2 communication client**
-
-TODO An S2 Node that implemented a WebSocket Secure client that can be used for establishing S2 communication between itself and another S2 node. The other S2 node must act as an S2 server node.
-
-**End user**
-
-A person or entity that manages S2 nodes. For the purpose of this specification it is assumed that there is already a trust relationship in place between this person and the S2 nodes. The means that the way the trust relationship has been established is out of scope for this specification.
-
-**Pairing token**
-
-TODO
-
-**Pairing S2 node ID**
-
-**S2 Node ID**
-
-**Pairing code**
-
-**Authentication token**
-
-TODO
-
-**Pairing attempt**
-
-The process of pairing two S2 nodes. The process can be completed successfully or unsuccessfully.
-
-**Iniator S2 Node**
-
-TODO
-
-**Responder S2 Node**
-
-TODO
-
-**End user environment**
-
-TODO
-
-**S2 pairing endpoint registry**
-
-
+| Term | Definition |
+| --- | --- |
+| Authentication token | A token that is used for setting up an S2 connection. |
+| End user | A person or entity that manages S2 nodes. For the purpose of this specification it is assumed that there is already a trust relationship in place between this person and the S2 nodes. The means that the way the trust relationship has been established is out of scope for this specification. |
+| End user environment | An restricted area within an application that contains all the S2 nodes that belong to the end user. |
+| Initiator S2 node | The S2 node that that takes the initiative to pair with a responder S2 node. This is typically the S2 node from which the user initiates the pairing process. It is the counterpart of the responder S2 node. |
+| Pairing attempt | The process of pairing two S2 nodes. The process can be completed successfully or unsuccessfully. |
+| Pairing code | The pairing code is the string of characters the end user has to copy from the responder S2 node user interface to the initiator S2 node user interface, in order to pair the two S2 nodes. The pairing code consist of a pairing token and when required a pairing S2 node ID. |
+| Pairing S2 node ID | A short identifier for an S2 node, which is unique in the context of a single S2 endpoint. |
+| Pairing token | A secret string of characters, which acts as a proof of the trust relationship between the end user and an S2 node |
+| Responder S2 Node |  The S2 node that that responds to a request to pair. This is the S2 node that issued the pairing code. It is the counterpart of the initiator S2 node. |
+| S2 endpoint | A service which can handle pairing requests or initiates pairing requests itself. An S2 endpoint can represent on S2 node, but could also represent many. |
+| S2 communication client | The S2 nodes which behaves as the HTTP client when initiating an S2 connection. |
+| S2 communication server | The S2 nodes which behaves as the HTTP server when initiating an S2 connection. |
+| S2 pairing client | The 2S endpoint which behaves as the HTTP client when pairing with an S2 node. |
+| S2 pairing endpoint registry | The central registry that keeps track of publicly available S2 pairing servers. |
+| S2 pairing server | The 2S endpoint which behaves as the HTTP client when pairing with an S2 node. |
+| S2 node | Refers to an instance of either a CEM or a RM as defined in EN 50491-12-1 and implementing this specification. S2 communication between two S2 nodes can only be established if one of the S2 nodes is a CEM and the other a RM. These S2 nodes must also have the same end user. |
+| S2 node ID | A globally unique identifier for an S2 node in the UUID format. |
+| User interface | A user interface through which an end user can interact with an S2 node. Interaction between the end user and the user interface must be secure, but this is out of scope for this specification. Examples of a user interface are a web interface, an app or a physical interface (HMI) on a device. |
 
 
 # Architecture (informative)
@@ -143,12 +99,12 @@ This section explains the over architecture and deployment options for CEM and R
 
 ## Deployment of S2 nodes
 
-This specification is concerned with connecting an instance of a CEM with an instance of a RM. Either of these instances are refered to as *S2 nodes*, which either have the CEM *role* or the RM *role*. Obivously, it is only possible to pair an S2 node with the CEM role to an S2 node with the RM role.
+This specification is concerned with connecting an instance of a CEM with an instance of a RM. Either of these instances are referred to as *S2 nodes*, which either have the CEM *role* or the RM *role*. Obviously, it is only possible to pair an S2 node with the CEM role to an S2 node with the RM role.
 
-S2 Nodes can be deployed locally within the LAN, or somewhere on a server in the WAN. Although their deploymend doesn't significantly affect the working of these S2 Nodes, there are some key differences between these types of deployment.
+S2 Nodes can be deployed locally within the LAN, or somewhere on a server in the WAN. Although their deployment doesn't significantly affect the working of these S2 Nodes, there are some key differences between these types of deployment.
 
-* **WAN** S2 nodes are typically part of a large application that run on many servers and/or on some kind of cloud computing platform. A single application usually serves many users. Each user could have one or multiple S2 nodes. This could for example be a cloud-based energy management system that can connect to many devices. It could also be a cloud enviroment of a device manufacturer that hosts the RM instances in the cloud. An end user could own multiple devices from this manufacturer, thus the application could host multipse RM instances for this particual user. We call a group of S2 nodes that a single user can manage within one application an *end user environment*. It is also possible that an end user environment contains both CEM and RM instances. The user interface is typically a web interface or a smartphone app.
-* **LAN** S2 nodes are typically part of an application that runs on an embedded computer device somewhere in the building. Such a device could be a physical energy management system, an energy flexible device such as a home battery, heat pump or EV charger, or a gateway device which connects to an energy flexibel device through some kind of protocol. Often an application will only host a single S2 node, but it is also possible that an application hosts multiple S2 nodes. A device could function completely on its own, but it cloud also be connected to an internet based application of the manufacturer. The user interface could be a physical human-machine interface on the device, but also be a smartphone app that connects directly to the device (e.g. via bluetooth), or a smartphone app or web interface that connects to an internet based application of the manufacturer. For energy flexible devices, it is assumed that they could also have no user interface at all, or that they are very constrained when it comes to comuting power. It is assumed that a CEM always has a user interface.
+* **WAN** S2 nodes are typically part of a large application that run on many servers and/or on some kind of cloud computing platform. A single application usually serves many users. Each user could have one or multiple S2 nodes. This could for example be a cloud-based energy management system that can connect to many devices. It could also be a cloud environment of a device manufacturer that hosts the RM instances in the cloud. An end user could own multiple devices from this manufacturer, thus the application could host multiple RM instances for this particular user. We call a group of S2 nodes that a single user can manage within one application an *end user environment*. It is also possible that an end user environment contains both CEM and RM instances. The user interface is typically a web interface or a smartphone app.
+* **LAN** S2 nodes are typically part of an application that runs on an embedded computer device somewhere in the building. Such a device could be a physical energy management system, an energy flexible device such as a home battery, heat pump or EV charger, or a gateway device which connects to an energy flexible device through some kind of protocol. Often an application will only host a single S2 node, but it is also possible that an application hosts multiple S2 nodes. A device could function completely on its own, but it cloud also be connected to an internet based application of the manufacturer. The user interface could be a physical human-machine interface on the device, but also be a smartphone app that connects directly to the device (e.g. via bluetooth), or a smartphone app or web interface that connects to an internet based application of the manufacturer. For energy flexible devices, it is assumed that they could also have no user interface at all, or that they are very constrained when it comes to computing power. It is assumed that a CEM always has a user interface.
 
 ![Deployment_options](/img/communication-layer/deployment_options.png)
 
@@ -215,7 +171,7 @@ On of the main techologies the process relies on is HTTP REST. All interactions 
 
 ### Discovery
 
-The first step is finding the responder S2 node from the initaitor S2 node. In principle this is done based on the URL of the responder S2 node. However, to improve user experince, two systems exist to find this URL in a more user frindely manner. For more details see [Discovery](#discovery).
+The first step is finding the responder S2 node from the initiator S2 node. In principle this is done based on the URL of the responder S2 node. However, to improve user experience, two systems exist to find this URL in a more user friendly manner. For more details see [Discovery](#discovery).
 
 * If the responder S2 node is deployed in the WAN, the end user can find the endpoint through the S2 pairing endpoint registry. This would result in a list of vendors that offer S2 nodes.
 * If both S2 nodes are deployed in the LAN however, the responder S2 can be detected automatically through a process based on DNS-SD. This way the user only has to select the desired S2 node to connect to from a list of S2 nodes which were discovered in the LAN. This process can also be used when an S2 node is deployed in the WAN, but the device also has a presence in the LAN.
@@ -240,7 +196,7 @@ It should be noted that pairing and communication are two seperete HTTP interfac
 
 Communication interaction is always TLS based (i.e. HTTPS is used). For WAN deployments, normal certificates (signed by a Certificate Authority) are being used. For LAN deployments self-signed certificates are used.
 
-After the HTTP interaction a WebSocket is esteblished. The S2 communication server is always the WebSocket server. This server must use the same TLS certificate as the HTTP server.
+After the HTTP interaction a WebSocket is established. The S2 communication server is always the WebSocket server. This server must use the same TLS certificate as the HTTP server.
 
 ### Unpairing
 
@@ -250,16 +206,16 @@ Either S2 node can take the initiative to unpair from the other S2 node. This is
 
 As explained, the pairing process is based on HTTP REST calls. That means that for every pairing attempt, one S2 node behaves as the HTTP server, and one HTTP node behaves as the pairing client. The logical solution would be to make the initiator S2 node the HTTP client and the responder S2 node the HTTP server. After all, it is the HTTP client that takes the initiative to contact the HTTP server. The HTTP server cannot take the initiative to contact the HTTP client.
 
-The objective is to have all S2 nodes be able to be the initiator S2 node, as well as the responder S2 Node. This is necessery to provide a consistent user experience. The end user might not be aware which S2 node is deployed in the LAN or in the WAN, and then it might be confusing that, for example, his energy management system both provides S2 pairing codes and asks for S2 pairing codes.
+The objective is to have all S2 nodes be able to be the initiator S2 node, as well as the responder S2 Node. This is necessary to provide a consistent user experience. The end user might not be aware which S2 node is deployed in the LAN or in the WAN, and then it might be confusing that, for example, his energy management system both provides S2 pairing codes and asks for S2 pairing codes.
 
-If every S2 node must be able to be the initator S2 node in certain situations, and the responder S2 node in other situations, and the easiest solution is to implement the initiator as HTTP client and the responder as HTTP server, you might come to the conclusion that every S2 node needs to be able to behave both as an HTTP server and as an HTTP client.
+If every S2 node must be able to be the initiator S2 node in certain situations, and the responder S2 node in other situations, and the easiest solution is to implement the initiator as HTTP client and the responder as HTTP server, you might come to the conclusion that every S2 node needs to be able to behave both as an HTTP server and as an HTTP client.
 
 There are however two situations where this is not possible:
 
 * **WAN initiator S2 node and LAN responder S2 node**: Since the LAN is usually shielded from the WAN through a firewall or NAT, it is assumed that it is not possible to approach a LAN HTTP server from a WAN client. This specifications offers two approaches to this problem:
-  * Accept this limitaiton and not allow the WAN S2 node to be the initiator S2 node. Pairing can only be performed when the LAN S2 node is the initiator S2 node and the WAN S2 node is the responder S2 node. Special care must be taken to explain this to the end user.
+  * Accept this limitation and not allow the WAN S2 node to be the initiator S2 node. Pairing can only be performed when the LAN S2 node is the initiator S2 node and the WAN S2 node is the responder S2 node. Special care must be taken to explain this to the end user.
   * Many modern devices or EMS systems are connected to a cloud backend managed by the OEM. If this is the case, it is possible to implement the pairing HTTP server in the cloud, even though the S2 node itself is in the WAN. If the pairing is performed successfully in the OEM backend, the result of the pairing must be communicated to the S2 node via the existing connection between device/EMS and the OEM backend.
-* **LAN initiator RM and LAN responder RM**: Since one of the requiremets is that a LAN RM instance can be implemented on restricted hardware, and a TLS enabled HTTP server is for more memory intensive than an HTTP client, there is an option to implement a LAN RM instance purely as an HTTP server. A long-polling mechanism is available to indicate to the HTTP Server that the S2 node is available for pairing. This mechanism is also used to initiate the pairing process from the HTTP server. In other words: in this specific situation the initiator S2 node behaves as the HTTP server, and the responder S2 node only has to be an HTTP client.
+* **LAN initiator RM and LAN responder RM**: Since one of the requirements is that a LAN RM instance can be implemented on restricted hardware, and a TLS enabled HTTP server is for more memory intensive than an HTTP client, there is an option to implement a LAN RM instance purely as an HTTP server. A long-polling mechanism is available to indicate to the HTTP Server that the S2 node is available for pairing. This mechanism is also used to initiate the pairing process from the HTTP server. In other words: in this specific situation the initiator S2 node behaves as the HTTP server, and the responder S2 node only has to be an HTTP client.
 
 ![Pairing_direction](/img/communication-layer/pairing_direction.png)
 
@@ -311,13 +267,13 @@ A LAN scenario where both RM and CEM are running on the same local network. Disc
 
 ## The pairing token, the pairing S2 node ID and the pairing code
 
-The pairing token is a random string of characters that is generated by the responder S2 node. It is a secret which is transfered by the end user to the initiator S2 node, and then is verified during the pairing process. Since there will be many cases where the end user has to manully type in the pairing token, the pairing token has to be short enough to make it easy for the end user to type in, but long enough to make it secure. The pairing token **must** be generated by a cryptographically secure pseudorandom number generator. The pairing token **must** use a rondom combination of lower case and upper case letters and numbers, and **must** contain at least 6 characters
+The pairing token is a random string of characters that is generated by the responder S2 node. It is a secret which is transferred by the end user to the initiator S2 node, and then is verified during the pairing process. Since there will be many cases where the end user has to manually type in the pairing token, the pairing token has to be short enough to make it easy for the end user to type in, but long enough to make it secure. The pairing token **must** be generated by a cryptographically secure pseudorandom number generator. The pairing token **must** use a random combination of lower case and upper case letters and numbers, and **must** contain at least 6 characters
 
 The pairing token is typically dynamically generated when the user requests the pairing token at the user interface of the responder S2 node. Dynamically generated pairing tokens **must** expire after a duration; five minutes is the recommended duration. However, energy flexible devices that do not have a user interface are allowed to have a static pairing token, that for example can be printed somewhere on the physical device. Static pairing tokens do not expire. Static pairing tokens **should** be longer than 6 characters. 
 
-An S2 endpoint can host multiple S2 nodes. When attempting to pair a certain S2 node, the S2 endpoint needs to know exactly which of its S2 nodes this pairing attempt is aimed at. S2 nodes are uniquely identified with thair S2 node ID. Since this S2 node ID is a UUID, it is pretty long and cumbersome to type in. That is why an S2 endpoint can assign its nodes a `pairing S2 node ID`. This is an identifier that is intented to be short, and only unique within the context of this particular S2 endpoint. Pairing S2 node IDs could be assigned by the S2 endpoint whenever new S2 nodes are created, but also could be generated dynamically only when someone is attempting to pair to this S2 node. This way, pairing S2 node IDs have a short live, and can be reused by other S2 nodes at other moments. This allows to use shorter pairing S2 node ID's. Pairing S2 node IDs are a string of characters, which may include lower case letters, upper case letters and numbers. Pairing S2 node IDs are ideally as short as possible (at least one character), but should of course be long enough to allow the S2 endpoint to uniquely identify an S2 node. When an S2 endpoint only contains one S2 node, there is no need for a pairing S2 node ID.
+An S2 endpoint can host multiple S2 nodes. When attempting to pair a certain S2 node, the S2 endpoint needs to know exactly which of its S2 nodes this pairing attempt is aimed at. S2 nodes are uniquely identified with their S2 node ID. Since this S2 node ID is a UUID, it is pretty long and cumbersome to type in. That is why an S2 endpoint can assign its nodes a `pairing S2 node ID`. This is an identifier that is intended to be short, and only unique within the context of this particular S2 endpoint. Pairing S2 node IDs could be assigned by the S2 endpoint whenever new S2 nodes are created, but also could be generated dynamically only when someone is attempting to pair to this S2 node. This way, pairing S2 node IDs have a short live, and can be reused by other S2 nodes at other moments. This allows to use shorter pairing S2 node ID's. Pairing S2 node IDs are a string of characters, which may include lower case letters, upper case letters and numbers. Pairing S2 node IDs are ideally as short as possible (at least one character), but should of course be long enough to allow the S2 endpoint to uniquely identify an S2 node. When an S2 endpoint only contains one S2 node, there is no need for a pairing S2 node ID.
 
-Although the pairing token and the pairing S2 node ID are two seperate strings, which are treated as completely different in the pairing process, they are presented together to the user as one string: the *pairing code*. The pairing code is simply the pairing S2 node ID, followed by a dash ('-'), followed by the pairing token. When there is no pairing S2 node ID, the pairing code is simply identical to the pairing token.
+Although the pairing token and the pairing S2 node ID are two separate strings, which are treated as completely different in the pairing process, they are presented together to the user as one string: the *pairing code*. The pairing code is simply the pairing S2 node ID, followed by a dash ('-'), followed by the pairing token. When there is no pairing S2 node ID, the pairing code is simply identical to the pairing token.
 
 ```
 When no pairing S2 node ID is used (i.e. the S2 endpoint only contains one S2 node):
@@ -326,7 +282,7 @@ When a pairing S2 node ID is used:
   pairing code = [pairing S2 node ID]-[pairing token]
 ```
 
-The pairing code allows us to transfer two pieces of information by only bothering the end user once. Due to its format the initiator S2 node can easily excract the pairing S2 node ID and the pairing token from the pairing code by splitting the string at the dash. 
+The pairing code allows us to transfer two pieces of information by only bothering the end user once. Due to its format the initiator S2 node can easily extract the pairing S2 node ID and the pairing token from the pairing code by splitting the string at the dash. 
 
 ## Pre-pairing interaction
 
@@ -334,7 +290,7 @@ The pairing code allows us to transfer two pieces of information by only botheri
 
 TODO checken/herschijven
 
-The user visits the S2ClientNodeUI and the S2ServerNode has been discovered (so the S2ServerNode base URL is known) by the the S2ClientNode per [discovery](#discovery) as specified above. The S2ClientNode does a preparePairing HTTP request to let the S2ServerNode know that there is an S2ClientNode that wants to pair. It is up to the S2ServerNode implementation to decide what to do with this signal. It can be used to display a pop-up with the pairing token in its UI to improve the user experience. It must be implemented by the client, but only when there is a clear distinction between the moment perparePairing is called and when requestPairing is called. When preparePairing is called, it is not guaranteed that a call to pairingRequest or cancelPreparePairing will follow so it is recommended to put a time-out on showing the pairing token in the S2ServerNodeUI.
+The user visits the S2ClientNodeUI and the S2ServerNode has been discovered (so the S2ServerNode base URL is known) by the the S2ClientNode per [discovery](#discovery) as specified above. The S2ClientNode does a preparePairing HTTP request to let the S2ServerNode know that there is an S2ClientNode that wants to pair. It is up to the S2ServerNode implementation to decide what to do with this signal. It can be used to display a pop-up with the pairing token in its UI to improve the user experience. It must be implemented by the client, but only when there is a clear distinction between the moment preparePairing is called and when requestPairing is called. When preparePairing is called, it is not guaranteed that a call to pairingRequest or cancelPreparePairing will follow so it is recommended to put a time-out on showing the pairing token in the S2ServerNodeUI.
 
 ## Long-polling
 
@@ -344,9 +300,9 @@ TODO long-polling
 
 ## Pairing interaction
 
-TODO update image
+The pairing process itself consists of several HTTP interactions between client and server. The image below depicts a successful pairing process between two S2 nodes. 
 
-![image](/img/communication-layer/pairing-manually.png)
+![image](/img/communication-layer/pairing_http_process.png)
 
 <details>
 <summary>Image generated using the following PlantUML code:</summary>
@@ -391,60 +347,147 @@ Server-->Client: 10. Response status 204
 ```
 </details>
 
+### 0. Precondition
+
+Before an S2 node can be paired, it needs to things.
+
+1. The HTTP server and the HTTP client can only start with a pairing request when they are fully initialized and have all the details of the S2 nodes it represents available. 
+2. Both S2 nodes must have a pairing token available. Either because they issued this token themselves, or because the end user has provided it through the user interface.
+
+> Note: The initiator S2 node could be the HTTP server or the HTTP client
+
+If the HTTP client does not fulfill these preconditions, it **cannot** send the first HTTP request of the pairing process.
+
 ### 1. POST /requestPairing
-TODO uitleg
+In the first POST request the client provides the server with same information about itself. The main purpose of this is to check if these two S2 nodes are compatible.
+
+The client sends the following information (for full details see the OpenAPI specification file):
+
+| Information | Description |
+| --- | --- |
+| `s2ClientNodeDescription` | Information about the S2 node that wants to pair, such as brand, logo and type. Important fields include `id` (the S2 node ID) and `role` of the initiator S2 node |
+| `s2ClientEndpointDescription` | Information about the client S2 endpoint. An important field is the deployment. |
+| `pairingS2NodeID` | The pairing S2 node ID of the node that is being targeted (this field can be omitted if the endpoint only represents one S2 node) |  
+| `supportedCommunicationProtocols` | List of supported communications protocols of the client (**must** always contain WebSockets) |
+| `supportedS2MessageVersions` | List of supported S2 message versions by the client |
+| `supportedHmacHashingAlgorithms` | List of supported hashing algorithms for the challenge response function (currently only `SHA256` is supported and **must** be present) |
+| `clientHmacChallenge` | The challenge of the client for the challenge response process (see [Challenge response process](#challenge-response-process) |
+| `forcePairing` | Indicate if the S2 nodes must pair, even though they (currently) do not support the same S2 message versions (this could in the future be solved with a software update) |
+
+The server **must** perform the checks in the table below to make sure that it can proceed with this request. If one of these checks fail, the server should respond with an HTTP status 400 and a `PairingResponseErrorMessage`. The contents of the `additionalInfo` field is supposed the be helpful and up to the implementer.
+
+| Check | Type of `PairingResponseErrorMessage` when check fails | Can be ignored when  `forcePairing` is true ?|
+| --- | --- | --- |
+| Is the request properly formatted and does it follow the schema? | `Parsing error` | No |
+| Does it recognize the `pairingS2NodeID`? | `S2Node not found` | No |
+| Are the S2 endpoint and S2 node ready for pairing? | `Other` | No |
+| If no `pairingS2NodeID` provided, does this endpoint indeed only represent one S2 node? | `No S2Node provided` | No |
+| Does the targeted S2 node have a different role than the initiator S2 node (i.e. you cannot pair two RM's or two CEM's)? | `Invalid combination of roles` | No |
+| Does the server accept any of the provided hashing algorithms for the challenge response process? | `Incompatible HMAC hashing algorithms` | No |
+| Is there overlap between the S2 message versions? | `Incompatible S2 message versions` | Yes |
+| If the targeted S2 node on the HTTP server is the initiator S2 node, did the end user provide a valid pairing token? | `No valid pairingToken on PairingServer` | No |
+| If the targeted S2 node on the HTTP server is the responder S2 node, does the S2 node have a pairing token which has not expired? | `No valid pairingToken on PairingServer` | No |
+
+> Note: If the S2 node that is being paired is an RM which is already paired, the pairing process proceeds. When the paring process is finished successfully the existing pairing relation must be unpaired.
+
+> Note: If the targeted S2 node is already paired with the initiator S2 node, the pairing process proceeds. When the paring process is finished successfully the existing pairing relation is maintained.
+
+> Note: This is the only step where it is checked if the pairing code has expired. If the pairing token expires after this step, but during the pairing process, the pairing process will continue. A pairing attempt is limited to 30 seconds.
+
+If no checks fail the server **should** proceed to the next step.
 
 ### 2. Calculate clientHmacChallengeResponse
+The server selects an hashing algorithm for the challenge response function from the list that was provided by the client. This has to be a hashing algorithm that the server considers secure. The server calculates a response to the provided `clientHmacChallenge`. For details see [Challenge response process](#challenge-response-process).
 
 ### 3. Response status 200
+In order to formulate a response, the server **must** generate a `pairingAttemptId`. This is an identifier that **must** be generated by a cryptographically secure pseudorandom number generator and encoded using Base64. This identifier is used to keep track of all the HTTP interactions during the pairing attempt, and **must** be provided by the HTTP client as a header with all subsequent interactions. A pairing attempt **must** be completed within 30 seconds, or else the server **must** assume the pairing attempt has failed.
+
+The server responds with the following information (for full details see the OpenAPI specification file):
+
+| Information | Description |
+| --- | --- |
+| `pairingAttemptId` | The generated identifier for this pairing attempt |
+| `s2ServerNodeDescription` | Information about the S2 node that is being targeted, such as brand, logo and type. Important fields include `id` (the S2 node ID) and `role` of the responder S2 node |
+| `s2ServerEndpointDescription` | Information about the server S2 endpoint. An important field is the deployment. |
+| `selectedHmacHashingAlgorithm` | The hashing algorithm for the challenge response function as selected in step 2 |
+| `clientHmacChallengeResponse` | The response to the challenge provided by the HTTP client as calculated in step 2 |
+| `serverHmacChallenge` | The challenge created by the HTTP server for the challenge response process (see [Challenge response process](#challenge-response-process).) |
+
+The client **must** perform the following checks of this data.
+
+| Check | How to proceed if check fails |
+| --- | --- |
+| Can the contents of the response be parsed? | Do not proceed with the pairing attempt |
+| Is the response formatted according to the schema? | call `/finalizePairing` where `success` is `false` if `pairingAttemptId` is available |
+| Is the role of the S2 node at the server compatible? | call `/finalizePairing` where `success` is `false` |
+
+If no checks fail the server **should** proceed to the next step.
 
 ### 4. HTTP Client checks clientHmacChallengeResponse
+The HTTP client checks the `clientHmacChallengeResponse` provided by the HTTP server in step 3. It does that by calculating the response itself, and checking if the results is identical to the `clientHmacChallengeResponse`.
+
+If the result is identical, the client **should** proceed to the next step. If the result is not identical, the client **must** stop the pairing attempt. It **must** attempt to inform the HTTP server of this by doing an HTTP request to `finalizePairing` where the value of `success` must be `false`.
 
 ### 5. Calculate serverHmacChallengeResponse
+The HTTP client calculates a response to the provided `serverHmacChallenge` using the hashing algorithm as indicated in the `selectedHmacHashingAlgorithm`. For details see [Challenge response process](#challenge-response-process).
+
+From hereon the process branches into two scenario's, depending on if the HTTP client will be the communication client or the communication server. See [Mapping the CEM and RM to communication server or client](#mapping-the-cem-and-rm-to-communication-server-or-client) for which s2 node will perform which role for communication.
+
+If the HTTP server will be the communication *server* steps 6A, 7A and 8A **should** follow. If the HTTP server will be the communications *client* steps 6B, 7B en 8B **should** follow.
 
 ### 6A. POST /requestConnectionDetails
+TODO
 
 ### 7A. HTTP Server checks serverHmacChallengeResponse
+TODO
 
 ### 8A. Response status 200
+TODO
 
 ### 6B. POST /postConnectionDetails
+TODO
 
 ### 7B. HTTP Server checks serverHmacChallengeResponse
+TODO
 
 ### 8B. Response status 204
+TODO
 
 ### 9. POST /finalizePairing
+TODO
 
 ### 10. Response status 204
-TODO CA certificaat opslaan
+TODO CA certificaat opslaan, unpairen indien al gepaired
+
+### Interruption of the process
+TODO maximale duur van het proces is 30 seconden, als een van de twee zo lang niets hoort is de pairingattempt voorbij.
 
 
 ## Challenge response process
 
-This protocol uses a two-way challenge response process to verify that both S2 Nodes have the same pairing token. For this process it doesn't matter which S2 node has generated the pairing token and which S2 node has the pairing token that was entered by the end user. The reason a two-way challenge response process is used to verify the authentication token is that it allows to esteblish trust without having to expose the authentication token before this trust is estiblished. Both a challenge and a response are binary data, which are encoded using Base64.
+This protocol uses a two-way challenge response process to verify that both S2 Nodes have the same pairing token. For this process it doesn't matter which S2 node has generated the pairing token and which S2 node has the pairing token that was entered by the end user. The reason a two-way challenge response process is used to verify the authentication token is that it allows to establish trust without having to expose the authentication token before this trust is established. Both a challenge and a response are binary data, which are encoded using Base64.
 
 The challenge that is  generated by the HTTP Client is called the `clientHmacChallenge`. The response to this challenge, generated by the HTTP Server, is called the `clientHmacChallengeResponse`. The challenge that is  generated by the HTTP Server is called the `serverHmacChallenge`. The response to this challenge, generated by the HTTP Client, is called the `serverHmacChallengeResponse`.
 
 TODO minimale lengtes toevoegen
 
-A challenge is a nonce; a random string of bytes. It **must** be generated by a cryptographically secure pseudorandom number generator. The response is calculated based on the function described below. Both the generater of the challenge and the receiver of the challenge calculate the response based several input parameters. Since both S2 nodes should have the same input, both S2 nodes should calculate the same response. The S2 Node that received the challenge sends it back to the S2 node that generated the challenge. Now the S2 node that generated the challenge simply has to check if the received response is identical to the expected response that he calculated himself.
+A challenge is a nonce; a random string of bytes. It **must** be generated by a cryptographically secure pseudorandom number generator. The response is calculated based on the function described below. Both the generator of the challenge and the receiver of the challenge calculate the response based several input parameters. Since both S2 nodes should have the same input, both S2 nodes should calculate the same response. The S2 Node that received the challenge sends it back to the S2 node that generated the challenge. Now the S2 node that generated the challenge simply has to check if the received response is identical to the expected response that he calculated himself.
 
-The algorithm to calculate the response is based on the HMAC (hash-based message authentication code) function. This function has a *key* and a *message* as arguments. Most programming languages have a function or library availabable that provides HMAC functions.
+The algorithm to calculate the response is based on the HMAC (hash-based message authentication code) function. This function has a *key* and a *message* as arguments. Most programming languages have a function or library available that provides HMAC functions.
 
-The HMAC function itself uses a crypographic hash function for its calcualtions. Since cryptographic hash functions might contain vulnarabilities, this protocol uses a simple crypographic hash function selection mechanism. The HTTP client sends with the requestPairing HTTP request a list of supported hash functions. In the response the HTTP server indicates which hash function it has selected from this list. This function **must** be used for all response calculations during het pairing attempt. Currently there is only one hash function available (SHA256), but other options might be added in the future.
+The HMAC function itself uses a cryptographic hash function for its calculations. Since cryptographic hash functions might contain vulnerabilities, this protocol uses a simple cryptographic hash function selection mechanism. The HTTP client sends with the requestPairing HTTP request a list of supported hash functions. In the response the HTTP server indicates which hash function it has selected from this list. This function **must** be used for all response calculations during het pairing attempt. Currently there is only one hash function available (SHA256), but other options might be added in the future.
 
 It order to avoid man-in-the-middle attacks when using self-signed certificates, the SHA256 fingerprint of the server TLS certificate can also be used as input for calculating the response. 
 
 The exact function to calculate the response depends on the deployment of the S2 nodes.
 
+```
 When both S2 nodes have a LAN deployment:
-
-```R = HMAC(C, T || F)```
+  R = HMAC(C, T || F)```
 
 When at least one S2 node has a WAN deployment:
-
-```R = HMAC(C, T)```
+  R = HMAC(C, T)
+```
 
 Where:
 | Symbol | meaning |
@@ -453,8 +496,8 @@ Where:
 | `HMAC` | HMAC function with the selected cryptographic hash function |
 | `C` | Challenge |
 | `T`  | Pairing token |
-| `F`  | SHA256 fingerpint of the TLS server certificate of the HTTP server |
-| `\|\|` | concatenation |
+| `F`  | SHA256 fingerprint of the TLS server certificate of the HTTP server |
+| `\|\|` | Concatenation |
 
 
 # S2 Connection (normative)
@@ -463,7 +506,7 @@ After two nodes have been paired, the nodes exchange S2 messages over a secure c
 
 The following mechanism **must** be used to initiate a secure connection between two S2 nodes. Client authentication is based on a one-time use communication token that needs to be renewed every time a new S2 session is created.
 
-## Mapping the CEM and RM to HTTP server or client
+## Mapping the CEM and RM to communication server or client
 
 TODO update, veplaatsen naar normatieve gedeelte
 
