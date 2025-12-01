@@ -45,7 +45,7 @@ TODO cleanup
 - Communication **MUST** work without additional firewall configuration by the end user.
 - Implementation of the communication layer **MUST** be based on a widely accepted technology and must be relatively easy to implement.
 - The pairing process **SHOULD** support extensibility for other application layer communication protocols.
-- Provide a relatively consistent user experince regardless of the deployment of the S2 node
+- Provide a relatively consistent user experience regardless of the deployment of the S2 node
 - Run a local RM on a device with constrained hardware
 - A RM could not have a UI
 
@@ -110,25 +110,25 @@ S2 Nodes can be deployed locally within the LAN, or somewhere on a server in the
 
 There are three types of S2 connections between S2 nodes possible:
 
-* **WAN-WAN**: A connection between two S2 nodes deployed in a WAN. Connecting between them is straitforward and can be done based on URLs, based on DNS domain names. It is possible to rely on common TLS certificates thanks to a public key infrastructure.
+* **WAN-WAN**: A connection between two S2 nodes deployed in a WAN. Connecting between them is straightforward and can be done based on URLs, based on DNS domain names. It is possible to rely on common TLS certificates thanks to a public key infrastructure.
 * **WAN-LAN**: A connection between a LAN deployed S2 node a WAN deployed S2 node. Since there is almost always a firewall and/or NAT between these two, it is assumed that it is only possible to set up a connection from the LAN to the WAN; not the other way around. Connecting from the LAN S2 node to the WAN S2 node can be done based on a URL, and common TLS certificates can be used thanks to public key infrastructure.
-* **LAN-LAN**: A connection between two LAN deployed S2 nodes. It is assumed that in this situation we cannot rely an internet connection, making it impossible to rely on a public key infrastructure for certificates. That is why for this type of connection self-signed TLS certificates are used. Connections are made based on hostnames that are resolved to IP-adresses using Multicast DNS (mDNS), since IP-adresses are not guarenteed to be stable. Discovering another node could be done using DNS Service Discovery (DNS-SD).
+* **LAN-LAN**: A connection between two LAN deployed S2 nodes. It is assumed that in this situation we cannot rely an internet connection, making it impossible to rely on a public key infrastructure for certificates. That is why for this type of connection self-signed TLS certificates are used. Connections are made based on hostnames that are resolved to IP-addresses using Multicast DNS (mDNS), since IP-addresses are not guaranteed to be stable. Discovering another node could be done using DNS Service Discovery (DNS-SD).
 
 ## Pairing and unpairing from the perspective of the end user
-The end user can take the initiative to *pair* a single CEM instance with a single RM instance. This process has to be started with one of the S2 nodes. Which node this is depends on the deployment and implementation decisions of the S2 node, but ideally it could be either one. The S2 node however needs to have a user interface. We'll call the S2 node that user uses to start the pairing proces the *initator*. We'll call the other S2 node the *responder*.
+The end user can take the initiative to *pair* a single CEM instance with a single RM instance. This process has to be started with one of the S2 nodes. Which node this is depends on the deployment and implementation decisions of the S2 node, but ideally it could be either one. The S2 node however needs to have a user interface. We'll call the S2 node that user uses to start the pairing process the *initiator*. We'll call the other S2 node the *responder*.
 
-The first step of pairing is esteblishing a connection from the iniator S2 node to the responder S2 node. This can be done in serveral ways:
+The first step of pairing is establishing a connection from the initiator S2 node to the responder S2 node. This can be done in several ways:
 * Enter the address manually.
 * If the responder S2 node is deployed in the WAN, the URL could be retrieved through a registry. The end user would have to select the type of S2 node from a list of known s2 node services in its region.
 * If both S2 nodes are deployed in the LAN however, s2 nodes can be automatically be detected. The end user would have to select the S2 node from a list of automatically discovered S2 nodes.
 
-The second step is entering the pairing code of the responder S2 node. This is a means for the end user to confirm that these two S2 nodes are allowed to send control signals through S2 to each other. The pairing code can be obtained from the responder S2 node. The pairing code is a (seemingly) random string of characters. This pairing code is typically displayed somewhere in the user interface of the other S2 node. We recommend to use a dynamic token which expires after 5 minutes. However, if the S2 node has a physical precense in the building and doesn't have user interface, there is also the option to have a static pairing code which can be printed on the device.
+The second step is entering the pairing code of the responder S2 node. This is a means for the end user to confirm that these two S2 nodes are allowed to send control signals through S2 to each other. The pairing code can be obtained from the responder S2 node. The pairing code is a (seemingly) random string of characters. This pairing code is typically displayed somewhere in the user interface of the other S2 node. We recommend to use a dynamic token which expires after 5 minutes. However, if the S2 node has a physical presence in the building and doesn't have user interface, there is also the option to have a static pairing code which can be printed on the device.
 
-Optionally, the initiator S2 node can send a signal to the responder S2 node to indicate that the end user has started the pairing process and has selected the responder S2 node. This could trigger the user interface of the responder S2 node to proactively show the pairing code (e.g. through a pop-up) to improve the user experince.
+Optionally, the initiator S2 node can send a signal to the responder S2 node to indicate that the end user has started the pairing process and has selected the responder S2 node. This could trigger the user interface of the responder S2 node to proactively show the pairing code (e.g. through a pop-up) to improve the user experience.
 
-Once the pairing code is known to the initiator S2 node, the pairing process is started. It is esteblished that both S2 nodes are compatible and it is verified that the entered pairing code is correct. Pairing could either fail or succeed.
+Once the pairing code is known to the initiator S2 node, the pairing process is started. It is established that both S2 nodes are compatible and it is verified that the entered pairing code is correct. Pairing could either fail or succeed.
 
-If pairing is performed sucessfully, the CEM and RM instances should esteblish a connection with each other and communicate through S2. If the connection is interrupted, the instances will automatically try to reestablish the connection.
+If pairing is performed successfully, the CEM and RM instances should establish a connection with each other and communicate through S2. If the connection is interrupted, the instances will automatically try to reestablish the connection.
 
 Once a CEM is paired, the user has to possibility to command either of the S2 nodes to *unpair*. After unpairing the CEM and RM instances can no longer communicate through S2 (unless the end user pairs them again).
 
@@ -167,7 +167,7 @@ The S2 endpoint is basically the application that hosts the S2 nodes. In a LAN d
 
 An S2 connection basically consists of four steps: discovery, pairing, communication and unpairing. For these steps different types of technology are used.
 
-On of the main techologies the process relies on is HTTP REST. All interactions based on HTTP are formally described in OpenAPI specification files. [OpenAPI](https://swagger.io/specification/) is a formal language for specifying HTTP based API's. It can be used to generate reference documentation for developers, as well as stub code for many programming languages.
+On of the main technologies the process relies on is HTTP REST. All interactions based on HTTP are formally described in OpenAPI specification files. [OpenAPI](https://swagger.io/specification/) is a formal language for specifying HTTP based API's. It can be used to generate reference documentation for developers, as well as stub code for many programming languages.
 
 ### Discovery
 
@@ -192,9 +192,9 @@ The process always starts with HTTP based communication, but then is handed over
 
 We'll refer to the endpoint that behaves as the HTTP server during the communication process as the *S2 communication server*, and the client as the *S2 communication client*.
 
-It should be noted that pairing and communication are two seperete HTTP interfaces, that don't have to be used in the same way. It could be that an S2 Node is an S2 pairing client, but then becomes an S2 communication server. This depends on the deployment of the s2 Nodes (see [Pairing details for different deployments](#pairing-details-for-different-deployments)).
+It should be noted that pairing and communication are two separate HTTP interfaces, that don't have to be used in the same way. It could be that an S2 Node is an S2 pairing client, but then becomes an S2 communication server. This depends on the deployment of the s2 Nodes (see [Pairing details for different deployments](#pairing-details-for-different-deployments)).
 
-Communication interaction is always TLS based (i.e. HTTPS is used). For WAN deployments, normal certificates (signed by a Certificate Authority) are being used. For LAN deployments self-signed certificates are used.
+Communication interaction is always TLS based (i.e. HTTPS is used). For WAN deployments, normal certificates (signed by a Certificate Authority) are being used. For LAN-LAN deployments self-signed certificates are used.
 
 After the HTTP interaction a WebSocket is established. The S2 communication server is always the WebSocket server. This server must use the same TLS certificate as the HTTP server.
 
@@ -241,6 +241,10 @@ A CEM can be paired with multiple RM's a the same time. A RM can only be paired 
 
 TODO: OpenAPI is altijd leading
 
+## Addressing S2 nodes
+
+TODO DNS names WAN, mDNS hostname LAN
+
 ## Discovery
 
 TODO
@@ -267,7 +271,7 @@ A LAN scenario where both RM and CEM are running on the same local network. Disc
 
 ## The pairing token, the pairing S2 node ID and the pairing code
 
-The pairing token is a random string of characters that is generated by the responder S2 node. It is a secret which is transferred by the end user to the initiator S2 node, and then is verified during the pairing process. Since there will be many cases where the end user has to manually type in the pairing token, the pairing token has to be short enough to make it easy for the end user to type in, but long enough to make it secure. The pairing token **must** be generated by a cryptographically secure pseudorandom number generator. The pairing token **must** use a random combination of lower case and upper case letters and numbers, and **must** contain at least 6 characters
+The pairing token is a random string of characters that is generated by the responder S2 node. It is a secret which is transferred by the end user to the initiator S2 node, and then is verified during the pairing process. Since there will be many cases where the end user has to manually type in the pairing token, the pairing token has to be short enough to make it easy for the end user to type in, but long enough to make it secure. The pairing token **must** be generated by a cryptographically secure pseudorandom number generator. The pairing token **must** be random binary data with a length of at least 9 bytes, and is encoded using Base64 before it is presented to the end user (9 bytes is equal to 12 characters when encoded with Base64).
 
 The pairing token is typically dynamically generated when the user requests the pairing token at the user interface of the responder S2 node. Dynamically generated pairing tokens **must** expire after a duration; five minutes is the recommended duration. However, energy flexible devices that do not have a user interface are allowed to have a static pairing token, that for example can be printed somewhere on the physical device. Static pairing tokens do not expire. Static pairing tokens **should** be longer than 6 characters. 
 
@@ -277,9 +281,9 @@ Although the pairing token and the pairing S2 node ID are two separate strings, 
 
 ```
 When no pairing S2 node ID is used (i.e. the S2 endpoint only contains one S2 node):
-  pairing code = [pairing token]
+  [pairing code] = [pairing token]
 When a pairing S2 node ID is used:
-  pairing code = [pairing S2 node ID]-[pairing token]
+  [pairing code] = [pairing S2 node ID]-[pairing token]
 ```
 
 The pairing code allows us to transfer two pieces of information by only bothering the end user once. Due to its format the initiator S2 node can easily extract the pairing S2 node ID and the pairing token from the pairing code by splitting the string at the dash. 
@@ -465,7 +469,7 @@ TODO maximale duur van het proces is 30 seconden, als een van de twee zo lang ni
 
 ## Challenge response process
 
-This protocol uses a two-way challenge response process to verify that both S2 Nodes have the same pairing token. For this process it doesn't matter which S2 node has generated the pairing token and which S2 node has the pairing token that was entered by the end user. The reason a two-way challenge response process is used to verify the authentication token is that it allows to establish trust without having to expose the authentication token before this trust is established. Both a challenge and a response are binary data, which are encoded using Base64.
+This protocol uses a two-way challenge response process to verify that both S2 Nodes have the same pairing token. For this process it doesn't matter which S2 node has generated the pairing token and which S2 node has the pairing token that was entered by the end user. The reason a two-way challenge response process is used to verify the pairing token is that it allows to establish trust without having to expose the pairing token before this trust is established. Both a challenge and a response are binary data, which are encoded using Base64.
 
 The challenge that is  generated by the HTTP Client is called the `clientHmacChallenge`. The response to this challenge, generated by the HTTP Server, is called the `clientHmacChallengeResponse`. The challenge that is  generated by the HTTP Server is called the `serverHmacChallenge`. The response to this challenge, generated by the HTTP Client, is called the `serverHmacChallengeResponse`.
 
@@ -477,13 +481,15 @@ The algorithm to calculate the response is based on the HMAC (hash-based message
 
 The HMAC function itself uses a cryptographic hash function for its calculations. Since cryptographic hash functions might contain vulnerabilities, this protocol uses a simple cryptographic hash function selection mechanism. The HTTP client sends with the requestPairing HTTP request a list of supported hash functions. In the response the HTTP server indicates which hash function it has selected from this list. This function **must** be used for all response calculations during het pairing attempt. Currently there is only one hash function available (SHA256), but other options might be added in the future.
 
-It order to avoid man-in-the-middle attacks when using self-signed certificates, the SHA256 fingerprint of the server TLS certificate can also be used as input for calculating the response. 
+It order to avoid man-in-the-middle attacks when using self-signed certificates, the SHA256 fingerprint of the TLS *server certificate* can also be used as input for calculating the response.
+
+> Note that the pairing token is encoded using Base64, so it must also be decoded using Base64 before it can be used in the challenge response function.
 
 The exact function to calculate the response depends on the deployment of the S2 nodes.
 
 ```
 When both S2 nodes have a LAN deployment:
-  R = HMAC(C, T || F)```
+  R = HMAC(C, T || F)
 
 When at least one S2 node has a WAN deployment:
   R = HMAC(C, T)
