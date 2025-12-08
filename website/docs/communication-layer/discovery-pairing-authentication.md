@@ -63,10 +63,63 @@ Discovery: DNS-SD (within a LAN) in combination with a central registry (for WAN
 
 Serialization: json.
 
+
 **Why not oAuth 2.0?**
 
 The short answer is: oAuth is mainly designed for accessing protected resources in the cloud and since the S2 CEM and RM would also need to be able to pair on a local network (even without requiring internet access) oAuth 2.0 is simply not a good fit. We have identified a way to make it work but since it is such non-typical way, we choose not to use oAuth 2.0. 
 For the long answer, please refer to [this page](why-not-oauth.md).
+
+
+
+
+## Security requirements
+
+The described protocol, ensures the following 4 requirements:
+
+1. Mutual authentication
+2. Integrity of communication
+3. Confidentiality of communication
+4. Forward secrecy
+
+There is one guarantee that explicitly is not given by this protocol:
+
+5. Non-repudiation
+
+
+
+### 1. Mutual authentication
+
+The mutual authentication is based on the trust relation between the user and the Client/Server. Since it is assumed that the user already had a trust relation with both of them, this existing trust can be used for mutual authentication between the client and the server. Note that the this communication is not part of the S2 protocol.
+
+The enduser requests an url, certificate fingerprint and token from the server, and gives these to the client. Based on these data, the client can connect to the server, using a TLS connection, check the certificate and authenticate himself with the token. Note that if the server uses a self-signed certificate, it will also give a certificate fingerprint to the user. The client needs to use this fingerprint to verify the certificate in the TLS connection.
+
+### 2. Integrity of communication
+
+Using TLS will ensure the integrity of the data.
+
+### 3. Confidentiality of communication
+
+Using TLS will ensure the confidentiality of the data.
+
+### 4. Forward secrecy
+
+Using TLS1.3 will ensure the forward secrecy of the data.
+
+### 5. Non-repudiation
+
+Non-repudiation is not guaranteed in this protocol. Individual messages are not signed by anyone and as a result both parties could deny sending a specific request. However, while no legal proof is given, since integrity and authenticity is guaranteed by TLS, each party always knows for sure which party made what statement.
+
+### Remaining risk
+
+There are two remaining vulnerable situations for the described protocol. In this section both will be explained.
+
+### Self signed certificates
+
+In the case that a local RM and a local SEM communication, it is not possible to generate a PKI-certificate that can be publicly validated. As a result, S2 accepts in **ONLY** this situation self-signed certificates. The risk for spoofing attacks are mitigated by sharing the certificate fingerprint and pinning the self signed certificate at the client side. As a result, the client can check for all future connections whether or not it is connected with the same server.
+
+### Trust relations between the end-user and the Client/Server
+
+The entire trust model of S2 is based on the fact that there is already a trust relation between the end-user and the client/server. If these clients/servers do not use adequate security mechanisms, it might be possible to attack the S2 system as well.
 
 
 # Terms and definitions (normative)
@@ -315,8 +368,53 @@ When a pairing S2 node ID is used:
 
 The pairing code allows us to transfer two pieces of information by only bothering the end user once. Due to its format the initiator S2 node can easily extract the pairing S2 node ID and the pairing token from the pairing code by splitting the string at the dash. 
 
-## Self-signed certificates
-If the HTTP server is deployed in the LAN, the HTTP server will use a self-signed certificate. This means that the HTTP client **must** be configured to accept self-signed certificates during the pairing process. Since the pairing process consists out of several HTTP requests, the HTTP client **must** check that for every request the same self-signed certificate is used by the HTTP server. If this is not the case, the HTTP client **cannot** proceed with the request.
+
+## Certificates
+
+There are two possible types of certificates. The first option is a public server certificate, that is part of the public PKI infrastructure, (indirectly) signed by a public root CA. This protocol allows local servers to use a self signed CA certificate to sign its local server certificate. This is needed because a local server is not able to get a certificate from a public PKI infrastructure.
+
+In the following image, the difference is shown. On the left a public root CA that's publicly known and trusted, on the right, a self signed root certificate, that's unknown and it's trustworthiness has to be achieved in another way.
+
+![image.png](/img/communication-layer/certificate-chains.png)
+
+<details>
+<summary>Image generated using the following PlantUML code:</summary>
+
+```
+@startuml
+struct PublicRootCA
+struct PublicIntermediateCA
+struct PublicServerCertificate
+
+PublicRootCA --> PublicIntermediateCA
+PublicIntermediateCA --> PublicServerCertificate
+
+
+struct SelfSignedCA
+struct LocalServerCertificate
+
+SelfSignedCA --> SelfSignedCA
+SelfSignedCA --> LocalServerCertificate
+@enduml
+```
+</details>
+
+
+### Trusting a self signed root certificate
+
+The self signed root certificate is by default not trusted. However during the pairing phase, the server with the self signed root certificate will share part of the root's certificate fingerprint as part of the pairing token, via a second channel. This will enable the client to verify the self signed root certificate, and create trust. From this moment on, the client will store the complete fingerprint of the self signed root certificate, and use it to verify the server certificate for all future connections.
+
+Note that the `preparePairing` and `cancelPreparePairing` endpoints can be called before the pairing has happened. So in the case the server is running on a LAN (and thus uses self-signed certificates), the client can skip the certificate validation steps on those endpoint. This means that the HTTP client **must** be configured to accept self-signed certificates during the pairing process. Since the pairing process consists out of several HTTP requests, the HTTP client **must** check that for every request the same self-signed certificate is used by the HTTP server. If this is not the case, the HTTP client **cannot** proceed with the request.
+
+
+
+### Updating the certificates
+
+A server can update its certificate. When a cloud server updates it's certificate, it **MUST** be signed by a CA, so a client can check it's validity. A server **SHOULD** update its server certificate at least once every 6 months.
+
+If the server is in local-local mode, and uses a self-signed CA certificate, the CA certificate **SHOULD** be created with a validity period which is long enough for the expected lifetime of the server. If the used crypto for the the CA certificate is broken, or the lifetime of the server is longer than the validity of the certificate, the server **MUST** create a new self-signed CA certificate and all clients need to be paired again. Like cloud servers, a local server **SHOULD** update its server certificate at least once every 6 months.
+
+
 
 ## Challenge response process
 
