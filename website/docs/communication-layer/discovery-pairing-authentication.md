@@ -544,6 +544,7 @@ If the HTTP client does not fulfill these preconditions, it **cannot** send the 
 Since the HTTP client does not know which major versions of the pairing API are implemented by the server, it must first do a GET request to the index (e.g. `https://hostname.local/pairing/`). 
 
 The client **must** perform the following checks during this request:
+
 | Check | How to proceed if check fails |
 | --- | --- |
 | Check certificate | Pairing is failed |
@@ -577,6 +578,7 @@ The client sends the following information (for full details see the OpenAPI spe
 | `forcePairing` | Indicate if the S2 nodes must pair, even though they (currently) do not support the same S2 message versions (this could in the future be solved with a software update) |
 
 The client **must** perform the following checks during this request:
+
 | Check | How to proceed if check fails |
 | --- | --- |
 | Check certificate | Pairing is failed |
@@ -661,6 +663,7 @@ If the `pairingAttemptId` is not recognized by the server (or has expired), the 
 If the request was not understood by the server for any other reason, the server **must** respond with status 400.
 
 The client **must** perform the following checks during this request:
+
 | Check | How to proceed if check fails |
 | --- | --- |
 | Check certificate | Pairing is failed |
@@ -700,6 +703,7 @@ The HTTP sends the connection details to the HTTP server. This request also serv
 | `accessToken` | The access token that was generated for this S2 node | 
 
 The client **must** perform the following checks during this request:
+
 | Check | How to proceed if check fails |
 | --- | --- |
 | Check certificate | Pairing is failed |
@@ -709,6 +713,7 @@ The client **must** perform the following checks during this request:
 If no checks fail the client **should** proceed to the next step.
 
 The server **must** perform the following checks during this request:
+
 | Check | How to proceed if check fails |
 | --- | --- |
 | `pairingAttemptId` is recognized | Respond with status code 401 |
@@ -730,19 +735,23 @@ The server confirms it has accepted the response and received the connection det
 If all interaction has been successful until this point, the HTTP client **must** do a request to finalize the pairing attempt. The provided value for `success` **must** be `true`.
 
 The client **must** perform the following checks during this request:
+
 | Check | How to proceed if check fails |
 | --- | --- |
 | Check certificate | Pairing is failed |
 | If self signed certificate, check is server is local | Pairing is failed |
 | Check if certificate is pinned | Pairing is failed | 
+
 If no checks fail the client **should** proceed to the next step.
 
 The server **must** perform the following checks during this request:
+
 | Check | How to proceed if check fails |
 | --- | --- |
 | The `pairingAttemptId` is correctly recognized | respond with status code 401 |
 | The request is not understood for any other reason | respond with status code 400 |
 | Check if certificate is pinned | Pairing is failed | 
+
 If no checks fail the server **should** proceed to the next step.
 
 Receiving a `/finalizePairing` request marks the completion of the pairing attempt for the HTTP server. If the HTTP server issued an access token during this pairing attempt, it can now be used by an S2 communication client to set up an S2 connection. The `pairingAttemptId` can no longer be used by the HTTP client.
