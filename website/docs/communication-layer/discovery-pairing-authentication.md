@@ -750,7 +750,6 @@ The server **must** perform the following checks during this request:
 | --- | --- |
 | The `pairingAttemptId` is correctly recognized | respond with status code 401 |
 | The request is not understood for any other reason | respond with status code 400 |
-| Check if certificate is pinned | Pairing is failed | 
 
 If no checks fail the server **should** proceed to the next step.
 
