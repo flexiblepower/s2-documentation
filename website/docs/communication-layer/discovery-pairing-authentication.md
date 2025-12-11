@@ -91,7 +91,7 @@ There is one guarantee that explicitly is not given by this protocol:
 
 The mutual authentication is based on the trust relation between the user and the Client/Server. Since it is assumed that the user already had a trust relation with both of them, this existing trust can be used for mutual authentication between the client and the server. Note that the this communication is not part of the S2 protocol.
 
-The enduser requests an url, certificate fingerprint and token from the server, and gives these to the client. Based on these data, the client can connect to the server, using a TLS connection, check the certificate and authenticate himself with the token. Note that if the server uses a self-signed certificate, it will also give a certificate fingerprint to the user. The client needs to use this fingerprint to verify the certificate in the TLS connection.
+The enduser requests an url, and token from the server, and gives these to the client. Based on these data, the client can connect to the server, using a TLS connection, check the certificate and authenticate himself with the token. Note that if the server uses a self-signed certificate, the fingerprint will be shared during the pairing phase, so it can be verified by the client.
 
 ### 2. Integrity of communication (guaranteed)
 
@@ -115,7 +115,7 @@ There are two remaining vulnerable situations for the described protocol. In thi
 
 #### Self signed certificates
 
-In the case that a local RM and a local SEM communication, it is not possible to generate a PKI-certificate that can be publicly validated. As a result, S2 accepts in **ONLY** this situation self-signed certificates. The risk for spoofing attacks are mitigated by sharing the certificate fingerprint and pinning the self signed certificate at the client side. In these situations, part of the certificate fingerprint will also be shared in the pairing token. As a result, the client can check for all connections whether or not it is connected with the correct server.
+In the case that a local RM and a local SEM communicate, it is not possible to generate a PKI-certificate that can be publicly validated. As a result, S2 accepts, **ONLY** in this situation, self-signed certificates. The risk for spoofing attacks are mitigated by sharing the fingerprint during the pairing phase and pinning the self signed certificate at the client side. In these situations, part of the certificate fingerprint will also be shared in the pairing token. As a result, the client can check for all connections whether or not it is connected with the correct server.
 
 #### Trust relations between the end-user and the Client/Server
 
@@ -173,7 +173,7 @@ There are three types of S2 connections between S2 nodes possible:
 The end user can take the initiative to *pair* a single CEM instance with a single RM instance. This process has to be started with one of the S2 nodes. Which node this is depends on the deployment and implementation decisions of the S2 node, but ideally it could be either one. The S2 node however needs to have a user interface. We'll call the S2 node that user uses to start the pairing process the *initiator*. We'll call the other S2 node the *responder*.
 
 The first step of pairing is establishing a connection from the initiator S2 node to the responder S2 node. This can be done in several ways:
-* Enter the address manually.
+* Enter the responder S2 node address manually at the initiator S2 node.
 * If the responder S2 node is deployed in the WAN, the URL could be retrieved through a registry. The end user would have to select the type of S2 node from a list of known s2 node services in its region.
 * If both S2 nodes are deployed in the LAN however, s2 nodes can be automatically be detected. The end user would have to select the S2 node from a list of automatically discovered S2 nodes.
 
@@ -233,11 +233,11 @@ The first step is finding the responder S2 node from the initiator S2 node. In p
 
 ### Pairing
 
-The pairing process itself is completely based on HTTP rest. One S2 node behaves as the HTTP server, and the other as the HTTP client. This process is described in an OpenAPI file. The process consists of multiple steps. If the pairing process is completed successfully, the S2 nodes will agree on an access token. This token is used to initiate communication or to unpair.
+The pairing process itself is completely based on HTTP REST. One S2 node behaves as the HTTP server, and the other as the HTTP client. This process is described in an OpenAPI file. The process consists of multiple steps. If the pairing process is completed successfully, the S2 nodes will agree on an access token. This token is used to initiate communication or to unpair.
 
 We'll refer to the endpoint that behaves as the HTTP server during the pairing process as the *S2 pairing server*, and the client as the *S2 pairing client*.
 
-Pairing interaction is always TLS based (i.e. HTTPS is used). For WAN deployments, normal certificates (signed by a Certificate Authority) are being used. For LAN deployments self-signed certificates are used.
+Pairing interaction is always TLS based (i.e. HTTPS is used). For WAN deployments, normal certificates (signed by a Certificate Authority) are being used. For LAN deployments self-signed certificates are used. For more information about the use of self-signed certificates, check [Trusting a self signed root certificate](###Trusting-a-self-signed-root-certificate)
 
 ### Communication
 
@@ -249,13 +249,16 @@ We'll refer to the endpoint that behaves as the HTTP server during the communica
 
 It should be noted that pairing and communication are two separate HTTP interfaces, that don't have to be used in the same way. It could be that an S2 Node is an S2 pairing client, but then becomes an S2 communication server. This depends on the deployment of the s2 Nodes (see [Pairing details for different deployments](#pairing-details-for-different-deployments)).
 
-Communication interaction is always TLS based (i.e. HTTPS is used). For WAN deployments, normal certificates (signed by a Certificate Authority) are being used. For LAN-LAN deployments self-signed certificates are used.
+Communication interaction is always TLS based (i.e. HTTPS is used). For WAN deployments, normal certificates (signed by a Certificate Authority) are being used. For LAN-LAN deployments self-signed certificates are used. For more information about the use of self-signed certificates, check [Trusting a self signed root certificate](###Trusting-a-self-signed-root-certificate)
 
 After the HTTP interaction a WebSocket is established. The S2 communication server is always the WebSocket server. This server must use the same TLS certificate as the HTTP server.
 
 ### Unpairing
 
 Either S2 node can take the initiative to unpair from the other S2 node. This is done using the same HTTP OpenAPI specification and the same HTTP server and client as the communication. The details for unpairing differ depending if it is the S2 communication server or if it is the S2 communication client that initiates the unpairing process.
+
+Unpairing interaction is always TLS based (i.e. HTTPS is used). For WAN deployments, normal certificates (signed by a Certificate Authority) are being used. For LAN-LAN deployments self-signed certificates are used. For more information about the use of self-signed certificates, check [Trusting a self signed root certificate](###Trusting-a-self-signed-root-certificate)
+
 
 ## Pairing details for different deployments
 
@@ -270,7 +273,7 @@ There are however two situations where this is not possible:
 * **WAN initiator S2 node and LAN responder S2 node**: Since the LAN is usually shielded from the WAN through a firewall or NAT, it is assumed that it is not possible to approach a LAN HTTP server from a WAN client. This specifications offers two approaches to this problem:
   * Accept this limitation and not allow the WAN S2 node to be the initiator S2 node. Pairing can only be performed when the LAN S2 node is the initiator S2 node and the WAN S2 node is the responder S2 node. Special care must be taken to explain this to the end user.
   * Many modern devices or EMS systems are connected to a cloud backend managed by the OEM. If this is the case, it is possible to implement the pairing HTTP server in the cloud, even though the S2 node itself is in the WAN. If the pairing is performed successfully in the OEM backend, the result of the pairing must be communicated to the S2 node via the existing connection between device/EMS and the OEM backend.
-* **LAN initiator RM and LAN responder RM**: Since one of the requirements is that a LAN RM instance can be implemented on restricted hardware, and a TLS enabled HTTP server is for more memory intensive than an HTTP client, there is an option to implement a LAN RM instance purely as an HTTP server. A long-polling mechanism is available to indicate to the HTTP Server that the S2 node is available for pairing. This mechanism is also used to initiate the pairing process from the HTTP server. In other words: in this specific situation the initiator S2 node behaves as the HTTP server, and the responder S2 node only has to be an HTTP client.
+* **LAN initiator RM and LAN responder RM**: Since one of the requirements is that a LAN RM instance can be implemented on restricted hardware, and a TLS enabled HTTP server is far more memory intensive than an HTTP client, there is an option to implement a LAN RM instance purely as an HTTP server. A long-polling mechanism is available to indicate to the HTTP Server that the S2 node is available for pairing. This mechanism is also used to initiate the pairing process from the HTTP server. In other words: in this specific situation the initiator S2 node behaves as the HTTP server, and the responder S2 node only has to be an HTTP client.
 
 ![Pairing_direction](/img/communication-layer/pairing_direction.png)
 
@@ -401,7 +404,7 @@ SelfSignedCA --> LocalServerCertificate
 
 ### Trusting a self signed root certificate
 
-The self signed root certificate is by default not trusted. However during the pairing phase, the server with the self signed root certificate will share part of the root's certificate fingerprint as part of the pairing token, via a second channel. This will enable the client to verify the self signed root certificate, and create trust. From this moment on, the client will store the complete fingerprint of the self signed root certificate, and use it to verify the server certificate for all future connections.
+The self signed root certificate is by default not trusted. However during the pairing phase, the server with the self signed root certificate will share the fingerprint of the certificate during the pairing phase as part of the challenge. This will enable the client to verify the self signed root certificate, and create trust. From this moment on, the client will store the complete fingerprint of the self signed root certificate, and use it to verify the server certificate for all future connections.
 
 Note that the `preparePairing` and `cancelPreparePairing` endpoints can be called before the pairing has happened. So in the case the server is running on a LAN (and thus uses self-signed certificates), the client can skip the certificate validation steps on those endpoint. This means that the HTTP client **must** be configured to accept self-signed certificates during the pairing process. Since the pairing process consists out of several HTTP requests, the HTTP client **must** check that for every request the same self-signed certificate is used by the HTTP server. If this is not the case, the HTTP client **cannot** proceed with the request.
 
@@ -540,6 +543,15 @@ If the HTTP client does not fulfill these preconditions, it **cannot** send the 
 ### 1. GET / (index containing pairing API versions)
 Since the HTTP client does not know which major versions of the pairing API are implemented by the server, it must first do a GET request to the index (e.g. `https://hostname.local/pairing/`). 
 
+The client **must** perform the following checks during this request:
+| Check | How to proceed if check fails |
+| --- | --- |
+| Check certificate | Pairing is failed |
+| If self signed certificate, check is server is local | Pairing is failed |
+| Store fingerprint of certificate for later check | | 
+
+If no checks fail the client **should** proceed to the next step.
+
 ### 2. Response status 200
 The server responds with a list of implement major versions of the pairing API. It is formatted as a JSON array contains all the supported version of the pairing API (e.g. `["v1"]`).
 
@@ -563,6 +575,16 @@ The client sends the following information (for full details see the OpenAPI spe
 | `supportedHmacHashingAlgorithms` | List of supported hashing algorithms for the challenge response function (currently only `SHA256` is supported and **must** be present) |
 | `clientHmacChallenge` | The challenge of the client for the challenge response process (see [Challenge response process](#challenge-response-process) |
 | `forcePairing` | Indicate if the S2 nodes must pair, even though they (currently) do not support the same S2 message versions (this could in the future be solved with a software update) |
+
+The client **must** perform the following checks during this request:
+| Check | How to proceed if check fails |
+| --- | --- |
+| Check certificate | Pairing is failed |
+| If self signed certificate, check is server is local | Pairing is failed |
+| Check if same fingerprint is used as previous request | Pairing is failed | 
+
+If no checks fail the client **should** proceed to the next step.
+
 
 The server **must** perform the checks in the table below to make sure that it can proceed with this request. If one of these checks fail, the server should respond with an HTTP status 400 and a `PairingResponseErrorMessage`. The contents of the `additionalInfo` field is supposed the be helpful and up to the implementer.
 
@@ -619,6 +641,9 @@ The HTTP client checks the `clientHmacChallengeResponse` provided by the HTTP se
 
 If the result is identical, the client **should** proceed to the next step. If the result is not identical, the client **must** stop the pairing attempt. It **must** attempt to inform the HTTP server of this by doing an HTTP request to `finalizePairing` where the value of `success` must be `false`.
 
+Note that in case of a local server, the certificate fingerprint is part of the challenge. So if the challenge succeeds, the certificate fingerprint is correct, and the certificate can be trusted. The client **must** pin this certificate, and trust this certificate for future use.
+
+
 ### 8. Calculate serverHmacChallengeResponse
 The HTTP client calculates a response to the provided `serverHmacChallenge` using the hashing algorithm as indicated in the `selectedHmacHashingAlgorithm`. For details see [Challenge response process](#challenge-response-process).
 
@@ -634,6 +659,16 @@ The HTTP client makes a request for the connection details. This request also se
 If the `pairingAttemptId` is not recognized by the server (or has expired), the server **must** respond with status code 401.
 
 If the request was not understood by the server for any other reason, the server **must** respond with status 400.
+
+The client **must** perform the following checks during this request:
+| Check | How to proceed if check fails |
+| --- | --- |
+| Check certificate | Pairing is failed |
+| If self signed certificate, check is server is local | Pairing is failed |
+| Check if certificate is pinned | Pairing is failed | 
+
+If no checks fail the client **should** proceed to the next step.
+
 
 ### 10A. HTTP Server checks serverHmacChallengeResponse
 The HTTP server checks the `serverHmacChallengeResponse` provided by the HTTP client in step 9A. It does that by calculating the response itself, and checking if the results is identical to the `serverHmacChallengeResponse`.
@@ -664,9 +699,22 @@ The HTTP sends the connection details to the HTTP server. This request also serv
 | `initiateConnectionUrl` | The base URI for the S2 connection process (does not include the version number) |
 | `accessToken` | The access token that was generated for this S2 node | 
 
-If the `pairingAttemptId` is not recognized by the server (or has expired), the server **must** respond with status code 401.
+The client **must** perform the following checks during this request:
+| Check | How to proceed if check fails |
+| --- | --- |
+| Check certificate | Pairing is failed |
+| If self signed certificate, check is server is local | Pairing is failed |
+| Check if certificate is pinned | Pairing is failed | 
 
-If the request was not understood by the server for any other reason, the server **must** respond with status 400.
+If no checks fail the client **should** proceed to the next step.
+
+The server **must** perform the following checks during this request:
+| Check | How to proceed if check fails |
+| --- | --- |
+| `pairingAttemptId` is recognized | Respond with status code 401 |
+| Request could not be parsed correctly | Respond with status code 400 |
+
+If no checks fail the server **should** proceed to the next step.
 
 ### 10B. HTTP Server checks serverHmacChallengeResponse
 The HTTP server checks the `serverHmacChallengeResponse` provided by the HTTP client in step 9A. It does that by calculating the response itself, and checking if the results is identical to the `serverHmacChallengeResponse`.
@@ -681,9 +729,21 @@ The server confirms it has accepted the response and received the connection det
 
 If all interaction has been successful until this point, the HTTP client **must** do a request to finalize the pairing attempt. The provided value for `success` **must** be `true`.
 
-If the `pairingAttemptId` is not recognized by the server (or has expired), the server **must** respond with status code 401.
+The client **must** perform the following checks during this request:
+| Check | How to proceed if check fails |
+| --- | --- |
+| Check certificate | Pairing is failed |
+| If self signed certificate, check is server is local | Pairing is failed |
+| Check if certificate is pinned | Pairing is failed | 
+If no checks fail the client **should** proceed to the next step.
 
-If the request was not understood by the server for any other reason, the server **must** respond with status 400.
+The server **must** perform the following checks during this request:
+| Check | How to proceed if check fails |
+| --- | --- |
+| The `pairingAttemptId` is correctly recognized | respond with status code 401 |
+| The request is not understood for any other reason | respond with status code 400 |
+| Check if certificate is pinned | Pairing is failed | 
+If no checks fail the server **should** proceed to the next step.
 
 Receiving a `/finalizePairing` request marks the completion of the pairing attempt for the HTTP server. If the HTTP server issued an access token during this pairing attempt, it can now be used by an S2 communication client to set up an S2 connection. The `pairingAttemptId` can no longer be used by the HTTP client.
 
