@@ -547,8 +547,8 @@ The client **must** perform the following checks during this request:
 
 | Check | How to proceed if check fails |
 | --- | --- |
-| Check certificate | Pairing is failed |
-| If self signed certificate, check is server is local | Pairing is failed |
+| Check certificate | Pairing is failed, do not proceed with the pairing attempt |
+| If self signed certificate, check is server is local | Pairing is failed, do not proceed with the pairing attempt |
 | Store fingerprint of certificate for later check | | 
 
 If no checks fail the client **should** proceed to the next step.
@@ -581,9 +581,9 @@ The client **must** perform the following checks during this request:
 
 | Check | How to proceed if check fails |
 | --- | --- |
-| Check certificate | Pairing is failed |
-| If self signed certificate, check is server is local | Pairing is failed |
-| Check if same fingerprint is used as previous request | Pairing is failed | 
+| Check certificate | Pairing is failed, do not proceed with the pairing attempt |
+| If self signed certificate, check is server is local | Pairing is failed, do not proceed with the pairing attempt |
+| Check if same fingerprint is used as previous request | Pairing is failed, do not proceed with the pairing attempt | 
 
 If no checks fail the client **should** proceed to the next step.
 
@@ -666,9 +666,9 @@ The client **must** perform the following checks during this request:
 
 | Check | How to proceed if check fails |
 | --- | --- |
-| Check certificate | Pairing is failed |
-| If self signed certificate, check is server is local | Pairing is failed |
-| Check if certificate is pinned | Pairing is failed | 
+| Check certificate | Pairing is failed, do not proceed with the pairing attempt |
+| If self signed certificate, check is server is local | Pairing is failed, do not proceed with the pairing attempt |
+| Check if certificate is pinned | Pairing is failed, do not proceed with the pairing attempt | 
 
 If no checks fail the client **should** proceed to the next step.
 
@@ -706,9 +706,9 @@ The client **must** perform the following checks during this request:
 
 | Check | How to proceed if check fails |
 | --- | --- |
-| Check certificate | Pairing is failed |
-| If self signed certificate, check is server is local | Pairing is failed |
-| Check if certificate is pinned | Pairing is failed | 
+| Check certificate | Pairing is failed, do not proceed with the pairing attempt |
+| If self signed certificate, check is server is local | Pairing is failed, do not proceed with the pairing attempt |
+| Check if certificate is pinned | Pairing is failed, do not proceed with the pairing attempt | 
 
 If no checks fail the client **should** proceed to the next step.
 
@@ -738,9 +738,9 @@ The client **must** perform the following checks during this request:
 
 | Check | How to proceed if check fails |
 | --- | --- |
-| Check certificate | Pairing is failed |
-| If self signed certificate, check is server is local | Pairing is failed |
-| Check if certificate is pinned | Pairing is failed | 
+| Check certificate | Pairing is failed, do not proceed with the pairing attempt |
+| If self signed certificate, check is server is local | Pairing is failed, do not proceed with the pairing attempt |
+| Check if certificate is pinned | Pairing is failed, do not proceed with the pairing attempt | 
 
 If no checks fail the client **should** proceed to the next step.
 
@@ -818,10 +818,33 @@ Client -> Client : 8. accept new accessToken
 
 The client has a list of pairs of accessTokens and commTokens. After the initial initiateConnection call, the list always contains at least one pair (initially there is only an accessToken as result of the pairing process). It uses one of the accessTokens to make an authorized request to retrieve a commToken and new accessToken form the server.
 
+The client **must** perform the following checks during this request:
+
+| Check | How to proceed if check fails |
+| --- | --- |
+| Check certificate | Initiation is failed, do not proceed with the initiation attempt |
+| If self signed certificate, check is server is local | Initiation is failed, do not proceed with the initiation attempt |
+| Check if certificate is pinned | Initiation is failed, do not proceed with the initiation attempt | 
+
+If no checks fail the client **should** proceed to the next step.
+
+
+
+
 **2. generate new token pair**
 
 For each paired NodeId the server saves an active accessToken and active commToken. In addition to that, the server also has a list for pending tokens. This list contains entries, each consisting of an accessToken, a commToken, a NodeId and a timestamp.
 The server checks the provided accessToken from the client with the active accessToken it has saved for this node. If the provided accessToken was valid, the server generates a new accessToken and commToken and saves this together with the S2NodeId and the current time as in entry in the list of pending tokens.
+
+The server **must** perform the following checks during this request:
+
+| Check | How to proceed if check fails |
+| --- | --- |
+| Verify `accessToken` | respond with status code ??? |
+
+
+If no checks fail the server **should** proceed to the next step.
+
 
 **3. initiateConnection response**
 
@@ -839,6 +862,16 @@ b. If the client was not able to persist the new accessToken (e.g. because the s
 
 The client initiates the S2 session, and provides the commToken.
 
+The client **must** perform the following checks during this request:
+
+| Check | How to proceed if check fails |
+| --- | --- |
+| Check certificate | Initiation is failed, do not proceed with the initiation attempt |
+| If self signed certificate, check is server is local | Initiation is failed, do not proceed with the initiation attempt |
+| Check if certificate is pinned | Initiation is failed, do not proceed with the initiation attempt | 
+
+If no checks fail the client **should** proceed to the next step.
+
 **6. Activate new accessToken for this NodeId**
 
 This step is the implicit acknowledgement to the server that the client has saved the accessToken successfully.
@@ -848,6 +881,11 @@ a. If the provided commToken is in the list pending tokens, and the token was ge
 b. If the provided commToken is not in the list of pending tokens, the server must not accept the connection and respond with an error code.
 
 c. If the server is not able to active the new tokens (e.g. because the storage device or the DBMS is not available), the server must not accept the connection and responds with an error code.
+
+| Check | How to proceed if check fails |
+| --- | --- |
+| Verify `commToken` | respond with status code ??? |
+
 
 **7. Successful S2 session?**
 
@@ -868,6 +906,17 @@ This section specifies how to use WebSocket Secure as the S2-over-TCP/IP applica
 The WebSocket client **must** run on the S2ClientNode and the WebSocket server on the S2ServerNode.
 
 The choice for a WebSocket as application layer communication protocol has the advantage that the session concept is intrinsically introduced with the communication protocol. All S2 communication happens in the context of a (stateful) S2 session which is catered for by the WebSocket session. So, the S2 session matches the WebSocket session.
+
+The client **must** perform the following checks during this request:
+
+| Check | How to proceed if check fails |
+| --- | --- |
+| Check certificate | Websocket connection failed, do not proceed with the connection attempt |
+| If self signed certificate, check is server is local | Websocket connection failed, do not proceed with the connection attempt |
+| Check if certificate is pinned | Websocket connection failed, do not proceed with the connection attempt | 
+
+If no checks fail the client **should** proceed to the next step.
+
 
 ### Authentication
 For each S2 WebSocket session the client **must** authenticate itself using the commToken in the authorization header of the websocket connection request, following [RFC 6750 - The OAuth 2.0 Authorization Framework: Bearer Token Usage](https://datatracker.ietf.org/doc/html/rfc6750).
