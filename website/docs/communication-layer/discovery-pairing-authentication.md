@@ -115,7 +115,7 @@ There are two remaining vulnerable situations for the described protocol. In thi
 
 #### Self signed certificates
 
-In the case that a local RM and a local SEM communicate, it is not possible to generate a PKI-certificate that can be publicly validated. As a result, S2 accepts, **ONLY** in this situation, self-signed certificates. The risk for spoofing attacks are mitigated by sharing the fingerprint during the pairing phase and pinning the self signed certificate at the client side. In these situations, part of the certificate fingerprint will also be shared in the pairing token. As a result, the client can check for all connections whether or not it is connected with the correct server.
+In the case that a local RM and a local CEM communicate, it is not in every situation possible to generate a PKI-certificate that can be publicly validated. As a result, S2 accepts, **ONLY** in this situation, self-signed certificates. The risk for spoofing attacks are mitigated by including the certificate fingerprint in the challenge-response process as part of the pairing process, and pinning the self signed CA certificate at the client side. As a result, the client can check for all connections whether or not it is connected with the correct server.
 
 #### Trust relations between the end-user and the Client/Server
 
@@ -251,7 +251,7 @@ It should be noted that pairing and communication are two separate HTTP interfac
 
 Communication interaction is always TLS based (i.e. HTTPS is used). For WAN deployments, normal certificates (signed by a Certificate Authority) are being used. For LAN-LAN deployments self-signed certificates are used. For more information about the use of self-signed certificates, check [Trusting a self signed root certificate](###Trusting-a-self-signed-root-certificate)
 
-After the HTTP interaction a WebSocket is established. The S2 communication server is always the WebSocket server. This server must use the same TLS certificate as the HTTP server.
+After the HTTP interaction a WebSocket is established (other transport protocols will be added in the future). The S2 communication server is always the WebSocket server. This server must use the same TLS certificate as the HTTP server.
 
 ### Unpairing
 
@@ -571,7 +571,7 @@ The client sends the following information (for full details see the OpenAPI spe
 | `s2ClientNodeDescription` | Information about the S2 node that wants to pair, such as brand, logo and type. Important fields include `id` (the S2 node ID) and `role` of the initiator S2 node |
 | `s2ClientEndpointDescription` | Information about the client S2 endpoint. An important field is the deployment. |
 | `pairingS2NodeID` | The pairing S2 node ID of the node that is being targeted (this field can be omitted if the endpoint only represents one S2 node) |  
-| `supportedCommunicationProtocols` | List of supported communications protocols of the client (**must** always contain WebSockets) |
+| `supportedCommunicationProtocols` | List of supported communications protocols of the client |
 | `supportedS2MessageVersions` | List of supported S2 message versions by the client |
 | `supportedHmacHashingAlgorithms` | List of supported hashing algorithms for the challenge response function (currently only `SHA256` is supported and **must** be present) |
 | `clientHmacChallenge` | The challenge of the client for the challenge response process (see [Challenge response process](#challenge-response-process) |
@@ -770,16 +770,14 @@ If the server receives wrong HTTP request (e.g. `/postConnectionDetails` while i
 
 After two nodes have been paired, the nodes exchange S2 messages over a secure connection. 
 
-The following mechanism **must** be used to initiate a secure connection between two S2 nodes. Client authentication is based on a one-time use communication token that needs to be renewed every time a new S2 session is created.
+The following mechanism **must** be used to initiate a secure connection between two S2 nodes. Client authentication is based on a one-time use communication token that needs to be renewed every time a new S2 session is created. The S2 communication client will always attempt to set up an S2 connecting with the S2 communication server when there is no connection. For more details see [Reconnection strategy](#reconnection-strategy). 
 
 ## Mapping the CEM and RM to communication server or client
 
-TODO update, veplaatsen naar normatieve gedeelte
+The CEM and RM roles defined by the S2 protocol are distinct from the Server and Client roles of the S2 pairing process. The following rules apply to determine whether the RM or CEM acts as a client or server for the communication initialization.
 
-The CEM and RM roles defined by the S2 protocol are distinct from the Server and Client roles of the S2 pairing process. The following rules apply to determine whether the RM or CEM acts as a Client or Server in the pairing process.
-
-* If a connection is set up between a cloud/WAN node and a local node, the cloud/WAN node must act as an S2 Server Node, and the local node must act as an S2 Client Node.
-* If a connection is set up between two nodes that are similarly deployed (i.e. both in cloud/WAN, or both local), the CEM must act as an S2 Server Node, and the RM must act as an S2 Client Node.
+* If a connection is set up between a WAN S2 node and a LAN S2 node, the WAN S2 node must act as an S2 communication server, and the local node must act as an S2 communication client.
+* If a connection is set up between two nodes that are similarly deployed (i.e. both in WAN, or both in LAN), the CEM must act as an S2 communication server, and the RM must act as an S2 communication client.
 
 There are four scenarios for CEM and RM deployment, and applying the rules above yields the following:
 
@@ -790,9 +788,11 @@ There are four scenarios for CEM and RM deployment, and applying the rules above
 | LAN | WAN | S2 communication client | S2 communication server |
 | LAN | LAN | S2 communication server | S2 communication client |
 
-Note: A device developed solely for use as an RM in a local setup will never function as an S2 communication server. Similarly, a device designed exclusively for use as a CEM in a WAN deployment will never operate as an S2 communication client.
+> Note: A device developed solely for use as an RM in a LAN setup will never function as an S2 communication server.
 
-## Initiation
+## Connection initiation
+
+During the pairing process an `accessToken` is generated by the S2 node which will be the S2 communication server and sent to the S2 node that will be the S2 communication client. This `accessToken` can be used by the S2 communication client to set up a session with the S2 communication server for exchanging S2 messages. Each time a new connection is made the `accessToken` will be renewed. In other words, an `accessToken` can only be used once to set up a connection. The S2 communication server will generate a new `accessToken` and sends it to the S2 communication client. Since this `accessToken` is the only means to connect two S2 nodes once they are paired, the connection initiation process makes sure that both S2 nodes confirm that they have successfully persisted the new `accessToken` before invalidating the old `accessToken`.
 
 ![connection initiation](/img/communication-layer/connection-initiation.png)
 
@@ -801,22 +801,60 @@ Note: A device developed solely for use as an RM in a local setup will never fun
 
 ```
 @startuml
-Client -> Server : 1. initiateConnection(s2ClientNodeId, accessToken,\n supportedCommunicationProtocols, supportedS2Versions)
-Server -> Server : 2. check protocol version, generate new token pair
-Server -> Client : 3. initiateConnectionResponse(s2ServerNodeId,\npendingAccessToken, commToken, connectionUrl,\nselectedCommunicationProtocol, selectedS2Version)
-Client -> Client : 4. store new accessToken
-Client -> Server : 5. setUpConnection(commToken)
-Server -> Server : 6. activate new accessToken for this NodeId 
-Client <-> Server : 7. Successful S2 session
-Client -> Client : 8. accept new accessToken
+participant "HTTP Client" as Client
+participant "HTTP Server" as Server
+
+Client->Server++: 1. GET / (index containing pairing API versions)
+Server-->Client: 2. Response status 200
+deactivate Server
+Client->Client: 3. Decide pairing version
+
+Client->Server++: 4. POST /[version]/initiateConnection
+Server->Server: 5. Generate new pending accessToken
+Server-->Client--: 6. Response status 200
+Client->Client: 7. Store pending accessToken
+Client->Server++: 8. POST /[version]/confirmAccessToken
+Server->Server: 9. Activate new accessToken for this S2 node ID 
+Server-->Client--: 10. Response status 200
+Client -> Client : 11. Accept new accessToken
 @enduml
 ```
 
 </details>
 
-**1. initiateConnection**
+### 0. Precondition
 
-The client has a list of pairs of accessTokens and commTokens. After the initial initiateConnection call, the list always contains at least one pair (initially there is only an accessToken as result of the pairing process). It uses one of the accessTokens to make an authorized request to retrieve a commToken and new accessToken form the server.
+Before an S2 node can be paired, it needs to things.
+
+1. The HTTP server and the HTTP client can only start with a communication request when they are fully initialized and have all the details of the S2 nodes it represents available. 
+2. The HTTP client must have the base URL of the connection API (e.g. `https://hostname.local/connection/`)
+3. The two S2 nodes must have been paired successfully and must have an accessToken for this pairing
+
+If the HTTP client does not fulfill these preconditions, it **cannot** send the first HTTP request of the connection process.
+
+### 1. GET / (index containing communication API versions)
+Since the HTTP client does not know which major versions of the communication API are implemented by the server, it must first do a GET request to the index (e.g. `https://hostname.local/pairing/`). 
+
+The client **must** perform the following checks during this request:
+
+| Check | How to proceed if check fails |
+| --- | --- |
+| Check certificate | Do not proceed with connection, try again later |
+| If self signed certificate, check if server is local | Do not proceed with connection, try again later |
+
+If no checks fail the client **should** proceed to the next step.
+
+### 2. Response status 200
+The server responds with a list of implement major versions of the pairing API. It is formatted as a JSON array contains all the supported version of the pairing API (e.g. `["v1"]`).
+
+If the HTTP client does not support any of the provided versions, it means that the two S2 endpoints are not compatible, and that connection is not possible.
+
+### 3. Decide communication API version
+From the provided list of major versions of the communication API, the HTTP client must select one that is implement by the HTTP client itself (typically the highest supported version). 
+
+### 4. POST /[version]/initiateConnection
+
+Since there are situations in which the client cannot know for sure which `accessToken` the S2 communication server uses for this pairing, the S2 communication client must keep a persisted list of `accessTokens` (which will typically contain only one `accessToken`).
 
 The client **must** perform the following checks during this request:
 
@@ -828,72 +866,89 @@ The client **must** perform the following checks during this request:
 
 If no checks fail the client **should** proceed to the next step.
 
+The client sends the following information (for full details see the OpenAPI specification file). In addition, the `accessToken` is sent through a header. 
 
-
-
-**2. generate new token pair**
-
-For each paired NodeId the server saves an active accessToken and active commToken. In addition to that, the server also has a list for pending tokens. This list contains entries, each consisting of an accessToken, a commToken, a NodeId and a timestamp.
-The server checks the provided accessToken from the client with the active accessToken it has saved for this node. If the provided accessToken was valid, the server generates a new accessToken and commToken and saves this together with the S2NodeId and the current time as in entry in the list of pending tokens.
-
-The server **must** perform the following checks during this request:
-
-| Check | How to proceed if check fails |
+| Information | Description |
 | --- | --- |
-| Verify `accessToken` | respond with status code ??? |
+| `s2ClientNodeId` | The S2 node ID of the S2 communications client that wants to connect to the server. |
+| `s2ServerNodeId` | The S2 node ID of the S2 communications server that the client wants to connect to. |
+| `s2ClientNodeDescription` | Information about the S2 node, such as brand, logo and type. This only needs to be provided if the S2 communication client wants to update this information, otherwise the S2 communication server will assumer the stored information is still valid. |
+| `s2ClientEndpointDescription` | Information about the client S2 endpoint. This only needs to be provided if the S2 communication client wants to update this information, otherwise the S2 communication server will assumer the stored information is still valid. |
+| `supportedCommunicationProtocols` | List of supported communications protocols of the client |
+| `supportedS2MessageVersions` | List of supported S2 message versions by the client |
 
+The server **must** perform the checks in the table below to make sure that it can proceed with this request. If one of these checks fail, the server should respond with an HTTP status 400 and a `CommunicationDetailsErrorMessage` or with HTTP status 401. The contents of the `additionalInfo` field of the `CommunicationDetailsErrorMessage` is supposed the be helpful and up to the implementer.
 
-If no checks fail the server **should** proceed to the next step.
+| Check | Response | What should the client do with this message? |
+| --- | --- | --- |
+| Is the request properly formatted and does it follow the schema? | `CommunicationDetailsErrorMessage` with errorMessage `Parsing error` | Retry later |
+| Was this S2 node ID paired with this S2 node, but was it unpaired? | `CommunicationDetailsErrorMessage` with errorMessage `No longer paired` | Do not retry, inform end user |
+| Is this `s2ClientNodeId` paired with the `s2ServerNodeId`? | Status code 401 | Do not retry, inform end user |
+| Is the `s2ServerNodeId` known? | Status code 401 | Do not retry, inform end user |
+| Is this the correct `accessToken` for this S2 node ID?  | Status code 401 | Do not retry, inform end user |
+| Is there overlap between the communication protocols? | `CommunicationDetailsErrorMessage` with errorMessage `Incompatible communication protocols` | Retry later |
+| Is there overlap between the S2 message versions? | `CommunicationDetailsErrorMessage` with errorMessage `Incompatible S2 message versions` | Retry later |
+| Are the S2 endpoint and S2 node ready for pairing? | `CommunicationDetailsErrorMessage` with errorMessage `Other` | Retry later |
 
+### 5. Generate new pending `accessToken`
 
-**3. initiateConnection response**
+For each paired S2 node the server saves an active `accessToken`. In addition to that, the server also has a list for pending `accessToken`s, that were generated but not yet confirmed by the client. This list contains entries, each consisting of an `accessToken`, the S2 node IDs of the client and server S2 nodes and a timestamp.
 
-a. If the provided accessToken was valid, the server sends the generated pending accessToken, commToken and connectionUrl to the client.
+The server generates a new `accessToken` and saves this together with the S2 node ID and the current time as in entry in the list of pending tokens. The `accessToken` **must** be generated by a cryptographically secure pseudorandom number generator.
 
-b. If the provided accesToken was not valid, the server responds with an error. The process terminates. If the client has multiple accessTokens stored, it can retry with another one. 
+### 6. Response status 200
 
-**4. store new accessToken**
+In the request the client supplied a list of supported communication protocols and S2 messages versions. The server must select one of the options that were provided by the client.
 
-a. The client has a list of accessTokens. It adds the new accessToken to the list, but does not yet remove the old one.
+The server sends the following information (for full details see the OpenAPI specification file). 
 
-b. If the client was not able to persist the new accessToken (e.g. because the storage device or the DBMS is not available) the client does not proceed with the process. Once the client is able to persist accessTokens again, it can retry to set up a connection from the start.
+| Information | Description |
+| --- | --- |
+| `selectedCommunicationProtocol` | The communication protocol that was selected by the server |
+| `selectedS2MessageVersion` | The S2 message version that was selected by the server |
+| `accessToken` | The newly generated pending `accessToken` |
+| `serverS2NodeDescription` | Information about the S2 node at the server, such as brand, logo and type. This only needs to be provided if the S2 communication server wants to update this information, otherwise the S2 communication client will assumer the stored information is still valid. |
+| `serverS2EndpointDescription` | Information about the server S2 endpoint. This only needs to be provided if the S2 communication server wants to update this information, otherwise the S2 communication client will assumer the stored information is still valid. |
 
-**5. setUpConnection(commToken)**
+The client **must** perform the checks in the table below to make sure that it can proceed with this request.
 
-The client initiates the S2 session, and provides the commToken.
+| Check | What should the client do? |
+| --- | --- |
+| Is the request properly formatted and does it follow the schema? | Do not proceed and try again later with step 1 |
+| Was the selected S2 message version offered in the request? | Do not proceed and try again later with step 1 |
+| Was the selected communication protocol offered in the request? | Do not proceed and try again later with step 1 |
+
+### 7. Store pending accessToken
+It client adds the pending `accessToken` to its list of `accessTokens`, but does not yet remove the old one. If the client is not able to persist the pending `accessToken` (e.g. because the storage device or the DBMS is not available), the client does not proceed with the process. Once the client is able to persist `accessTokens` again, it can retry to set up a connection starting with step 1.
+
+### 8. POST /[version]/confirmAccessToken
+The client confirms to the server that it has successfully persisted the pending `accessToken`. The **pending** `accessToken` is provided through the header of the request.
 
 The client **must** perform the following checks during this request:
 
 | Check | How to proceed if check fails |
 | --- | --- |
-| Check certificate | Initiation is failed, do not proceed with the initiation attempt |
-| If self signed certificate, check is server is local | Initiation is failed, do not proceed with the initiation attempt |
-| Check if certificate is pinned | Initiation is failed, do not proceed with the initiation attempt | 
+| Check certificate | Do not proceed with connection, try again later |
+| If self signed certificate, check if server is local | Do not proceed with connection, try again later |
+| Check if certificate is pinned | Do not proceed with connection, try again later | 
 
-If no checks fail the client **should** proceed to the next step.
+If no checks fail the client **should** proceed.
 
-**6. Activate new accessToken for this NodeId**
+### 9. Activate new `accessToken` for this S2 node ID 
 
-This step is the implicit acknowledgement to the server that the client has saved the accessToken successfully.
+If the provided `accessToken` is in the list pending `accessToken`s, and the token was generated not more than 30 seconds ago, the server now makes the pending `accessToken` the active `accessToken` for this pairing of S2 nodes. Also, the entry is removed from the list of pending `accessToken`s.
 
-a. If the provided commToken is in the list pending tokens, and the token was generated not more than 30 seconds ago, the server replaces the associated accessToken for the associated NodeId as the active token. Also, the entry is removed from the list of pending tokens.
+If the provided `accessToken` is not in the list of pending `accessTokens`s, the server must not accept the connection and respond with status 401. The client can try again later starting at step 1.
 
-b. If the provided commToken is not in the list of pending tokens, the server must not accept the connection and respond with an error code.
+If the server is not able to active the new `accessToken` (e.g. because the storage device or the DBMS is not available), the server must not accept the connection and responds with an error code 500. The client can try again later starting at step 1.
 
-c. If the server is not able to active the new tokens (e.g. because the storage device or the DBMS is not available), the server must not accept the connection and responds with an error code.
-
-| Check | How to proceed if check fails |
-| --- | --- |
-| Verify `commToken` | respond with status code ??? |
-
-
-**7. Successful S2 session?**
+## 7. Successful S2 session?
 
 a. The S2 session is successfully opened. This is an implicit acknowledgement that both server and the client are in possession of the new tokens. For the server it is an acknowledgement that is has activated the new access token successfully and for the client it means that it did correctly receive and persist the new accessToken. 
 
 b. If for any reason the S2 session is not set up successfully, the process terminates. The client can restart the process from the beginning when desired.
 
-**8. Remove old tokens**
+## 8. Remove old tokens
 
 a. Since the server implicitly acknowledged the new accessToken, all pairs of accessToken and commToken which do not contain the used commToken can be removed.
 
