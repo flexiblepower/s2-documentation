@@ -31,15 +31,14 @@ The protocol is designed to specify communication between two devices, a resourc
 # Background (informative)
 
 ## Requirements
-TODO beter uitleggen wat doelen van deze oplossing zijn (bijv. afweging univormiteit vs. complexiteit)
+
+> TODO: This section needs to be rewritten to better explain the design goals
 
 The communication layer meets the following requirements:
 
 The Customer Energy Manager (CEM) and Resource Manager (RM) are logical concepts within the S2 architecture, therefore the S2 standard does not make any assumptions on how and where the CEM and RM are deployed in a real life situation. In practice, the CEM could be deployed on a local gateway in a LAN or as a server somewhere on the internet (WAN), while the RM could be part of the device itself, deployed on an add-on module or on the internet as well. This means that the S2 communication layer **MUST** be able to deal with multiple scenarios that are depicted in the figure below.
 
 In addition to - and partly because of - supporting the various deployment options, the S2 communication layer has the following generic requirements:
-
-TODO cleanup
 
 - Support for full duplex communication. Both sides **MUST** be able to send and receive data simultaneously.
 - Communication **MUST** be IP based.
@@ -293,9 +292,7 @@ The major version is increased when non-backwards compatible changes are made.
 
 The major version of the API is embedded in the base URI of the API as `/v[major]` (e.g. `/v1`). HTTP server and HTTP clients can decide to implement several major version of the API in parallel to increase interoperability. In that case server must server all version on the same base URI (e.g. `https://hostname.local/pairing/v1/...` and `https://hostname.local/pairing/v2/...`). The server **must** always (even when it only supports one major version of the API) serve an index (e.g. `https://hostname.local/pairing/`) which returns a JSON array with all supported versions as they are defined as port of the URI (e.g. `["v1", "v2"]`).
 
-## Versioning of S2 message schemas
-
-TODO
+> TODO: Versioning of S2 JSON Schema's needs to be explained
 
 ## Addressing S2 endpoints (normative)
 The URI of the pairing and connection API are used in the discovery process, pairing process and connection process, as wel as the basis for TLS certificates.
@@ -325,7 +322,7 @@ A CEM can be paired with multiple RM's a the same time. A RM can only be paired 
 
 ## Discovery
 
-TODO
+> TODO: This section still notes to be expanded
 
 In order to ease the pairing process, which is specified below, the discovery process provides a way for nodes to find each other without requiring a user to know the pairing endpoint of the other node. In other words, the discovery process is a way to provide an S2 Node with the URL of another node which is needed to start the pairing process. Alternatively, it is always possible to initiate the pairing by manually providing the URL by the end user.
 
@@ -455,7 +452,7 @@ Where:
 
 > This section is only applicable for LAN-LAN pairing
 
-TODO checken/herschijven
+> TODO: This section needs to be improved
 
 The user visits the S2ClientNodeUI and the S2ServerNode has been discovered (so the S2ServerNode base URL is known) by the the S2ClientNode per [discovery](#discovery) as specified above. The S2ClientNode does a preparePairing HTTP request to let the S2ServerNode know that there is an S2ClientNode that wants to pair. It is up to the S2ServerNode implementation to decide what to do with this signal. It can be used to display a pop-up with the pairing token in its UI to improve the user experience. It must be implemented by the client, but only when there is a clear distinction between the moment preparePairing is called and when requestPairing is called. When preparePairing is called, it is not guaranteed that a call to pairingRequest or cancelPreparePairing will follow so it is recommended to put a time-out on showing the pairing token in the S2ServerNodeUI.
 
@@ -463,7 +460,7 @@ The user visits the S2ClientNodeUI and the S2ServerNode has been discovered (so 
 
 > This section is only applicable for LAN-LAN pairing
 
-TODO long-polling
+> TODO: Long-polling still needs to be explained
 
 ## Pairing interaction
 
@@ -1066,7 +1063,7 @@ Client and server **can** keep other (non-security) information for, for example
 
 # Security (normative)
 
-TODO: nog iets opschrijven over bescherming tegen DOS aanvallen
+> TODO: This section needs to be expanded to explain measures agains ddos
 
 Please refer to an extensive description of the security specifications to [Security considerations](./security-considerations.md).
 
