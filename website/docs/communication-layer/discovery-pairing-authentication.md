@@ -101,7 +101,7 @@ This is used to denote the endpoint of both the REST API client and the WebSocke
 
 A person or entity that manages S2 nodes. For the purpose of this specification it is assumed that there is already a trust relationship in place between this person and the S2 nodes. The means that the way the trust relationship has been established is out of scope for this specification.
 
-# Mapping the CEM and RM to S2 Server and Client Nodes
+## Mapping CEM and RM to S2 Server and Client Nodes
 
 The CEM and RM roles defined by the S2 protocol are distinct from the Server and Client roles of the S2 pairing process. The following rules apply to determine whether the RM or CEM acts as a Client or Server in the pairing process.
 
@@ -144,7 +144,7 @@ A LAN scenario where both RM and CEM are running on the same local network. Disc
 
 ## The pairing process
 
-The pairing process is based on the trust relation that the end user has with both the CEM and the RM. That trust relation is out of scope for this specification and is up to CEM and RM providers to implement. Given the deployment scenario, it [follows](# Mapping the CEM and RM to S2 Server and Client Nodes) which of the RM and the CEM is server and which is the client in the pairing process.
+The pairing process is based on the trust relation that the end user has with both the CEM and the RM. That trust relation is out of scope for this specification and is up to CEM and RM providers to implement. Given the deployment scenario, it [follows](#mapping-cem-and-rm-to-s2-server-and-client-nodes) which of the RM and the CEM is server and which is the client in the pairing process.
 
 The pairing process can either be initiated from the client or from the server.
 
