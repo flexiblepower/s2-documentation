@@ -110,9 +110,9 @@ Non-repudiation is not guaranteed in this protocol. Individual messages are not 
 
 There are two remaining vulnerable situations for the described protocol. In this section both will be explained.
 
-#### Self signed certificates
+#### self-signed certificates
 
-In the case that a local RM and a local CEM communicate, it is not in every situation possible to generate a PKI-certificate that can be publicly validated. As a result, S2 accepts, **ONLY** in this situation, self-signed certificates. The risk for spoofing attacks are mitigated by including the certificate fingerprint in the challenge-response process as part of the pairing process, and pinning the self signed CA certificate at the client side. As a result, the client can check for all connections whether or not it is connected with the correct server.
+In the case that a local RM and a local CEM communicate, it is not in every situation possible to generate a PKI-certificate that can be publicly validated. As a result, S2 accepts, **ONLY** in this situation, self-signed certificates. The risk for spoofing attacks are mitigated by including the certificate fingerprint in the challenge-response process as part of the pairing process, and pinning the self-signed CA certificate at the client side. As a result, the client can check for all connections whether or not it is connected with the correct server.
 
 #### Trust relations between the end-user and the Client/Server
 
@@ -160,9 +160,9 @@ S2 Nodes can be deployed locally within the LAN, or somewhere on a server in the
 
 There are three types of S2 connections between S2 nodes possible:
 
-* **WAN-WAN**: A connection between two S2 nodes deployed in a WAN. Connecting between them is straightforward and can be done based on URLs, based on DNS domain names. It is possible to rely on common TLS certificates thanks to a public key infrastructure.
+* **WAN-WAN**: A connection between two S2 nodes deployed in a WAN. Connecting between them is straightforward and can be done based on URLs, based on DNS domain names. It is possible to rely on TLS certificates that can be validated thanks to a public key infrastructure.
 * **WAN-LAN**: A connection between a LAN deployed S2 node a WAN deployed S2 node. Since there is almost always a firewall and/or NAT between these two, it is assumed that it is only possible to set up a connection from the LAN to the WAN; not the other way around. Connecting from the LAN S2 node to the WAN S2 node can be done based on a URL, and common TLS certificates can be used thanks to public key infrastructure.
-* **LAN-LAN**: A connection between two LAN deployed S2 nodes. It is assumed that in this situation we cannot rely an internet connection, making it impossible to rely on a public key infrastructure for certificates. That is why for this type of connection self-signed TLS certificates are used. Connections are made based on hostnames that are resolved to IP-addresses using Multicast DNS (mDNS), since IP-addresses are not guaranteed to be stable. Discovering another node could be done using DNS Service Discovery (DNS-SD).
+* **LAN-LAN**: A connection between two LAN deployed S2 nodes. It is assumed that in this situation we cannot rely an internet connection, making it impossible to rely on a public key infrastructure for TLS certificates. That is why for this type of connection self-signed TLS certificates are used. Connections are made based on hostnames that are resolved to IP-addresses using Multicast DNS (mDNS), since IP-addresses are not guaranteed to be stable. Discovering another node could be done using DNS Service Discovery (DNS-SD).
 
 ## Pairing and unpairing from the perspective of the end user
 The end user can take the initiative to *pair* a single CEM instance with a single RM instance. This process has to be started with one of the S2 nodes. Which node this is depends on the deployment and implementation decisions of the S2 node, but ideally it could be either one. The S2 node however needs to have a user interface. We'll call the S2 node that user uses to start the pairing process the *initiator*. We'll call the other S2 node the *responder*.
@@ -232,7 +232,7 @@ The pairing process itself is completely based on HTTP REST. One S2 node behaves
 
 We'll refer to the endpoint that behaves as the HTTP server during the pairing process as the *S2 pairing server*, and the client as the *S2 pairing client*.
 
-Pairing interaction is always TLS based (i.e. HTTPS is used). For WAN deployments, normal certificates (signed by a Certificate Authority) are being used. For LAN deployments self-signed certificates are used. For more information about the use of self-signed certificates, check [Trusting a self signed root certificate](###Trusting-a-self-signed-root-certificate)
+Pairing interaction is always TLS based (i.e. HTTPS is used). For WAN deployments, normal certificates (signed by a Certificate Authority) are being used. For LAN deployments self-signed certificates are used. For more information about the use of self-signed certificates, check [Trusting a self-signed root certificate](###Trusting-a-self-signed-root-certificate)
 
 ### Communication
 
@@ -244,7 +244,7 @@ We'll refer to the endpoint that behaves as the HTTP server during the communica
 
 It should be noted that pairing and communication are two separate HTTP interfaces, that don't have to be used in the same way. It could be that an S2 Node is an S2 pairing client, but then becomes an S2 communication server. This depends on the deployment of the s2 Nodes (see [Pairing details for different deployments](#pairing-details-for-different-deployments)).
 
-Communication interaction is always TLS based (i.e. HTTPS is used). For WAN deployments, normal certificates (signed by a Certificate Authority) are being used. For LAN-LAN deployments self-signed certificates are used. For more information about the use of self-signed certificates, check [Trusting a self signed root certificate](###Trusting-a-self-signed-root-certificate)
+Communication interaction is always TLS based (i.e. HTTPS is used). For WAN deployments, normal certificates (signed by a Certificate Authority) are being used. For LAN-LAN deployments self-signed certificates are used. For more information about the use of self-signed certificates, check [Trusting a self-signed root certificate](###Trusting-a-self-signed-root-certificate)
 
 After the HTTP interaction a WebSocket is established (other transport protocols will be added in the future). The S2 communication server is always the WebSocket server. This server must use the same TLS certificate as the HTTP server.
 
@@ -252,7 +252,7 @@ After the HTTP interaction a WebSocket is established (other transport protocols
 
 Either S2 node can take the initiative to unpair from the other S2 node. This is done using the same HTTP OpenAPI specification and the same HTTP server and client as the communication. The details for unpairing differ depending if it is the S2 communication server or if it is the S2 communication client that initiates the unpairing process.
 
-Unpairing interaction is always TLS based (i.e. HTTPS is used). For WAN deployments, normal certificates (signed by a Certificate Authority) are being used. For LAN-LAN deployments self-signed certificates are used. For more information about the use of self-signed certificates, check [Trusting a self signed root certificate](###Trusting-a-self-signed-root-certificate)
+Unpairing interaction is always TLS based (i.e. HTTPS is used). For WAN deployments, normal certificates (signed by a Certificate Authority) are being used. For LAN-LAN deployments self-signed certificates are used. For more information about the use of self-signed certificates, check [Trusting a self-signed root certificate](###Trusting-a-self-signed-root-certificate)
 
 
 ## Pairing details for different deployments
@@ -364,11 +364,11 @@ When a pairing S2 node ID is used:
 The pairing code allows us to transfer two pieces of information by only bothering the end user once. Due to its format the initiator S2 node can easily extract the pairing S2 node ID and the pairing token from the pairing code by splitting the string at the dash. 
 
 
-## Certificates
+## TLS Certificates
 
-There are two possible types of certificates. The first option is a public server certificate, that is part of the public PKI infrastructure, (indirectly) signed by a public root CA. This protocol allows local servers to use a self signed CA certificate to sign its local server certificate. This is needed because a local server is not able to get a certificate from a public PKI infrastructure.
+There are two possible types of certificates for TLS communication. The first option is using a public server certificate, that is created through a Public Key Infrastructure (PKI) and thus signed by a public CA. The other option (only applicable to LAN servers) is to use a self-signed certificate. The latter is needed because a LAN server is not able to obtain a certificate that has been issued by a CA for its local domain.
 
-In the following image, the difference is shown. On the left a public root CA that's publicly known and trusted, on the right, a self signed root certificate, that's unknown and it's trustworthiness has to be achieved in another way.
+In the following image, the difference is shown. On the left a public root CA that is publicly known and trusted, on the right, a self-signed root certificate, that is unknown and its trustworthiness has to be achieved in another way.
 
 ![image.png](/img/communication-layer/certificate-chains.png)
 
@@ -395,17 +395,17 @@ SelfSignedCA --> LocalServerCertificate
 </details>
 
 
-### Trusting a self signed root certificate
+### Trusting a self-signed root certificate
 
-The self signed root certificate is by default not trusted. However during the pairing phase, the server with the self signed root certificate will share the fingerprint of the certificate during the pairing phase as part of the challenge. This will enable the client to verify the self signed root certificate, and create trust. From this moment on, the client will store the complete fingerprint of the self signed root certificate, and use it to verify the server certificate for all future connections.
+The self-signed root certificate is by default not trusted. However during the pairing phase, the server with the self-signed root certificate will share the fingerprint of the certificate during the pairing phase as part of the challenge. This will enable the client to verify the self-signed root certificate, and create trust. From this moment on, the client will store the complete fingerprint of the self-signed root certificate, and use it to verify the server certificate for all future connections.
 
-Note that the `preparePairing` and `cancelPreparePairing` endpoints can be called before the pairing has happened. So in the case the server is running on a LAN (and thus uses self-signed certificates), the client can skip the certificate validation steps on those endpoint. This means that the HTTP client **must** be configured to accept self-signed certificates during the pairing process. Since the pairing process consists out of several HTTP requests, the HTTP client **must** check that for every request the same self-signed certificate is used by the HTTP server. If this is not the case, the HTTP client **cannot** proceed with the request.
+Note that the `preparePairing` and `cancelPreparePairing` endpoints can be called before the pairing has happened. So in the case the server is running on a LAN (and thus uses self-signed certificates), the client can skip the certificate validation steps on those endpoint. This means that the HTTP client **must** be configured to accept self-signed certificates during the pairing process. Since the pairing process consists of several HTTP requests, the HTTP client **must** check that for every request the same self-signed certificate is used by the HTTP server. If this is not the case, the HTTP client **cannot** proceed with the request.
 
 
 
 ### Updating the certificates
 
-A server can update its certificate. When a cloud server updates it's certificate, it **MUST** be signed by a CA, so a client can check it's validity. A server **SHOULD** update its server certificate at least once every 6 months.
+A server can update its certificate. When a cloud server updates its certificate, it **MUST** be signed by a CA, so a client can check its validity. A server **SHOULD** update its server certificate at least once every 6 months.
 
 If the server is in local-local mode, and uses a self-signed CA certificate, the CA certificate **SHOULD** be created with a validity period which is long enough for the expected lifetime of the server. If the used crypto for the the CA certificate is broken, or the lifetime of the server is longer than the validity of the certificate, the server **MUST** create a new self-signed CA certificate and all clients need to be paired again. Like cloud servers, a local server **SHOULD** update its server certificate at least once every 6 months.
 
@@ -540,9 +540,9 @@ The client **must** perform the following checks during this request:
 
 | Check | How to proceed if check fails |
 | --- | --- |
-| Check certificate | Pairing is failed, do not proceed with the pairing attempt |
-| If self signed certificate, check if server is local | Pairing is failed, do not proceed with the pairing attempt |
-| Store fingerprint of certificate for later check | | 
+| Check TLS certificate | Pairing is failed, do not proceed with the pairing attempt |
+| If self-signed TLS certificate, check if server is local | Pairing is failed, do not proceed with the pairing attempt |
+| Store fingerprint of TLS certificate for later check | | 
 
 If no checks fail the client **should** proceed to the next step.
 
@@ -574,8 +574,8 @@ The client **must** perform the following checks during this request:
 
 | Check | How to proceed if check fails |
 | --- | --- |
-| Check certificate | Pairing is failed, do not proceed with the pairing attempt |
-| If self signed certificate, check if server is local | Pairing is failed, do not proceed with the pairing attempt |
+| Check TLS certificate | Pairing is failed, do not proceed with the pairing attempt |
+| If self-signed TLS certificate, check if server is local | Pairing is failed, do not proceed with the pairing attempt |
 | Check if same fingerprint is used as previous request | Pairing is failed, do not proceed with the pairing attempt | 
 
 If no checks fail the client **should** proceed to the next step.
@@ -636,7 +636,7 @@ The HTTP client checks the `clientHmacChallengeResponse` provided by the HTTP se
 
 If the result is identical, the client **should** proceed to the next step. If the result is not identical, the client **must** stop the pairing attempt. It **must** attempt to inform the HTTP server of this by doing an HTTP request to `finalizePairing` where the value of `success` must be `false`.
 
-Note that in case of a local server, the certificate fingerprint is part of the challenge. So if the challenge succeeds, the certificate fingerprint is correct, and the certificate can be trusted. The client **must** pin this certificate, and trust this certificate for future use.
+Note that in case of a local server, the TLS certificate fingerprint is part of the challenge. So if the challenge succeeds, the certificate fingerprint is correct, and the certificate can be trusted. The client **must** pin this certificate, and trust this certificate for future use.
 
 
 ### 8. Calculate serverHmacChallengeResponse
@@ -659,9 +659,9 @@ The client **must** perform the following checks during this request:
 
 | Check | How to proceed if check fails |
 | --- | --- |
-| Check certificate | Pairing is failed, do not proceed with the pairing attempt |
-| If self signed certificate, check if server is local | Pairing is failed, do not proceed with the pairing attempt |
-| Check if certificate is pinned | Pairing is failed, do not proceed with the pairing attempt | 
+| Check TLS certificate | Pairing is failed, do not proceed with the pairing attempt |
+| If self-signed TLS certificate, check if server is local | Pairing is failed, do not proceed with the pairing attempt |
+| Check if TLS certificate is pinned | Pairing is failed, do not proceed with the pairing attempt | 
 
 If no checks fail the client **should** proceed to the next step.
 
@@ -699,9 +699,9 @@ The client **must** perform the following checks during this request:
 
 | Check | How to proceed if check fails |
 | --- | --- |
-| Check certificate | Pairing is failed, do not proceed with the pairing attempt |
-| If self signed certificate, check if server is local | Pairing is failed, do not proceed with the pairing attempt |
-| Check if certificate is pinned | Pairing is failed, do not proceed with the pairing attempt | 
+| Check TLS certificate | Pairing is failed, do not proceed with the pairing attempt |
+| If self-signed TLS certificate, check if server is local | Pairing is failed, do not proceed with the pairing attempt |
+| Check if TLS certificate is pinned | Pairing is failed, do not proceed with the pairing attempt | 
 
 If no checks fail the client **should** proceed to the next step.
 
@@ -731,9 +731,9 @@ The client **must** perform the following checks during this request:
 
 | Check | How to proceed if check fails |
 | --- | --- |
-| Check certificate | Pairing is failed, do not proceed with the pairing attempt |
-| If self signed certificate, check if server is local | Pairing is failed, do not proceed with the pairing attempt |
-| Check if certificate is pinned | Pairing is failed, do not proceed with the pairing attempt | 
+| Check TLS certificate | Pairing is failed, do not proceed with the pairing attempt |
+| If self-signed TLS certificate, check if server is local | Pairing is failed, do not proceed with the pairing attempt |
+| Check if TLS certificate is pinned | Pairing is failed, do not proceed with the pairing attempt | 
 
 If no checks fail the client **should** proceed to the next step.
 
@@ -751,7 +751,7 @@ Receiving a `/finalizePairing` request marks the completion of the pairing attem
 ### 13. Response status 204
 To confirm the successful completion of the paring attempt, the HTTP server responds to the client with HTTP status code 204. This response marks the completion of the pairing attempt for teh HTTP client. If the HTTP client issued an access token during this pairing attempt, it can now be used by an S2 communication client to set up an S2 connection. The `pairingAttemptId` can no longer be used by the HTTP client.
 
-If the HTTP server was using a self-signed certificate, the HTTP client can now store the self-signed root CA certificate. The client **must** check that this is the CA certificate that is used for all future interaction with this S2 endpoint. The HTTP server is allowed to use a new self-signed server certificate, as long as it is signed by the self-signed CA certificate that was used during the pairing process.
+If the HTTP server was using a self-signed TLS certificate, the HTTP client can now store the self-signed root certificate. The client **must** check that this is the CA certificate that is used for all future interaction with this S2 endpoint. The HTTP server is allowed to use a new self-signed server certificate, as long as it is signed by the self-signed CA certificate that was used during the pairing process.
 
 ### Interruption of the process
 A pairing attempt has a maximum duration of 15 seconds. That means that once a `pairingAttemptId` has been issued, this `pairingAttemptId` cannot be used after 15 seconds since it was issued. From the perspective of the HTTP server, any pairing attempt that is not completed in 15 seconds (with success or not) is considered a failed attempt. From the perspective of the HTTP client, if the server does not respond within 15 seconds since it received the `pairingAttemptId`, it must consider the pairing attempt as failed. If the HTTP client wants to make another attempt, it should start again at step 1 or step 4.
@@ -832,8 +832,8 @@ The client **must** perform the following checks during this request:
 
 | Check | How to proceed if check fails |
 | --- | --- |
-| Check certificate | Do not proceed with connection, try again later |
-| If self signed certificate, check if server is local | Do not proceed with connection, try again later |
+| Check TLS certificate | Do not proceed with connection, try again later |
+| If self-signed TLS certificate, check if server is local | Do not proceed with connection, try again later |
 
 If no checks fail the client **should** proceed to the next step.
 
@@ -853,9 +853,9 @@ The client **must** perform the following checks during this request:
 
 | Check | How to proceed if check fails |
 | --- | --- |
-| Check certificate | Initiation is failed, do not proceed with the initiation attempt |
-| If self signed certificate, check if server is local | Initiation is failed, do not proceed with the initiation attempt |
-| Check if certificate is pinned | Initiation is failed, do not proceed with the initiation attempt | 
+| Check TLS certificate | Initiation is failed, do not proceed with the initiation attempt |
+| If self-signed TLS certificate, check if server is local | Initiation is failed, do not proceed with the initiation attempt |
+| Check if TLS certificate is pinned | Initiation is failed, do not proceed with the initiation attempt | 
 
 If no checks fail the client **should** proceed to the next step.
 
@@ -921,9 +921,9 @@ The client **must** perform the following checks during this request:
 
 | Check | How to proceed if check fails |
 | --- | --- |
-| Check certificate | Do not proceed with connection, try again later |
-| If self signed certificate, check if server is local | Do not proceed with connection, try again later |
-| Check if certificate is pinned | Do not proceed with connection, try again later | 
+| Check TLS certificate | Do not proceed with connection, try again later |
+| If self-signed TLS certificate, check if server is local | Do not proceed with connection, try again later |
+| Check if TLS certificate is pinned | Do not proceed with connection, try again later | 
 
 If no checks fail the client **should** proceed.
 
@@ -962,9 +962,9 @@ The client **must** perform the following checks during this request:
 
 | Check | How to proceed if check fails |
 | --- | --- |
-| Check certificate | Websocket connection failed, do not proceed with the connection attempt |
-| If self signed certificate, check if server is local | Websocket connection failed, do not proceed with the connection attempt |
-| Check if certificate is pinned | Websocket connection failed, do not proceed with the connection attempt | 
+| Check TLS certificate | Websocket connection failed, do not proceed with the connection attempt |
+| If self-signed TLS certificate, check if server is local | Websocket connection failed, do not proceed with the connection attempt |
+| Check if TLS certificate is pinned | Websocket connection failed, do not proceed with the connection attempt | 
 
 If no checks fail the client **should** proceed to the next step.
 
@@ -1069,12 +1069,12 @@ Please refer to an extensive description of the security specifications to [Secu
 
 ## Certificates
 
-For each S2 connection the server authenticates using a certificate. The cloud implementation certificates **MUST** be PKI certificates which are not self-signed. Only local servers can use a self-signed CA certificate, which is used to sign a server certificate.
-If the S2 protocol is used in a local-local configuration, the server **CAN** use a self-signed CA certificate. In this case, the pairingInfo **MUST** include the first 9 bytes, encodes as 12 base64 encoded characters, of the fingerprint of this self-signed CA certificate and the client **MUST** check this fingerprint.
+For each S2 connection the server authenticates using a TLS certificate. The cloud implementation certificates **MUST** be PKI certificates which are not self-signed. Only local servers can use a self-signed root certificate, which is used to sign a server certificate.
+If the S2 protocol is used in a local-local configuration, the server **CAN** use a self-signed root certificate. In this case, the pairingInfo **MUST** include the first 9 bytes, encodes as 12 base64 encoded characters, of the fingerprint of this self-signed CA certificate and the client **MUST** check this fingerprint.
 
-Note that all communication use TLS. This is further explained in [Security considerations](./security-considerations.md).
+Note that all communication uses TLS. This is further explained in [Security considerations](./security-considerations.md).
 
-The server certificates **MUST** be exchanged and validated during the initiation of the connection (REST and WSS). This is default usage of most networking libraries.
+The server certificates **MUST** be exchanged and validated during the initiation of the connection (HTTPS and WSS). This is default usage of most networking libraries.
 
 ## Cipher suites
 
