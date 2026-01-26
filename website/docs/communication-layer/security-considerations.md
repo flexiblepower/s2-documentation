@@ -22,7 +22,7 @@ In the image below, the relevant security communication is visualized. Note that
 
 The following sequence diagram focuses on validation of certificates and tokens. Please refer to the other sequence diagrams that contain more details about the pairing and connection initiation.
 
-![image](/img/communication-layer/pairing-security.png)
+![image](../../static/img/communication-layer/pairing-security.png)
 
 <details>
 <summary>Image generated using the following PlantUML code:</summary>
@@ -135,7 +135,7 @@ There are two possible types of certificates. The first option is a public serve
 
 In the following image, the difference is shown. On the left a public root CA that's publicly known and trusted, on the right, a self signed root certificate, that's unknown and it's trustworthiness has to be achieved in another way.
 
-![image.png](/img/communication-layer/certificate-chains.png)
+(../../static/imgge.png](/img/communication-layer/certificate-chains.png)
 
 <details>
 <summary>Image generated using the following PlantUML code:</summary>

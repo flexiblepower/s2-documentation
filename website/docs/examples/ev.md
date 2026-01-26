@@ -3,7 +3,7 @@ title: "Example: Electric Vehicle"
 hide_title: true
 ---
 
-![image not found](/img/example-ev-header.png)
+![image not found](../../static/img/example-ev-header.png)
 
 This page serves as a guide for implementing a S2 RM for an electric vehicle (charge point), or to give a CEM developer a better understanding of what to expect when controlling the energy flexibility of electric vehicles. It provides some example S2 messages for a (fictional) EV as well.
 
