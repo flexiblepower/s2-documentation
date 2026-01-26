@@ -156,7 +156,7 @@ S2 Nodes can be deployed locally within the LAN, or somewhere on a server in the
 * **WAN** S2 nodes are typically part of a large application that run on many servers and/or on some kind of cloud computing platform. A single application usually serves many users. Each user could have one or multiple S2 nodes. This could for example be a cloud-based energy management system that can connect to many devices. It could also be a cloud environment of a device manufacturer that hosts the RM instances in the cloud. An end user could own multiple devices from this manufacturer, thus the application could host multiple RM instances for this particular user. We call a group of S2 nodes that a single user can manage within one application an *end user environment*. It is also possible that an end user environment contains both CEM and RM instances. The user interface is typically a web interface or a smartphone app.
 * **LAN** S2 nodes are typically part of an application that runs on an embedded computer device somewhere in the building. Such a device could be a physical energy management system, an energy flexible device such as a home battery, heat pump or EV charger, or a gateway device which connects to an energy flexible device through some kind of protocol. Often an application will only host a single S2 node, but it is also possible that an application hosts multiple S2 nodes. A device could function completely on its own, but it cloud also be connected to an internet based application of the manufacturer. The user interface could be a physical human-machine interface on the device, but also be a smartphone app that connects directly to the device (e.g. via bluetooth), or a smartphone app or web interface that connects to an internet based application of the manufacturer. For energy flexible devices, it is assumed that they could also have no user interface at all, or that they are very constrained when it comes to computing power. It is assumed that a CEM always has a user interface.
 
-![Deployment_options](/img/communication-layer/deployment_options.png)
+![Deployment_options](../../static/img/communication-layer/deployment_options.png)
 
 There are three types of S2 connections between S2 nodes possible:
 
@@ -182,7 +182,7 @@ If pairing is performed successfully, the CEM and RM instances should establish 
 
 Once a CEM is paired, the user has to possibility to command either of the S2 nodes to *unpair*. After unpairing the CEM and RM instances can no longer communicate through S2 (unless the end user pairs them again).
 
-![Pairing_process_user](/img/communication-layer/pairing_process_user.png)
+![Pairing_process_user](../../static/img/communication-layer/pairing_process_user.png)
 
 <details>
 <summary>Image generated using the following PlantUML code:</summary>
@@ -270,7 +270,7 @@ There are however two situations where this is not possible:
   * Many modern devices or EMS systems are connected to a cloud backend managed by the OEM. If this is the case, it is possible to implement the pairing HTTP server in the cloud, even though the S2 node itself is in the WAN. If the pairing is performed successfully in the OEM backend, the result of the pairing must be communicated to the S2 node via the existing connection between device/EMS and the OEM backend.
 * **LAN initiator RM and LAN responder RM**: Since one of the requirements is that a LAN RM instance can be implemented on restricted hardware, and a TLS enabled HTTP server is far more memory intensive than an HTTP client, there is an option to implement a LAN RM instance purely as an HTTP client. A long-polling mechanism is available to indicate to the HTTP Server that the S2 node is available for pairing. This mechanism is also used to initiate the pairing process from the HTTP server. In other words: in this specific situation the initiator S2 node behaves as the HTTP server, and the responder S2 node only has to be an HTTP client.
 
-![Pairing_direction](/img/communication-layer/pairing_direction.png)
+![Pairing_direction](../../static/img/communication-layer/pairing_direction.png)
 
 
 # Formal specification and versioning (normative)
@@ -370,7 +370,7 @@ There are two possible types of certificates. The first option is a public serve
 
 In the following image, the difference is shown. On the left a public root CA that's publicly known and trusted, on the right, a self signed root certificate, that's unknown and it's trustworthiness has to be achieved in another way.
 
-![image.png](/img/communication-layer/certificate-chains.png)
+![image.png](../../static/img/communication-layer/certificate-chains.png)
 
 <details>
 <summary>Image generated using the following PlantUML code:</summary>
@@ -466,7 +466,7 @@ The user visits the S2ClientNodeUI and the S2ServerNode has been discovered (so 
 
 The pairing process itself consists of several HTTP interactions between client and server. The image below depicts a successful pairing process between two S2 nodes. 
 
-![image](/img/communication-layer/pairing_http_process.png)
+![image](../../static/img/communication-layer/pairing_http_process.png)
 
 <details>
 <summary>Image generated using the following PlantUML code:</summary>
@@ -787,7 +787,7 @@ There are four scenarios for CEM and RM deployment, and applying the rules above
 
 During the pairing process an `accessToken` is generated by the S2 node which will be the S2 communication server and sent to the S2 node that will be the S2 communication client. This `accessToken` can be used by the S2 communication client to set up a session with the S2 communication server for exchanging S2 messages. Each time a new connection is made the `accessToken` will be renewed. In other words, an `accessToken` can only be used once to set up a connection. The S2 communication server will generate a new `accessToken` and sends it to the S2 communication client. Since this `accessToken` is the only means to connect two S2 nodes once they are paired, the connection initiation process makes sure that both S2 nodes confirm that they have successfully persisted the new `accessToken` before invalidating the old `accessToken`.
 
-![connection initiation](/img/communication-layer/connection-initiation.png)
+![connection initiation](../../static/img/communication-layer/connection-initiation.png)
 
 <details>
 <summary>Image generated using the following PlantUML code:</summary>
@@ -1012,7 +1012,7 @@ The S2 standard has been encoded into a JSON schema and asyncapi specification, 
 
 ### State of communication 
 
-![State of Communication](/img/communication-layer/state-of-communication.png)
+![State of Communication](../../static/img/communication-layer/state-of-communication.png)
 
 <details>
 <summary>Image generated using the following PlantUML code:</summary>

@@ -3,7 +3,7 @@ title: "Example: PV Installation"
 hide_title: true
 ---
 
-![image not found](/img/example-pv-header.png)
+![image not found](../../static/img/example-pv-header.png)
 
 This page serves as a guide for implementing an S2 RM for a PV installation. It provides example S2 messages that help developers to understand how to interact with PV installations and what kind of flexibility they can offer.
 
