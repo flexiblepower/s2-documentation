@@ -290,16 +290,16 @@ The minor version is increased when backwards compatible changes are made. Be aw
 
 The major version is increased when non-backwards compatible changes are made.
 
-The major version of the API is embedded in the base URI of the API as `/v[major]` (e.g. `/v1`). HTTP server and HTTP clients can decide to implement several major version of the API in parallel to increase interoperability. In that case server must server all version on the same base URI (e.g. `https://hostname.local/pairing/v1/...` and `https://hostname.local/pairing/v2/...`). The server **must** always (even when it only supports one major version of the API) serve an index (e.g. `https://hostname.local/pairing/`) which returns a JSON array with all supported versions as they are defined as port of the URI (e.g. `["v1", "v2"]`).
+The major version of the API is embedded in the base URL of the API as `/v[major]` (e.g. `/v1`). HTTP server and HTTP clients can decide to implement several major version of the API in parallel to increase interoperability. In that case server must server all version on the same base URL (e.g. `https://hostname.local/pairing/v1/...` and `https://hostname.local/pairing/v2/...`). The server **must** always (even when it only supports one major version of the API) serve an index (e.g. `https://hostname.local/pairing/`) which returns a JSON array with all supported versions as they are defined as port of the URL (e.g. `["v1", "v2"]`).
 
 > TODO: Versioning of S2 JSON Schema's needs to be explained
 
 ## Addressing S2 endpoints (normative)
-The URI of the pairing and connection API are used in the discovery process, pairing process and connection process, as wel as the basis for TLS certificates.
+The URL of the pairing and connection API are used in the discovery process, pairing process and connection process, as wel as the basis for TLS certificates.
 
-For WAN deployed S2 endpoints, the URI **must** be based on a DNS domain name.
+For WAN deployed S2 endpoints, the URL **must** be based on a DNS domain name.
 
-For LAN deployed S2 endpoint, the URI **must** be based on an mDNS alias or hostname (e.g. `hostname.local`). It is important that these names are *unique* and *stable*. Unique since there could be multiple instance within the same LAN, and stable because if it changes, the S2 endpoint cannot be found by other S2 endpoints. It should also be noted that the alias used by DNS-SD, and is presented to the end user. It recommended to choose a name that the end user should recognize and an element for the end user to make a distinction between two devices of the same type, such as a serial number.
+For LAN deployed S2 endpoint, the URL **must** be based on an mDNS alias or hostname (e.g. `hostname.local`). It is important that these names are *unique* and *stable*. Unique since there could be multiple instance within the same LAN, and stable because if it changes, the S2 endpoint cannot be found by other S2 endpoints. It should also be noted that the alias used by DNS-SD, and is presented to the end user. It recommended to choose a name that the end user should recognize and an element for the end user to make a distinction between two devices of the same type, such as a serial number.
 
 # Pairing process (normative)
 
@@ -678,7 +678,7 @@ The server responds with two pieces of information:
 
 | Information | Description |
 | --- | --- |
-| `initiateConnectionUrl` | The base URI for the S2 connection process (does not include the version number) |
+| `initiateConnectionUrl` | The base URL for the S2 connection process (does not include the version number) |
 | `accessToken` | The access token that was generated for this S2 node | 
 
 If the response is understood and properly formatted, the HTTP client **should** proceed to the next step. Otherwise the HTTP client **must** stop the pairing attempt. It **must** attempt to inform the HTTP server of this by doing an HTTP request to `finalizePairing` where the value of `success` must be `false`.
