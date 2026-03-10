@@ -12,7 +12,7 @@ Given our requirements on the pairing and authentication process, the following 
 
 The pairing and authentication process based on OAuth 2.0 would be specified as follows:
 
-![image](/img/communication-layer/oauth2-s2.png)
+![image](../../static/img/communication-layer/oauth2-s2.png)
 <details>
 <summary>Image generated using the following PlantUML code:</summary>
 
