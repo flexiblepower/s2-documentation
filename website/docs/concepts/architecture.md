@@ -85,8 +85,6 @@ Energy flexibility is often not the only reason to make a device smart or connec
 
 For example, if you have a home automation system that turns on the heating when you are in proximity of your home, the RM should be made aware of the change in the thermostat temperature and should inform the CEM on how this changed its energy flexibility options.
 
-When using s2-ws-json, other functions can easily be piggy bagged on the HTTP connection that is used for s2-ws-json, requiring only one connection between a device and an (energy) management system. On top of that you are of course free to set up any communication parallel to the s2-ws-json session as you like.
-
 ## Deployment
 The RM and the CEM are merely software modules. In order to support as many situations as possible, the S2 architecture doesn't define how they should be implemented and where they run physically.
 
