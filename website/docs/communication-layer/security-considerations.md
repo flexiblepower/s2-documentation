@@ -160,7 +160,7 @@ SelfSignedCA --> LocalServerCertificate
 </details>
 
 
-### Trusting aself signed root certificate
+### Trusting a self-signed root certificate
 
 The self signed root certificate is by default not trusted. However during the pairing phase, the server with the self signed root certificate will share part of the root's certificate fingerprint as part of the pairing token, via a second channel. This will enable the client to verify the self signed root certificate, and create trust. From this moment on, the client will store the complete fingerprint of the self signed root certificate, and use it to verify the server certificate for all future connections.
 
@@ -171,6 +171,9 @@ Note that the `preparePairing` and `cancelPreparePairing` endpoints can be calle
 A server can update its certificate. When a cloud server updates it's certificate, it **MUST** be signed by a CA, so a client can check it's validity. A server **SHOULD** update its server certificate at least once every 6 months.
 
 If the server is in local-local mode, and uses a self-signed CA certificate, the CA certificate **SHOULD** be created with a validity period which is long enough for the expected lifetime of the server. If the used crypto for the the CA certificate is broken, or the lifetime of the server is longer than the validity of the certificate, the server **MUST** create a new self-signed CA certificate and all clients need to be paired again. Like cloud servers, a local server **SHOULD** update its server certificate at least once every 6 months.
+
+## Brute-force protection
+To prevent brute-force pairing request, the server MUST implement rate limiting on the requestPairing endpoint. It is up to the server implementation to define the type of rate limiting.
 
 ## How are the requirements met?
 
