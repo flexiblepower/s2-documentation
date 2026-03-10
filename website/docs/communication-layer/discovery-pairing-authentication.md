@@ -406,7 +406,7 @@ The **pairing token** can be validated with the following regular expression:
 ^(?:[A-Za-z0-9+\/]{4}){2,}(?:[A-Za-z0-9+\/]{4}|[A-Za-z0-9+\/]{3}=|[A-Za-z0-9+\/]{2}={2})$
 ```
 
-The pairing token is typically dynamically generated when the user requests the pairing token at the user interface of the responder S2 node. Dynamically generated pairing tokens **must** expire after a duration; five minutes is the recommended duration. However, energy flexible devices that do not have a user interface are allowed to have a static pairing token, that for example can be printed somewhere on the physical device. Static pairing tokens do not expire. Static pairing tokens **should** be longer than 12 (base64) characters. 
+The pairing token is typically dynamically generated when the user requests the pairing token at the user interface of the responder S2 node. Dynamically generated pairing tokens **must** expire after a duration; five minutes is the recommended duration. However, energy flexible devices that do not have a user interface are allowed to have a static pairing token, that for example can be printed somewhere on the physical device. Static pairing tokens do not expire.
 
 An S2 endpoint can host multiple S2 nodes. When attempting to pair a certain S2 node, the S2 endpoint needs to know exactly which of its S2 nodes this pairing attempt is aimed at. S2 nodes are uniquely identified with their S2 node ID. Since this S2 node ID is a UUID, it is pretty long and cumbersome to type in. That is why an S2 endpoint can assign its nodes a `pairing S2 node ID`. This is an identifier that is intended to be short, and only unique within the context of this particular S2 endpoint. Pairing S2 node IDs could be assigned by the S2 endpoint whenever new S2 nodes are created, but also could be generated dynamically only when someone is attempting to pair to this S2 node. This way, pairing S2 node IDs have a short live, and can be reused by other S2 nodes at other moments. This allows to use shorter pairing S2 node ID's. Pairing S2 node IDs are a string of characters, which may include lower case letters, upper case letters and numbers. Pairing S2 node IDs are ideally as short as possible (at least one character), but should of course be long enough to allow the S2 endpoint to uniquely identify an S2 node. When an S2 endpoint only contains one S2 node, there is no need for a pairing S2 node ID.
 
@@ -530,7 +530,55 @@ The user visits the S2ClientNodeUI and the S2ServerNode has been discovered (so 
 
 > This section is only applicable for LAN-LAN pairing
 
-> TODO: Long-polling still needs to be explained
+The long-polling feature is intended to support S2 endpoints that only want to implement an HTTP client, and not an HTTP server. Typically this is because the S2 endpoint runs on constrained hardware. An S2 endpoint is only allowed to only implement the client if it exclusively hosts S2 nodes that have the RM role.
+
+Imagine we have S2 endpoints, one only hosting a CEM S2 node, and one only hosting a RM S2 node. The RM runs on constrained hardware, and only implements the HTTP client. We have two situations:
+
+1. **The RM is the initiator S2 node and the CEM is the responder S2 node**: The CEM issues a pairing code, the end users enters the pairing code in the UI of the RM. The RM endpoint (HTTP client) then sends a normal HTTP request to the CEM endpoint (HTTP server) to initiate pairing. The normal pairing process can be used, and long-polling is not required.
+2. **The CEM is the initiator S2 node and the RM is the responder S2 node**: The RM issues a pairing code (a dynamic pairing code through its UI, or a static pairing code for example through a sticker on the hardware), the end user enters the pairing code in the UI of the CEM. Now the CEM endpoint (HTTP server) cannot use the normal pairing process, since it has no way to contact the RM endpoint (HTTP client).
+
+For the second situation the long-polling feature can be used. It can be used by the initiator S2 node (the HTTP server) to notify the responder S2 node (the HTTP client) it wants to pair.
+
+> Informative: Long-polling is a technique that allows the server to send signals to the client without a significant delay, and without relying on additional technologies such as Websockets or Server-Sent Events. The common alternative is polling, where the client sends a request on a regular interval; let's say every 30 seconds. Polling creates a delay from the perspective of the server. If the server wants to send something to the client, it has to wait until the client contacts the server; which in the worst case 30 seconds. With long-polling the server doesn't immediately respond the the request (a hanging HTTP request). It responds immediately when the server wants the client to do something, or just before the request would time out. After receiving the response from the server the client immediately opens a new request to allow the server to send signals the client again.
+
+The long-polling feature fulfills the following functionality:
+* Make the existence of the client known to server, together with the S2 nodes IDs of the S2 nodes that are represented by the client endpoint
+* Send the `S2NodeDescription` and `S2EndpointDescription` of S2 nodes represented by the client when requested by the server
+* Send a prepare pairing signal or cancel prepare pairing from the server to the client for a particular S2 node ID
+* Send the signal from the server to the client to initiate pairing for a particular S2 node ID
+* Send an error message from the client to the server when pairing cannot be performed
+
+A client capable of long-polling **should** initiates long-polling when it encounters a S2 endpoint through DNS-SD that indicates that is available for long-polling requests. When the S2 endpoint represents zero S2 nodes the client **cannot** attempt long-polling. When the S2 endpoint advertisement itself, or only its long-polling indication disappears from DNS-SD the client **should** stop the long-polling process for that server. The client **must** also stop when it is no longer capable of pairing.
+
+The server **must** always respond within 25 seconds after receiving the request. The client **must** use a request time-out of at least 30 seconds.
+
+> TODO: Move the OpenAPI version selection process to its own section so we don't have to explain it every time
+
+The client starts the process by doing a POST request to the `/waitForPairing` path. For full normative details see the OpenAPI specification files. The request body contains a list of objects. The client **must** always provide an object for each S2 node ID it represents. The items in the list have a mandatory property `clientS2NodeId` and optional parameters `clientS2NodeDescription`, `clientS2EndpointDescription`. The client should only provide values for these properties when requested by the server. The object also contains the optional property `errorMessage`, which only should be used when an error has occurred before pairing.
+
+When the server wants the client to immediately do a new request, it responds with status code 204. When it wants the client to do something, it responds with status 200 and a response body containing a list. This list contains an object only for S2 node IDs represented by the client, that the server wants to do something with. This object contains the mandatory properties `clientS2NodeId` and `action`. The `action` property is an enumeration indicating an action the server wants to execute for a specific S2 node. The possible action values are `sendS2NodeDescription`, `preparePairing`, `cancelPreparePairing` and `requestPairing`.
+
+The table below indicates how the client should respond to the requests of the server. Note that the server could send multiple actions (for different S2 node IDs) in the same response. The server **cannot** provide multiple objects for the same S2 node ID in one response.
+
+| Status code | Value `action` | Pairing code entered? | What should the client do | What should the client include in the next request body |
+| --- | --- | --- | --- | --- |
+| 204 | n/a | n/a | Only send a next request | Only the `clientS2NodeId` |
+| 200 | `sendS2NodeDescription` | n/a | Only send the next request | The `clientS2NodeId`, `clientS2NodeDescription` and `clientS2EndpointDescription` |
+| 200 | `preparePairing` | n/a | Prepare pairing for the mentioned S2NodeId and send the next request | Only the `clientS2NodeId` | n/a |
+| 200 | `cancelPreparePairing` | n/a | Cancel prepare pairing for the mentioned S2NodeId and send the next request | Only the `clientS2NodeId` |
+| 200 | `requestPairing` | Yes | Initiate the pairing for the mentioned S2NodeId and send the next request | Only the `clientS2NodeId` |
+| 200 | `requestPairing` | No | Initiate the pairing for the mentioned S2NodeId and send the next request | Only the `clientS2NodeId`, and for the associated object provide an `errorMessage` with value `NoValidTokenOnPairingClient` |
+| 400 | n/a | n/a | Stop long-polling until next time long-polling is advertised through DNS-SD | n/a |
+| 401 | n/a | n/a | Stop long-polling, do not attempt long-polling with this node again | n/a |
+| 500 | n/a | n/a | Wait before trying to send the next request | Only the `clientS2NodeId`|
+
+2. **The CEM is the initiator S2 node and the RM is the responder S2 node**: The RM issues a pairing code (a dynamic pairing code through its UI, or a static pairing code for example through a sticker on the hardware), the end user inters the pairing code in the UI of the CEM. Now the CEM endpoint (HTTP server) cannot use the normal pairing process, since it has no way to contact the RM endpoint (HTTP client).
+
+When the server sends the `requestPairing` action, the S2 node on the client must already have issued a pairing token. If the S2 node uses a dynamic pairing code, it could be the case that the pairing code has expired, or that no pairing code has been issued in the first place. In that case the client **must** perform a new request with an `errorMessage` containing the value `NoValidTokenOnPairingClient` in the object associated with the S2 node ID of the S2 node should have attempted to pair.
+
+The activity diagram below summarizes the complete long-polling process from teh perspective of the client.
+
+![image](../../static/img/communication-layer/long-polling_activity_diagram.png)
 
 ## Pairing interaction
 
