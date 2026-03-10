@@ -351,11 +351,11 @@ DNS-SD is used for automatically discover S2 nodes from an S2 node that is deplo
 * To advertise a [long polling endpoint](#long-polling) so other initiator S2 nodes in the LAN could connect to this S2 node
 * To discover an S2 node of which the RM is deployed in the WAN, but that also has a presence in the LAN.
 
-S2 uses the service type `s2emp` (short for S2 Energy Management Protocol) and exclusively uses tcp, since it is an HTTP based protocol. S2 uses the following DNS-SD values:
+S2 uses the service type `s2connect` and exclusively uses tcp, since it is an HTTP based protocol. S2 uses the following DNS-SD values:
 
 | DNS-SD property | Value for S2 |
 | --- | --- |
-| Service type | `_s2emp` |
+| Service type | `_s2connect` |
 | Protocol | `_tcp` |
 | Port | No fixed port, decision is up to the implementation |
 | Subtypes | `_cem` and `_rm` |
@@ -390,11 +390,11 @@ The receiver of the service description **must** use the URL provided in the TXT
 
 > Scanning for S2 endpoints could for example be done using the following [avahi](https://avahi.org/) command:
 > 
-> `avahi-browse -r _s2emp._tcp`
+> `avahi-browse -r _s2connect._tcp`
 > 
 > Registering an S2 endpoint could for example be done using the folling avahi command:
 >
-> `avahi-publish-service -s "EVSE1038"  _s2emp._tcp 443 "txtvers=1" "e_name=brand" "deployment=LAN" "pairingUrl=https://EVSE1038.local:443/pairing/" --sub _rm._sub._s2emp._tcp`
+> `avahi-publish-service -s "EVSE1038"  _s2connect._tcp 443 "txtvers=1" "e_name=brand" "deployment=LAN" "pairingUrl=https://EVSE1038.local:443/pairing/" --sub _rm._sub._s2connect._tcp`
 
 ## The pairing token, the pairing S2 node ID and the pairing code
 
