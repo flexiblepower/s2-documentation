@@ -1,11 +1,13 @@
 ---
-title: The Specification
+title: S2 Connect Specification
 sidebar_position: 2
 ---
 
+# S2 Connect Specification
+
 # Introduction
 
-s2-ws-json is a WebSocket and JSON based protocol specification implementing the EN50491-12-2 "S2" standard for home and building energy management.
+S2 Connect is a JSON based protocol specification implementing the EN50491-12-2 "S2" standard for home and building energy management.
 
 This specification addresses everything needed to created a secure and interoperable implementation of the S2 standard. The communication layer concerns the discovery, the pairing, the application layer communication protocol, the authentication, the message data model and the serialization. It was specifically designed to support multiple deployment scenario's and to give a relative consistent user experience throughout these different scenario's.
 
@@ -1126,7 +1128,7 @@ An exponential back-off strategy **SHOULD** be used, increasing the time between
 
 ## Communication - JSON messages
 
-The S2 standard has been encoded into a JSON schema and asyncapi specification, for details see: [JSON protocol specification for S2 WebSockets](https://github.com/flexiblepower/s2-ws-json)
+The S2 standard has been encoded into a JSON schema specification, for details see: [S2 JSON](https://github.com/flexiblepower/s2-ws-json)
 
 ### State of communication 
 
