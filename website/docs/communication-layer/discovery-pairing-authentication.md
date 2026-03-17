@@ -13,6 +13,14 @@ This specification addresses everything needed to created a secure and interoper
 
 The protocol is designed to specify communication between two devices, a resource (e.g. a heat pump or EV charger) and a (home) energy management system. It is worth noting that, while this specification focuses on describing the interaction between two components, a (home) energy management is likely to be communicating with multiple resources at the same time.
 
+# Version
+
+This version of this specification is based on the following versions of the underlying formal specification files (see [Formal specification and versioning (normative)](#formal-specification-and-versioning-normative) for more details).
+
+| Project | Files | Version | Reference |
+| --- | --- | --- | --- |
+| S2 JSON | JSON schemas | `v0.02-beta` | [Github](github.com/flexiblepower/s2-ws-json) |
+| S2 Connect | OpenAPI files | `v1.0-beta-2` | [Github](https://github.com/flexiblepower/s2-connect) |
 # List of abbreviations
 
 |Abbreviation | Meaning
