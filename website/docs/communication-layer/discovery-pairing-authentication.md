@@ -691,12 +691,15 @@ The client sends the following information (for full details see the OpenAPI spe
 | --- | --- |
 | `clientNodeDescription` | Information about the node that wants to pair, such as brand, logo and type. Important fields include `id` (the node ID) and `role` of the initiator node |
 | `clientEndpointDescription` | Information about the client endpoint. An important field is the deployment. |
-| `nodeIdAlias` | The nodeIdAlias of the node that is being targeted (this field can be omitted if the endpoint only represents one node) |  
+| `nodeId` | The nodeID of the node that is being targeted (this filed can be omitted if the client only knows the `nodeIdAlias` or when the endpoint only represents one node). |
+| `nodeIdAlias` | The nodeIdAlias of the node that is being targeted (this field can be omitted if the client only knows the `nodeId` or when the endpoint only represents one node) |  
 | `supportedCommunicationProtocols` | List of supported communications protocols of the client |
 | `supportedS2MessageVersions` | List of supported S2 message versions by the client |
 | `supportedHmacHashingAlgorithms` | List of supported hashing algorithms for the challenge response function (currently only `SHA256` is supported and **must** be present) |
 | `clientHmacChallenge` | The challenge of the client for the challenge response process (see [Challenge response process](#challenge-response-process) |
 | `forcePairing` | Indicate if the nodes must pair, even though they (currently) do not support the same S2 message versions (this could in the future be solved with a software update) |
+
+Be aware that the client may never provide a value for `nodeId` and `nodeIdAlias` at the same time. When the server endpoint only represents one node, no value for any of the two properties have to be provided.
 
 The client **must** perform the following checks during this request:
 
