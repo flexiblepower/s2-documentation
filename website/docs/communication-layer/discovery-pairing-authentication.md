@@ -814,14 +814,16 @@ If the response is understood and properly formatted, the HTTP client **should**
 ### 9B. POST /[version]/postConnectionDetails
 > Note: The `pairingAttemptId` must be provided through a header for this HTTP request
 
-The HTTP sends the connection details to the HTTP server. This request also serves as a way to send the HTTP server the `serverHmacChallengeResponse` calculated in step 8.
+The HTTP sends the connection details to the HTTP server. This request also serves as a way to send the HTTP server the `serverHmacChallengeResponse` calculated in step 8. 
 
+In this case the pairing server will become the communication client. Once the pairing server becomes the communication client, it does not know what the certificate that the communication server will use. That is why it needs to provide it using the property `certificateFingerprint`. This property is a map, where the key of the map is the hashing algorithm used to generate the fingerprint, and the value is the fingerprint itself. The hashing function `SHA256` and the related fingerprint **must** always be provided.
 
 | Information | Description |
 | --- | --- |
 | `serverHmacChallengeResponse` | The response for the challenge response process |
 | `initiateConnectionUrl` | The base URI for the connection process (does not include the version number) |
-| `accessToken` | The access token that was generated for this node | 
+| `accessToken` | The access token that was generated for this node |
+| `certificateFingerprint` | A map with the fingerprint of the CA (root) certificate. They of the map is the name of the hashing algorithm used to generate the fingerprint, the value is the fingerprint itself. The key `SHA256` must always be provided. |
 
 The client **must** perform the following checks during this request:
 
