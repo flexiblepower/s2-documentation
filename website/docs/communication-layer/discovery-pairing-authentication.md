@@ -19,7 +19,7 @@ This version of this specification is based on the following versions of the und
 
 | Project | Files | Version | Reference |
 | --- | --- | --- | --- |
-| S2 JSON | JSON schemas | `v0.02-beta` | [Github](github.com/flexiblepower/s2-ws-json) |
+| S2 JSON | JSON schemas | `v0.02-beta` | [Github](https://github.com/flexiblepower/s2-ws-json) |
 | S2 Connect | OpenAPI files | `v1.0-beta-2` | [Github](https://github.com/flexiblepower/s2-connect) |
 # List of abbreviations
 
