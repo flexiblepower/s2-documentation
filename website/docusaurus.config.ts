@@ -58,6 +58,13 @@ const config: Config = {
       path: "model-reference",
       routeBasePath: "model-reference",
       breadcrumbs: false,
+    }],
+    ['@docusaurus/plugin-content-docs', {
+      id: "s2c",
+      path: "s2-connect",
+      routeBasePath: "s2-connect",
+      breadcrumbs: false,
+      sidebarPath: false
     }]
   ],
 
@@ -82,6 +89,12 @@ const config: Config = {
           activeBaseRegex: 'model-reference',
           position: 'left',
           label: 'Reference',
+        },
+        {
+          to: 's2-connect/discovery-pairing-authentication',
+          activeBaseRegex: 's2-connect',
+          position: 'left',
+          label: 'S2 Connect',
         },
         {
           href: 'https://github.com/flexiblepower/s2-documentation',
