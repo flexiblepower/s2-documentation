@@ -1162,7 +1162,7 @@ To prevent brute-force pairing request, the server **MUST** implement rate limit
 
 All HTTP and WebSocket communication uses TCP over TLS with server certificates. The server certificates **MUST** be exchanged and validated during the initiation of the connection (HTTPS and WSS). This is default usage of most networking libraries.
 
-There are two possible types of certificates for TLS communication. The first option is using a public server certificate, that is created through a Public Key Infrastructure (PKI) and thus signed by a public CA. The other option (only applicable to LAN servers) is to use a self-signed certificate. The latter is needed because a LAN server is not able to obtain a certificate that has been issued by a CA for its local domain name.
+There are two possible types of certificates for TLS communication. The first option is using a public server certificate, that is created through a Public Key Infrastructure (PKI) and thus signed by a public CA. The other option (only applicable to LAN servers) is to use a self-signed certificate. The latter is needed because a LAN server is not able to obtain a certificate that has been issued by a CA for its local domain name. This is also the only situation where self-signed certificates are allowed.
 
 The following image shows the difference. On the left a public root CA that is publicly known and trusted, on the right, a self-signed root certificate, that is unknown and its trustworthiness has to be achieved in another way.
 
