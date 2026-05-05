@@ -84,7 +84,7 @@ For the long answer, please refer to [this page](why-not-oauth.md).
 
 ## Security requirements
 
-The described protocol, ensures the following 4 requirements:
+The S2 Connect protocol ensures the following four requirements:
 
 1. Mutual authentication
 2. Integrity of communication
@@ -96,12 +96,11 @@ There is one guarantee that explicitly is not given by this protocol:
 5. Non-repudiation
 
 
-
 ### 1. Mutual authentication (guaranteed)
 
-The mutual authentication is based on the trust relation between the user and the Client/Server. Since it is assumed that the user already had a trust relation with both of them, this existing trust can be used for mutual authentication between the client and the server. Note that the this communication is not part of the S2 protocol.
+The mutual authentication is based on the trust relation between the user and the Client/Server. Since it is assumed that the user already had a trust relation with both of them, this existing trust can be used for mutual authentication between the client and the server. Note that the this communication is not part of the S2 Connect specification.
 
-The end user requests an url, and token from the server, and gives these to the client. Based on these data, the client can connect to the server, using a TLS connection, check the certificate and authenticate himself with the token. Note that if the server uses a self-signed certificate, the fingerprint will be shared during the pairing phase, so it can be verified by the client.
+The end user requests a URL, and token from the server, and gives these to the client. Based on these data, the client can connect to the server, using a TLS connection, check the certificate and authenticate himself with the token. Note that if the server uses a self-signed certificate, the fingerprint will be shared during the pairing phase, so it can be verified by the client.
 
 ### 2. Integrity of communication (guaranteed)
 
@@ -121,7 +120,7 @@ Non-repudiation is not guaranteed in this protocol. Individual messages are not 
 
 ### Remaining risk
 
-There are two remaining vulnerable situations for the described protocol. In this section both will be explained.
+There are two remaining vulnerable situations. In this section both will be explained.
 
 #### self-signed certificates
 
@@ -129,7 +128,7 @@ In the case that a local RM and a local CEM communicate, it is not in every situ
 
 #### Trust relations between the end-user and the Client/Server
 
-The entire trust model of S2 is based on the fact that there is already a trust relation between the end-user and the client/server. If these clients/servers do not use adequate security mechanisms, it might be possible to attack the S2 system as well.
+The entire trust model of S2 Connect is based on the fact that there is already a trust relation between the end-user and the client/server. If these clients/servers do not use adequate security mechanisms, it might be possible to attack the S2 system as well.
 
 # Terms and definitions (normative)
 
@@ -446,53 +445,6 @@ Alternatively, the **pairing code** can be validated with the following regular 
 ```
 
 The pairing code allows us to transfer two pieces of information by only bothering the end user once. Due to its format the initiator node can easily extract the node ID alias and the pairing token from the pairing code by splitting the string at the dash. 
-
-
-## TLS Certificates
-
-There are two possible types of certificates for TLS communication. The first option is using a public server certificate, that is created through a Public Key Infrastructure (PKI) and thus signed by a public CA. The other option (only applicable to LAN servers) is to use a self-signed certificate. The latter is needed because a LAN server is not able to obtain a certificate that has been issued by a CA for its local domain.
-
-In the following image, the difference is shown. On the left a public root CA that is publicly known and trusted, on the right, a self-signed root certificate, that is unknown and its trustworthiness has to be achieved in another way.
-
-![image.png](../../static/img/communication-layer/certificate-chains.png)
-
-<details>
-<summary>Image generated using the following PlantUML code:</summary>
-
-```
-@startuml
-struct PublicRootCA
-struct PublicIntermediateCA
-struct PublicServerCertificate
-
-PublicRootCA --> PublicIntermediateCA
-PublicIntermediateCA --> PublicServerCertificate
-
-
-struct SelfSignedCA
-struct LocalServerCertificate
-
-SelfSignedCA --> SelfSignedCA
-SelfSignedCA --> LocalServerCertificate
-@enduml
-```
-</details>
-
-
-### Trusting a self-signed root certificate
-
-The self-signed root certificate is by default not trusted. However during the pairing phase, the server with the self-signed root certificate will share the fingerprint of the certificate during the pairing phase as part of the challenge. This will enable the client to verify the self-signed root certificate, and create trust. From this moment on, the client will store the complete fingerprint of the self-signed root certificate, and use it to verify the server certificate for all future connections.
-
-Note that the `preparePairing` and `cancelPreparePairing` endpoints can be called before the pairing has happened. So in the case the server is running on a LAN (and thus uses self-signed certificates), the client can skip the certificate validation steps on those endpoint. This means that the HTTP client **must** be configured to accept self-signed certificates during the pairing process. Since the pairing process consists of several HTTP requests, the HTTP client **must** check that for every request the same self-signed certificate is used by the HTTP server. If this is not the case, the HTTP client **cannot** proceed with the request.
-
-
-
-### Updating the certificates
-
-A server can update its certificate. When a cloud server updates its certificate, it **MUST** be signed by a CA, so a client can check its validity. A server **SHOULD** update its server certificate at least once every 6 months.
-
-If the server is in local-local mode, and uses a self-signed CA certificate, the CA certificate **SHOULD** be created with a validity period which is long enough for the expected lifetime of the server. If the used crypto for the the CA certificate is broken, or the lifetime of the server is longer than the validity of the certificate, the server **MUST** create a new self-signed CA certificate and all clients need to be paired again. Like cloud servers, a local server **SHOULD** update its server certificate at least once every 6 months.
-
 
 
 ## Challenge response process
@@ -1202,16 +1154,56 @@ Client and server **can** keep other (non-security) information for, for example
 
 > TODO: This section needs to be expanded to explain measures against ddos
 
-Please refer to an extensive description of the security specifications to [Security considerations](./security-considerations.md).
+## Brute-force protection
+To prevent brute-force pairing request, the server **MUST** implement rate limiting on the requestPairing endpoint. It is up to the server implementation to define the type of rate limiting.
 
-## Certificates
 
-For each S2 connection the server authenticates using a TLS certificate. The cloud implementation certificates **MUST** be PKI certificates which are not self-signed. Only local servers can use a self-signed root certificate, which is used to sign a server certificate.
-If the S2 protocol is used in a local-local configuration, the server **CAN** use a self-signed root certificate. In this case, the pairingInfo **MUST** include the first 9 bytes, encodes as 12 base64 encoded characters, of the fingerprint of this self-signed CA certificate and the client **MUST** check this fingerprint.
+## TLS Certificates
 
-Note that all communication uses TLS. This is further explained in [Security considerations](./security-considerations.md).
+All HTTP and WebSocket communication uses TCP over TLS with server certificates. The server certificates **MUST** be exchanged and validated during the initiation of the connection (HTTPS and WSS). This is default usage of most networking libraries.
 
-The server certificates **MUST** be exchanged and validated during the initiation of the connection (HTTPS and WSS). This is default usage of most networking libraries.
+There are two possible types of certificates for TLS communication. The first option is using a public server certificate, that is created through a Public Key Infrastructure (PKI) and thus signed by a public CA. The other option (only applicable to LAN servers) is to use a self-signed certificate. The latter is needed because a LAN server is not able to obtain a certificate that has been issued by a CA for its local domain name. This is also the only situation where self-signed certificates are allowed.
+
+The following image shows the difference. On the left a public root CA that is publicly known and trusted, on the right, a self-signed root certificate, that is unknown and its trustworthiness has to be achieved in another way.
+
+![image.png](../../static/img/communication-layer/certificate-chains.png)
+
+<details>
+<summary>Image generated using the following PlantUML code:</summary>
+
+```
+@startuml
+struct PublicRootCA
+struct PublicIntermediateCA
+struct PublicServerCertificate
+
+PublicRootCA --> PublicIntermediateCA
+PublicIntermediateCA --> PublicServerCertificate
+
+
+struct SelfSignedCA
+struct LocalServerCertificate
+
+SelfSignedCA --> SelfSignedCA
+SelfSignedCA --> LocalServerCertificate
+@enduml
+```
+</details>
+
+
+### Trusting a self-signed root certificate
+
+The self-signed root certificate is by default not trusted. However during the pairing phase, the server with the self-signed root certificate will share the fingerprint of the certificate during the pairing phase as part of the challenge. This will enable the client to verify the self-signed root certificate, and create trust. In this case, the [pairing code](#the-pairing-token-the-node-id-alias-and-the-pairing-code) **MUST** include the first 9 bytes, encodes as 12 base64 encoded characters, of the fingerprint of this self-signed CA certificate and the client **MUST** check this fingerprint. From this moment on, the client will store the complete fingerprint of the self-signed root certificate, and use it to verify the server certificate for all future connections.
+
+Note that the `preparePairing` and `cancelPreparePairing` endpoints can be called before the pairing has happened. So in the case the server is running on a LAN (and thus uses self-signed certificates), the client can skip the certificate validation steps on those endpoint. This means that the HTTP client **must** be configured to accept self-signed certificates during the pairing process. Since the pairing process consists of several HTTP requests, the HTTP client **must** check that for every request the same self-signed certificate is used by the HTTP server. If this is not the case, the HTTP client **cannot** proceed with the request.
+
+
+### Updating the certificates
+
+A server can update its certificate. When a cloud server updates its certificate, it **MUST** be signed by a CA, so a client can check its validity. A server **SHOULD** update its server certificate at least once every 6 months.
+
+If the server is in local-local mode, and uses a self-signed CA certificate, the CA certificate **SHOULD** be created with a validity period which is long enough for the expected lifetime of the server. If the used crypto for the the CA certificate is broken, or the lifetime of the server is longer than the validity of the certificate, the server **MUST** create a new self-signed CA certificate and all clients need to be paired again. Like cloud servers, a local server **SHOULD** update its server certificate at least once every 6 months.
+
 
 ## Cipher suites
 
