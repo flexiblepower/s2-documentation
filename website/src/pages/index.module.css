@@ -22,8 +22,10 @@
   justify-content: center;
 } */
 
-.actionButton{
-  min-width: 280px;
+@media screen and (max-width: 996px){
+  .actionButton {
+    min-width: 280px;
+  }
 }
 
 .flexContainer{
@@ -34,4 +36,44 @@
 
 .systemImg {
   max-width: 40%;
+}
+
+/* Title styles for homepage hero - responsive */
+.title {
+  font-size: 3rem;
+  line-height: 1.05;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+}
+
+@media screen and (max-width: 996px) {
+  .title {
+    font-size: 2.4rem;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .title {
+    font-size: 1.8rem;
+    line-height: 1.1;
+  }
+}
+
+/* Subtitle styles for homepage hero - responsive */
+.subtitle {
+  font-size: 1.25rem;
+  line-height: 1.4;
+  margin: 0 0 1.25rem 0;
+}
+
+@media screen and (max-width: 996px) {
+  .subtitle {
+    font-size: 1.05rem;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .subtitle {
+    font-size: 0.95rem;
+  }
 }
