@@ -72,10 +72,11 @@ const config: Config = {
     // Replace with your project's social card
     image: 'img/docusaurus-social-card.jpg',
     navbar: {
-      title: 'The S2 Standard',
+      title: 'S2 Docs',
       logo: {
         alt: 'S2 Standard',
         src: 'img/Logo-S2-no-text.svg',
+        srcDark: 'img/s2-logo-dark.svg'
       },
       items: [
         {
