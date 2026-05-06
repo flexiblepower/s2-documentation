@@ -1166,7 +1166,7 @@ There are two possible types of certificates for TLS communication. The first op
 
 The following image shows the difference. On the left a public root CA that is publicly known and trusted, on the right, a self-signed root certificate, that is unknown and its trustworthiness has to be achieved in another way.
 
-![image.png](@site/static/img/communication-layer/certificate-chains.png)
+![image.png](../../static/img/communication-layer/certificate-chains.png)
 
 <details>
 <summary>Image generated using the following PlantUML code:</summary>
