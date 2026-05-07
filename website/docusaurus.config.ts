@@ -58,6 +58,21 @@ const config: Config = {
       path: "model-reference",
       routeBasePath: "model-reference",
       breadcrumbs: false,
+    }],
+    ['@docusaurus/plugin-content-docs', {
+      id: "s2c",
+      path: "s2-connect",
+      routeBasePath: "s2-connect",
+      breadcrumbs: false,
+      sidebarPath: false
+    }],
+    ['@docusaurus/plugin-client-redirects', {
+      redirects: [
+        {
+          to: '/s2-connect/discovery-pairing-authentication/',
+          from: ['/docs/communication-layer/discovery-pairing-authentication/'],
+        },
+      ],
     }]
   ],
 
@@ -65,10 +80,11 @@ const config: Config = {
     // Replace with your project's social card
     image: 'img/docusaurus-social-card.jpg',
     navbar: {
-      title: 'The S2 Standard',
+      title: 'S2 Docs',
       logo: {
         alt: 'S2 Standard',
         src: 'img/Logo-S2-no-text.svg',
+        srcDark: 'img/s2-logo-dark.svg'
       },
       items: [
         {
@@ -82,6 +98,20 @@ const config: Config = {
           activeBaseRegex: 'model-reference',
           position: 'left',
           label: 'Reference',
+        },
+        // {
+        //   to: 's2-connect/discovery-pairing-authentication',
+        //   activeBaseRegex: 's2-connect',
+        //   position: 'left',
+        //   label: 'S2 Connect',
+        // },
+        {
+          type: 'docsVersionDropdown',
+          position: 'right',
+          // props passed to the themed navbar item component - our themed override will read `showOn`
+          versions: ['current', '1.0-beta2'],
+          docsPluginId: 's2c',
+          // only show the dropdown when path starts with this prefix
         },
         {
           href: 'https://github.com/flexiblepower/s2-documentation',
@@ -130,6 +160,7 @@ const config: Config = {
   } satisfies Preset.ThemeConfig,
 
   scripts: [
+    { src: '/js/pathClass.js', defer: true },
   ],
 };
 
