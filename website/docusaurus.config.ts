@@ -65,6 +65,14 @@ const config: Config = {
       routeBasePath: "s2-connect",
       breadcrumbs: false,
       sidebarPath: false
+    }],
+    ['@docusaurus/plugin-client-redirects', {
+      redirects: [
+        {
+          to: '/s2-connect/discovery-pairing-authentication/',
+          from: ['/docs/communication-layer/discovery-pairing-authentication/'],
+        },
+      ],
     }]
   ],
 
@@ -91,11 +99,19 @@ const config: Config = {
           position: 'left',
           label: 'Reference',
         },
+        // {
+        //   to: 's2-connect/discovery-pairing-authentication',
+        //   activeBaseRegex: 's2-connect',
+        //   position: 'left',
+        //   label: 'S2 Connect',
+        // },
         {
-          to: 's2-connect/discovery-pairing-authentication',
-          activeBaseRegex: 's2-connect',
-          position: 'left',
-          label: 'S2 Connect',
+          type: 'docsVersionDropdown',
+          position: 'right',
+          // props passed to the themed navbar item component - our themed override will read `showOn`
+          versions: ['current', '1.0-beta2'],
+          docsPluginId: 's2c',
+          // only show the dropdown when path starts with this prefix
         },
         {
           href: 'https://github.com/flexiblepower/s2-documentation',
@@ -144,6 +160,7 @@ const config: Config = {
   } satisfies Preset.ThemeConfig,
 
   scripts: [
+    { src: '/js/pathClass.js', defer: true },
   ],
 };
 
