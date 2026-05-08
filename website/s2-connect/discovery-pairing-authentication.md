@@ -296,7 +296,7 @@ This document serves as an overall specification of the S2 Connect protocol. How
 | S2 JSON message structure | The types of S2 messages that can be exchanges between nodes | JSON schema files | [Github](https://github.com/flexiblepower/s2-ws-json/tree/main/s2-json-schema) |
 
 ## Versioning of OpenAPI files
-The S2 Connect pairing API and the S2 Connect connection API are formally defined as an OpenAPI file. To accommodate future changes to these APIs, the OpenAPI files are versioned. Versioning is done using a `major.minor` scheme. The pairing API and the connection API share the same version number.
+The S2 Connect pairing API and the S2 Connect connection API are formally defined in OpenAPI files. To accommodate future changes to these APIs, the OpenAPI files are versioned. Versioning is done using a `major.minor` scheme. The pairing API and the connection initiation API share the same version number.
 
 The minor version is increased when backwards compatible changes are made. Be aware that we consider adding items to certain lists of enums (e.g. the list of supported hash functions) backwards compatible. Other examples of backwards compatible changes are additional properties of JSON files or added operations.
 
@@ -306,12 +306,58 @@ The major version of the API is embedded in the base URL of the API as `/v[major
 
 > TODO: Versioning of S2 JSON Schema's needs to be explained
 
-## Addressing endpoints (normative)
+## Addressing endpoints
 The URL of the pairing and connection API are used in the discovery process, pairing process and connection process, as wel as the basis for TLS certificates.
 
 For WAN deployed endpoints, the URL **must** be based on a DNS domain name.
 
 For LAN deployed endpoint, the URL **must** be based on an mDNS alias or hostname (e.g. `hostname.local`). It is important that these names are *unique* and *stable*. Unique since there could be multiple instance within the same LAN, and stable because if it changes, the endpoint cannot be found by other endpoints. It should also be noted that the alias used by DNS-SD, and is presented to the end user. It recommended to choose a name that the end user should recognize and an element for the end user to make a distinction between two devices of the same type, such as a serial number.
+
+## Selecting the version of the pairing or connection initiation API
+As explained in the section [Versioning of OpenAPI files](#version) the pairing server or connection initiation server can implement multiple versions of the API specification in parallel. As a result, the client **must** always first determine which version of the API it will use, before it can start interacting with the API.
+
+The image below depicts the interactions between client and server for the process to determine the API version that will be used.
+
+![image](@site/static/img/communication-layer/api_version_selection.png)
+
+<details>
+<summary>Image generated using the following PlantUML code:</summary>
+
+```
+@startuml
+participant "HTTP Client" as Client
+participant "HTTP Server" as Server
+
+Client->Server++: 1. GET / (index containing pairing API versions)
+Server-->Client: 2. Response status 200
+deactivate Server
+Client->Client: 3. Decide pairing version
+
+@enduml
+```
+</details>
+
+### 1. GET / (index containing pairing API versions)
+Since the HTTP client does not know which major versions of the pairing API are implemented by the server, it must first do a GET request to the index (e.g. `https://hostname.local/pairing/`). 
+
+The client **must** perform the following checks during this request:
+
+| Check | How to proceed if check fails |
+| --- | --- |
+| Check TLS certificate | Pairing is failed, do not proceed with the pairing attempt |
+| If self-signed TLS certificate, check if server is local | Pairing is failed, do not proceed with the pairing attempt |
+| Store fingerprint of TLS certificate for later check | | 
+
+If no checks fail the client **should** proceed to the next step.
+
+### 2. Response status 200
+The server responds with a list of implement major versions of the pairing API. It is formatted as a JSON array contains all the supported version of the pairing API (e.g. `["v1"]`).
+
+If the HTTP client does not support any of the provided versions, it means that the two endpoints are not compatible, and that further interaction is not possible.
+
+### 3. Decide pairing version
+From the provided list of major versions of the pairing API, the HTTP client **must** select one that is implement by the HTTP client itself (typically the highest supported version). The client **should** select the most recent version.
+
 
 # Pairing process (normative)
 
@@ -483,7 +529,6 @@ Where:
 | `F`  | SHA256 fingerprint of the TLS server certificate of the HTTP server |
 | `\|\|` | Concatenation |
 
-
 ## Pre-pairing interaction
 
 > This section is only applicable for LAN-LAN pairing
@@ -560,43 +605,37 @@ The pairing process itself consists of several HTTP interactions between client 
 participant "HTTP Client" as Client
 participant "HTTP Server" as Server
 
-'select version of pairing API
-Client->Server++: 1. GET / (index containing pairing API versions)
-Server-->Client: 2. Response status 200
-deactivate Server
-Client->Client: 3. Decide pairing version
-
 'compatibility check
-Client->Server: 4. POST /[version]/requestPairing
+Client->Server: 1. POST /[version]/requestPairing
 activate Server
-Server->Server: 5. Calculate clientHmacChallengeResponse
-Server-->Client: 6. Response status 200
+Server->Server: 2. Calculate clientHmacChallengeResponse
+Server-->Client: 3. Response status 200
 deactivate Server
 
-Client->Client: 7. HTTP Client checks clientHmacChallengeResponse
+Client->Client: 4. HTTP Client checks clientHmacChallengeResponse
 
 Note over Client: HTTP Client now trusts HTTP Server
 
-Client->Client: 8. Calculate serverHmacChallengeResponse
+Client->Client: 5. Calculate serverHmacChallengeResponse
 
 alt Pairing server is Communication Server
-    Client->Server: 9A. POST /[version]/requestConnectionDetails
+    Client->Server: 6A. POST /[version]/requestConnectionDetails
     activate Server
-    Server->Server: 10A. HTTP Server checks serverHmacChallengeResponse
+    Server->Server: 7A. HTTP Server checks serverHmacChallengeResponse
     Note over Server: HTTP Server now trusts HTTP Client
-    Server-->Client: 11A. Response status 200
+    Server-->Client: 8A. Response status 200
     deactivate Server
 else Pairing server is Communication Client
-    Client->Server: 9B. POST /[version]/postConnectionDetails
+    Client->Server: 6B. POST /[version]/postConnectionDetails
     activate Server
-    Server->Server: 10B. HTTP Server checks serverHmacChallengeResponse
+    Server->Server: 7B. HTTP Server checks serverHmacChallengeResponse
     Note over Server: HTTP Server now trusts HTTP Client
-    Server-->Client: 11B. Response status 204
+    Server-->Client: 8B. Response status 204
     deactivate Server
 end
 
-Client->Server++: 12. POST /[version]/finalizePairing
-Server-->Client: 13. Response status 204
+Client->Server++: 9. POST /[version]/finalizePairing
+Server-->Client: 10. Response status 204
 deactivate Server
 
 Note over Client, Server: Pairing finalized
@@ -611,34 +650,14 @@ Before two node can be paired, the following preconditions must be met.
 
 1. The HTTP server and the HTTP client can only start with a pairing request when they are fully initialized and have all the details of the nodes it represents available. 
 2. The HTTP client must have the base URL of the pairing API (e.g. `https://hostname.local/pairing/`)
-3. Both nodes must have a pairing token available. Either because they issued this token themselves, or because the end user has provided it through the user interface.
+3. The HTTP client must have selected the version on the pairing API that will be used (see [Selecting the version of the pairing or connection initiation API](#selecting-the-version-of-the-pairing-or-connection-initiation-api))
+4. Both nodes must have a pairing token available. Either because they issued this token themselves, or because the end user has provided it through the user interface.
 
 > Note: The initiator node could be the HTTP server or the HTTP client
 
-If the HTTP client does not fulfill these preconditions, it **cannot** send the first HTTP request of the pairing process.
+If the HTTP client does not fulfill these preconditions, it **cannot** send the first HTTP request of the pairing process. 
 
-### 1. GET / (index containing pairing API versions)
-Since the HTTP client does not know which major versions of the pairing API are implemented by the server, it must first do a GET request to the index (e.g. `https://hostname.local/pairing/`). 
-
-The client **must** perform the following checks during this request:
-
-| Check | How to proceed if check fails |
-| --- | --- |
-| Check TLS certificate | Pairing is failed, do not proceed with the pairing attempt |
-| If self-signed TLS certificate, check if server is local | Pairing is failed, do not proceed with the pairing attempt |
-| Store fingerprint of TLS certificate for later check | | 
-
-If no checks fail the client **should** proceed to the next step.
-
-### 2. Response status 200
-The server responds with a list of implement major versions of the pairing API. It is formatted as a JSON array contains all the supported version of the pairing API (e.g. `["v1"]`).
-
-If the HTTP client does not support any of the provided versions, it means that the two endpoints are not compatible, and that pairing is not possible.
-
-### 3. Decide pairing version
-From the provided list of major versions of the pairing API, the HTTP client must select one that is implement by the HTTP client itself (typically the highest supported version). 
-
-### 4. POST /[version]/requestPairing
+### 1. POST /[version]/requestPairing
 In the first POST request the client provides the server with same information about itself. The main purpose of this is to check if these two nodes are compatible.
 
 The client sends the following information (for full details see the OpenAPI specification file):
@@ -691,12 +710,12 @@ The server **must** perform the checks in the table below to make sure that it c
 
 If no checks fail the server **should** proceed to the next step.
 
-### 5. Calculate clientHmacChallengeResponse
+### 2. Calculate clientHmacChallengeResponse
 The server selects an hashing algorithm for the challenge response function from the list that was provided by the client. This has to be a hashing algorithm that the server considers secure. The server calculates a response to the provided `clientHmacChallenge`. For details see [Challenge response process](#challenge-response-process).
 
-To mitigate brute-force attacks, the server **must** enforce a mandatory delay of one second before sending its response to the client (step 6). For any given node at the server, pairing attempts **must** be handled sequentially, such that each second only one pairing attempt can be processed for a node. Pairing attempts targeting different nodes **may** be processed in parallel. This way, a server representing multiple nodes is not globally limited to one pairing attempt per second, but instead enforces the one-second rate limit independently per node.
+To mitigate brute-force attacks, the server **must** enforce a mandatory delay of one second before sending its response to the client (step 3). For any given node at the server, pairing attempts **must** be handled sequentially, such that each second only one pairing attempt can be processed for a node. Pairing attempts targeting different nodes **may** be processed in parallel. This way, a server representing multiple nodes is not globally limited to one pairing attempt per second, but instead enforces the one-second rate limit independently per node.
 
-### 6. Response status 200
+### 3. Response status 200
 In order to formulate a response, the server **must** generate a `pairingAttemptId`. This is an identifier that **must** be generated by a cryptographically secure pseudorandom number generator and encoded using Base64. This identifier is used to keep track of all the HTTP interactions during the pairing attempt, and **must** be provided by the HTTP client as a header with all subsequent interactions. A pairing attempt **must** be completed within 15 seconds, or else the server **must** assume the pairing attempt has failed.
 
 The server responds with the following information (for full details see the OpenAPI specification file):
@@ -720,25 +739,25 @@ The client **must** perform the following checks of this data.
 
 If no checks fail the server **should** proceed to the next step.
 
-### 7. HTTP Client checks clientHmacChallengeResponse
-The HTTP client checks the `clientHmacChallengeResponse` provided by the HTTP server in step 6. It does that by calculating the response itself, and checking if the results is identical to the `clientHmacChallengeResponse`.
+### 4. HTTP Client checks clientHmacChallengeResponse
+The HTTP client checks the `clientHmacChallengeResponse` provided by the HTTP server in step 3. It does that by calculating the response itself, and checking if the results is identical to the `clientHmacChallengeResponse`.
 
 If the result is identical, the client **should** proceed to the next step. If the result is not identical, the client **must** stop the pairing attempt. It **must** attempt to inform the HTTP server of this by doing an HTTP request to `finalizePairing` where the value of `success` must be `false`.
 
 Note that in case of a local server, the TLS certificate fingerprint is part of the challenge. So if the challenge succeeds, the certificate fingerprint is correct, and the certificate can be trusted. The client **must** pin this certificate, and trust this certificate for future use.
 
 
-### 8. Calculate serverHmacChallengeResponse
+### 5. Calculate serverHmacChallengeResponse
 The HTTP client calculates a response to the provided `serverHmacChallenge` using the hashing algorithm as indicated in the `selectedHmacHashingAlgorithm`. For details see [Challenge response process](#challenge-response-process).
 
 From hereon the process branches into two scenario's, depending on if the HTTP client will be the communication client or the communication server. See [Mapping the CEM and RM to communication server or client](#mapping-the-cem-and-rm-to-communication-server-or-client) for which node will perform which role for communication.
 
-If the HTTP server will be the communication *server* steps 9A, 10A and 11A **should** follow. If the HTTP server will be the communications *client* steps 9B, 10B en 11B **should** follow.
+If the HTTP server will be the communication *server* steps 6A, 7A and 8A **should** follow. If the HTTP server will be the communications *client* steps 6B, 7B en 8B **should** follow.
 
-### 9A. POST /[version]/requestConnectionDetails
+### 6A. POST /[version]/requestConnectionDetails
 > Note: The `pairingAttemptId` must be provided through a header for this HTTP request
 
-The HTTP client makes a request for the connection details. This request also serves as a way to send the HTTP server the `serverHmacChallengeResponse` calculated in step 8.
+The HTTP client makes a request for the connection details. This request also serves as a way to send the HTTP server the `serverHmacChallengeResponse` calculated in step 5.
 
 If the `pairingAttemptId` is not recognized by the server (or has expired), the server **must** respond with status code 401.
 
@@ -755,12 +774,12 @@ The client **must** perform the following checks during this request:
 If no checks fail the client **should** proceed to the next step.
 
 
-### 10A. HTTP Server checks serverHmacChallengeResponse
-The HTTP server checks the `serverHmacChallengeResponse` provided by the HTTP client in step 9A. It does that by calculating the response itself, and checking if the results is identical to the `serverHmacChallengeResponse`.
+### 7A. HTTP Server checks serverHmacChallengeResponse
+The HTTP server checks the `serverHmacChallengeResponse` provided by the HTTP client in step 6A. It does that by calculating the response itself, and checking if the results is identical to the `serverHmacChallengeResponse`.
 
-If the result is identical, the server **should** proceed to the next step. If the result is not identical, the server **must** stop the pairing attempt by responding with HTTP status code 403. The `pairingAttemptId` cannot be used by the HTTP client anymore. If the HTTP client wants to make another attempt, it **must** start again at step 1 or step 4.
+If the result is identical, the server **should** proceed to the next step. If the result is not identical, the server **must** stop the pairing attempt by responding with HTTP status code 403. The `pairingAttemptId` cannot be used by the HTTP client anymore. If the HTTP client wants to make another attempt, it **must** start again at step 1 (starting with the API version selection process is also allowed).
 
-### 11A. Response status 200
+### 8A. Response status 200
 The server **must** generates an access token for the HTTP client. The access token is random binary data and **must** be generated by a cryptographically secure pseudorandom number generator and **must** have a minimum length of 32 bytes. It is encoded using Base64. The access token **cannot** be used by the initiator node until the pairing process is completed.
 
 The server responds with two pieces of information:
@@ -772,10 +791,10 @@ The server responds with two pieces of information:
 
 If the response is understood and properly formatted, the HTTP client **should** proceed to the next step. Otherwise the HTTP client **must** stop the pairing attempt. It **must** attempt to inform the HTTP server of this by doing an HTTP request to `finalizePairing` where the value of `success` must be `false`.
 
-### 9B. POST /[version]/postConnectionDetails
+### 6B. POST /[version]/postConnectionDetails
 > Note: The `pairingAttemptId` must be provided through a header for this HTTP request
 
-The HTTP sends the connection details to the HTTP server. This request also serves as a way to send the HTTP server the `serverHmacChallengeResponse` calculated in step 8. 
+The HTTP sends the connection details to the HTTP server. This request also serves as a way to send the HTTP server the `serverHmacChallengeResponse` calculated in step 5. 
 
 In this case the pairing server will become the communication client. Once the pairing server becomes the communication client, it does not know what the certificate that the communication server will use. That is why it needs to provide it using the property `certificateFingerprint`. This property is a map, where the key of the map is the hashing algorithm used to generate the fingerprint, and the value is the fingerprint itself. The hashing function `SHA256` and the related fingerprint **must** always be provided.
 
@@ -805,15 +824,15 @@ The server **must** perform the following checks during this request:
 
 If no checks fail the server **should** proceed to the next step.
 
-### 10B. HTTP Server checks serverHmacChallengeResponse
-The HTTP server checks the `serverHmacChallengeResponse` provided by the HTTP client in step 9A. It does that by calculating the response itself, and checking if the results is identical to the `serverHmacChallengeResponse`.
+### 7B. HTTP Server checks serverHmacChallengeResponse
+The HTTP server checks the `serverHmacChallengeResponse` provided by the HTTP client in step 6A. It does that by calculating the response itself, and checking if the results is identical to the `serverHmacChallengeResponse`.
 
-If the result is identical, the server **should** proceed to the next step. If the result is not identical, the client **must** stop the pairing attempt by responding with HTTP status code 403. The `pairingAttemptId` cannot be used by the HTTP client anymore. If the HTTP client wants to make another attempt, it **must** start again at step 1 or step 4.
+If the result is identical, the server **should** proceed to the next step. If the result is not identical, the client **must** stop the pairing attempt by responding with HTTP status code 403. The `pairingAttemptId` cannot be used by the HTTP client anymore. If the HTTP client wants to make another attempt, it **must** start again at step 1 (starting with the API version selection process is also allowed).
 
-### 11B. Response status 204
+### 8B. Response status 204
 The server confirms it has accepted the response and received the connection details by responding with HTTP status 204.
 
-### 12. POST /[version]/finalizePairing
+### 9. POST /[version]/finalizePairing
 > Note: The `pairingAttemptId` must be provided through a header for this HTTP request
 
 If all interaction has been successful until this point, the HTTP client **must** do a request to finalize the pairing attempt. The provided value for `success` **must** be `true`.
@@ -839,13 +858,13 @@ If no checks fail the server **should** proceed to the next step.
 
 Receiving a `/finalizePairing` request marks the completion of the pairing attempt for the HTTP server. If the HTTP server issued an access token during this pairing attempt, it can now be used by a communication client to set up an S2 connection. The `pairingAttemptId` can no longer be used by the HTTP client.
 
-### 13. Response status 204
+### 10. Response status 204
 To confirm the successful completion of the pairing attempt, the HTTP server responds to the client with HTTP status code 204. This response marks the completion of the pairing attempt for the HTTP client. If the HTTP client issued an access token during this pairing attempt, it can now be used by a communication client to set up an S2 connection. The `pairingAttemptId` can no longer be used by the HTTP client.
 
 If the HTTP server was using a self-signed TLS certificate, the HTTP client can now store the self-signed root certificate. The client **must** check that this is the CA certificate that is used for all future interaction with this endpoint. The HTTP server is allowed to use a new self-signed server certificate, as long as it is signed by the self-signed CA certificate that was used during the pairing process.
 
 ### Interruption of the process
-A pairing attempt has a maximum duration of 15 seconds. That means that once a `pairingAttemptId` has been issued, this `pairingAttemptId` cannot be used after 15 seconds since it was issued. From the perspective of the HTTP server, any pairing attempt that is not completed in 15 seconds (with success or not) is considered a failed attempt. From the perspective of the HTTP client, if the server does not respond within 15 seconds since it received the `pairingAttemptId`, it must consider the pairing attempt as failed. If the HTTP client wants to make another attempt, it should start again at step 1 or step 4.
+A pairing attempt has a maximum duration of 15 seconds. That means that once a `pairingAttemptId` has been issued, this `pairingAttemptId` cannot be used after 15 seconds since it was issued. From the perspective of the HTTP server, any pairing attempt that is not completed in 15 seconds (with success or not) is considered a failed attempt. From the perspective of the HTTP client, if the server does not respond within 15 seconds since it received the `pairingAttemptId`, it must consider the pairing attempt as failed. If the HTTP client wants to make another attempt, it should start again at step 1 (starting with the API version selection process is also allowed).
 
 ### Invalid interactions
 If the server receives a wrong HTTP request (e.g. `/postConnectionDetails` while it was expecting `/requestConnectionDetails`) or when it receives the requests in the wrong order (e.g. `/finalizePairing` with `success` = `true` before calling `/requestConnectionDetails`) it **must** respond with a status 400 and consider the pairing attempt as failed. The only exception is receiving the same request twice.
@@ -888,19 +907,14 @@ During the pairing process an `accessToken` is generated by the node which will 
 participant "HTTP Client" as Client
 participant "HTTP Server" as Server
 
-Client->Server++: 1. GET / (index containing pairing API versions)
-Server-->Client: 2. Response status 200
-deactivate Server
-Client->Client: 3. Decide pairing version
-
-Client->Server++: 4. POST /[version]/initiateConnection
-Server->Server: 5. Generate new pending accessToken
-Server-->Client--: 6. Response status 200
-Client->Client: 7. Store pending accessToken
-Client->Server++: 8. POST /[version]/confirmAccessToken
-Server->Server: 9. Activate new accessToken for this node ID 
-Server-->Client--: 10. Response status 200
-Client -> Client : 11. Remove old accessToken
+Client->Server++: 1. POST /[version]/initiateConnection
+Server->Server: 2. Generate new pending accessToken
+Server-->Client--: 3. Response status 200
+Client->Client: 4. Store pending accessToken
+Client->Server++: 5. POST /[version]/confirmAccessToken
+Server->Server: 6. Activate new accessToken for this node ID 
+Server-->Client--: 7. Response status 200
+Client -> Client : 8. Remove old accessToken
 @enduml
 ```
 
@@ -912,32 +926,12 @@ Before an node can initiate a connection, it needs three things.
 
 1. The HTTP server and the HTTP client can only start with a communication request when they are fully initialized and have all the details of the nodes it represents available. 
 2. The HTTP client must have the base URL of the connection API (e.g. `https://hostname.local/connection/`)
-3. The two nodes must have been paired successfully and must have an accessToken for this pairing
+3. The HTTP client must have selected the version on the pairing API that will be used (see [Selecting the version of the pairing or connection initiation API](#selecting-the-version-of-the-pairing-or-connection-initiation-api))
+4. The two nodes must have been paired successfully and must have an accessToken for this pairing
 
 If the HTTP client does not fulfill these preconditions, it **cannot** send the first HTTP request of the connection process.
 
-### 1. GET / (index containing communication API versions)
-Since the HTTP client does not know which major versions of the communication API are implemented by the server, it must first do a GET request to the index (e.g. `https://hostname.local/pairing/`). 
-
-The client **must** perform the following checks during this request:
-
-| Check | How to proceed if check fails |
-| --- | --- |
-| Check TLS certificate | Do not proceed with connection, try again later |
-| If self-signed TLS certificate, check if server is local | Do not proceed with connection, try again later |
-
-If no checks fail the client **should** proceed to the next step.
-
-### 2. Response status 200
-The server responds with a list of implement major versions of the pairing API. It is formatted as a JSON array contains all the supported version of the pairing API (e.g. `["v1"]`).
-
-If the HTTP client does not support any of the provided versions, it means that the two endpoints are not compatible, and that connection is not possible.
-
-### 3. Decide communication API version
-From the provided list of major versions of the communication API, the HTTP client must select one that is implement by the HTTP client itself (typically the highest supported version). 
-
-### 4. POST /[version]/initiateConnection
-
+### 1. POST /[version]/initiateConnection
 Since there are situations in which the client cannot know for sure which `accessToken` the communication server uses for this pairing, the communication client must keep a persisted list of `accessTokens` (which will typically contain only one `accessToken`).
 
 The client **must** perform the following checks during this request:
@@ -974,13 +968,13 @@ The server **must** perform the checks in the table below to make sure that it c
 | Is there overlap between the S2 message versions? | `CommunicationDetailsErrorMessage` with errorMessage `IncompatibleS2MessageVersions` | Retry later |
 | Are the endpoint and node ready for pairing? | `CommunicationDetailsErrorMessage` with errorMessage `Other` | Retry later |
 
-### 5. Generate new pending `accessToken`
+### 2. Generate new pending `accessToken`
 
 For each paired node the server saves an active `accessToken`. In addition to that, the server also has a list for pending `accessToken`s, that were generated but not yet confirmed by the client. This list contains entries, each consisting of an `accessToken`, the node IDs of the client and server nodes and a timestamp.
 
 The server generates a new `accessToken` and saves this together with the node ID and the current time as in entry in the list of pending tokens. The `accessToken` **must** be generated by a cryptographically secure pseudorandom number generator.
 
-### 6. Response status 200
+### 3. Response status 200
 
 In the request the client supplied a list of supported communication protocols and S2 messages versions. The server must select one of the options that were provided by the client.
 
@@ -1002,10 +996,10 @@ The client **must** perform the checks in the table below to make sure that it c
 | Was the selected S2 message version offered in the request? | Do not proceed and try again later with step 1 |
 | Was the selected communication protocol offered in the request? | Do not proceed and try again later with step 1 |
 
-### 7. Store pending accessToken
+### 4. Store pending accessToken
 It client adds the pending `accessToken` to its list of `accessTokens`, but does not yet remove the old one. If the client is not able to persist the pending `accessToken` (e.g. because the storage device or the DBMS is not available), the client does not proceed with the process. Once the client is able to persist `accessTokens` again, it can retry to set up a connection starting with step 1.
 
-### 8. POST /[version]/confirmAccessToken
+### 5. POST /[version]/confirmAccessToken
 The client confirms to the server that it has successfully persisted the pending `accessToken`. The **pending** `accessToken` is provided through the header of the request.
 
 The client **must** perform the following checks during this request:
@@ -1018,7 +1012,7 @@ The client **must** perform the following checks during this request:
 
 If no checks fail the client **should** proceed.
 
-### 9. Activate new `accessToken` for this node ID 
+### 6. Activate new `accessToken` for this node ID 
 
 If the provided `accessToken` is in the list pending `accessToken`s, and the token was generated not more than **15 seconds** ago, the server now makes the pending `accessToken` the active `accessToken` for this pairing of nodes (thereby invalidating the old `accessToken`). Also, the entry is removed from the list of pending `accessToken`s.
 
@@ -1026,20 +1020,20 @@ If the provided `accessToken` is not in the list of pending `accessTokens`s, the
 
 If the server is not able to active the new `accessToken` (e.g. because the storage device or the DBMS is not available), the server must not accept the connection and responds with an error code 500. The client can try again later starting at step 1.
 
-### 10. Response status 200
+### 7. Response status 200
 
 The communication server sends the details and credentials to open a socket for communicating the S2 messages. The exact contents of this message depend on the selected communication protocol. In any case it will be a JSON object containing the field `communicationProtocol`. The presence on other fields will depend on the value of the `communicationProtocol` field.
 
 If the response is not understood by the communication client, the client **should** retry later.
 
-### 11. Remove old accessToken
+### 8. Remove old accessToken
 
-Step 10 functions as a confirmation to the communication client that the communication server has activated the new `accessToken` for this pairing. The old `accessToken` cannot be used anymore, so the communication client must remove the old `accessToken` from the list of `accessToken`s.
+Step 7 functions as a confirmation to the communication client that the communication server has activated the new `accessToken` for this pairing. The old `accessToken` cannot be used anymore, so the communication client must remove the old `accessToken` from the list of `accessToken`s.
 
 ### Interruption of the process
-Once the communication server has generated a new pending `accessToken`, it must be confirmed within 15 seconds by the communication client. If this doesn't happen, a client will have to start the process from step 1 (or step 4) again.
+Once the communication server has generated a new pending `accessToken`, it must be confirmed within 15 seconds by the communication client. If this doesn't happen, a client will have to start the process from step 1.
 
-If the communication client doesn't receive a response to confirming the new `accessToken` (step 10), it does not know if the server has activated the new `accessToken`, or if the old `accessToken` is still in place. It now has (at least) two `accessToken`s in its list, and does not know for certain which one is activate at the communication server. It should try all the accessTokens sequentially. If it finds an `accessToken` that is accepted by the communication server, it can remove the other `accessTokens`.
+If the communication client doesn't receive a response to confirming the new `accessToken` (step 7), it does not know if the server has activated the new `accessToken`, or if the old `accessToken` is still in place. It now has (at least) two `accessToken`s in its list, and does not know for certain which one is activate at the communication server. It should try all the accessTokens sequentially. If it finds an `accessToken` that is accepted by the communication server, it can remove the other `accessTokens`.
 
 ## WebSocket based communication
 
