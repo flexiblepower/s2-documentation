@@ -287,16 +287,17 @@ There are however two situations where this is not possible:
 
 # Formal specification and versioning (normative)
 
-This document serves as an overall specification of the S2 Connect protocol. However, where possible, the protocol has been specified in a formal specification language in order to minimize possible interpretation and allow tooling to assist the implementation of the specification. Since many details are better described in these formal specification files, they are not described in this document. Where the formal specification files and this document overlap, the formal specification file is leading.
+This document serves as an overall specification of the S2 Connect protocol. However, where possible, the protocol has been specified in a formal specification language in order to minimize possibilities for different interpretations and allow tooling to assist the implementation of the specification. Since many details are better described in these formal specification files, they are not described in this document. **Where the formal specification files and this document overlap, the formal specification file is leading.**
 
 | Part of specification | Description | Specification format | Location |
 | --- | --- | --- | --- |
 | S2 Connect pairing API | HTTP based interaction to pair two nodes | OpenAPI file | [Github](https://github.com/flexiblepower/s2-connect/blob/main/s2-connect-pairing.yml) |
 | S2 Connect connection API | HTTP based interaction set up a communication channel for S2 messages between two nodes | OpenAPI file | [Github](https://github.com/flexiblepower/s2-connect/blob/main/s2-connect-connection-init.yml) |
+| S2 Connect WAN pairing endpoint registry API | HTTP based interface to query the registry  | OpenAPI file | [Github](https://github.com/flexiblepower/s2-connect/blob/main/s2-connect-wan-endpoint-registry.yml) |
 | S2 JSON message structure | The types of S2 messages that can be exchanges between nodes | JSON schema files | [Github](https://github.com/flexiblepower/s2-ws-json/tree/main/s2-json-schema) |
 
 ## Versioning of OpenAPI files
-The S2 Connect pairing API and the S2 Connect connection API are formally defined in OpenAPI files. To accommodate future changes to these APIs, the OpenAPI files are versioned. Versioning is done using a `major.minor` scheme. The pairing API and the connection initiation API share the same version number.
+The S2 Connect pairing API, the S2 Connect connection initiation API and the S2 Connect WAN pairing endpoint registry are formally defined in OpenAPI files. To accommodate future changes to these APIs, the OpenAPI files are versioned. Versioning is done using a `major.minor` scheme. All S2 Connect OpenAPI files share the same version number.
 
 The minor version is increased when backwards compatible changes are made. Be aware that we consider adding items to certain lists of enums (e.g. the list of supported hash functions) backwards compatible. Other examples of backwards compatible changes are additional properties of JSON files or added operations.
 
@@ -309,12 +310,12 @@ The major version of the API is embedded in the base URL of the API as `/v[major
 ## Addressing endpoints
 The URL of the pairing and connection API are used in the discovery process, pairing process and connection process, as wel as the basis for TLS certificates.
 
-For WAN deployed endpoints, the URL **must** be based on a DNS domain name.
+For **WAN** deployed endpoints, the URL **must** be based on a DNS domain name.
 
-For LAN deployed endpoint, the URL **must** be based on an mDNS alias or hostname (e.g. `hostname.local`). It is important that these names are *unique* and *stable*. Unique since there could be multiple instance within the same LAN, and stable because if it changes, the endpoint cannot be found by other endpoints. It should also be noted that the alias used by DNS-SD, and is presented to the end user. It recommended to choose a name that the end user should recognize and an element for the end user to make a distinction between two devices of the same type, such as a serial number.
+For **LAN** deployed endpoints, the URL **must** be based on an mDNS alias or hostname (e.g. `hostname.local`). It is important that these names are *unique* and *stable*. Unique since there could be multiple instance within the same LAN, and stable because if it changes, the endpoint cannot be found by other endpoints. It should also be noted that the alias used by DNS-SD, and is presented to the end user. It recommended to choose a name that the end user should recognize and an element for the end user to make a distinction between two devices of the same type, such as a serial number.
 
-## Selecting the version of the pairing or connection initiation API
-As explained in the section [Versioning of OpenAPI files](#version) the pairing server or connection initiation server can implement multiple versions of the API specification in parallel. As a result, the client **must** always first determine which version of the API it will use, before it can start interacting with the API.
+## Selecting the version of REST APIs
+As explained in the section [Versioning of OpenAPI files](#version) the pairing server, the connection initiation server and the WAN pairing endpoint registry can implement multiple versions of the API specification in parallel. As a result, the client **must** always first determine which version of the API it will use, before it can start interacting with the API.
 
 The image below depicts the interactions between client and server for the process to determine the API version that will be used.
 
@@ -380,33 +381,48 @@ A CEM can be paired with multiple RM's a the same time. A RM can only be paired 
 
 ## Discovery
 
-> TODO: This section still notes to be expanded
+In order to ease the pairing process, which is specified below, the discovery process provides a way for nodes to find each other without requiring a user to know the pairing endpoint of the other node. In other words, the discovery process is a way to provide an node with the URL of another node which is needed to start the pairing process. Alternatively, it **must** always possible to initiate the pairing by manually providing the URL by the end user.
 
-In order to ease the pairing process, which is specified below, the discovery process provides a way for nodes to find each other without requiring a user to know the pairing endpoint of the other node. In other words, the discovery process is a way to provide an node with the URL of another node which is needed to start the pairing process. Alternatively, it is always possible to initiate the pairing by manually providing the URL by the end user.
+There are two mechanisms for discovery: For discovering WAN endpoints there is a central online registry. For discovering endpoints within the same LAN, DNS-SD is used. DNS-SD can also be used to discovery WAN endpoints of devices that have a presence in the LAN (typically an energy smart appliance which hosts the RM in the cloud).
 
-> NOTE: the discovery process specification is work in progress and will be updated soon.
+### WAN pairing endpoint registry
 
-### WAN-WAN
-Both the S2 RM and CEM run in the cloud (for example communicating with the device via a manufacturer specific protocol). Discovery of the other node by lookup in a central registry.
+> Note: At this point the registry is specified, but not yet publicly available
 
-> NOTE: how the API of the registry will look like will be published soon
+The task of the registry is to facilitate a more user friendly way to determine the URL of the WAN pairing endpoint. Owners of an S2 Connect WAN pairing endpoint can register their endpoint at the registry. The user interface of a CEM or RM could show a list of relevant endpoints to the user (e.g. in a list or drop down menu) with details that would be easily recognizable to the end user (e.g. name and icon). By querying the registry the user interface can always show an up-to-date list of endpoints. The registry contains filtering functionality to filter endpoints that are relevant in the context.
 
-### WAN-LAN
+The registry uses the same versioning mechanism as the other S2 Connect OpenAPI files. See [Selecting the version of REST APIs](#selecting-the-version-of-rest-apis) to see how the client can select the version of the API to use.
 
-A hybrid scenario where either the RM or CEM is deployed locally and the other in the cloud. Discovery of the cloud node by lookup in a central registry or DNS-SD in case the node is also present on the LAN.
+The registry contains the following information for each endpoint. For full normative details see the OpenAPI specification files.
 
-> NOTE: the DNS-SD service specification will be published soon
+| Property | Description |
+| --- | --- |
+| `id` | Unique UUID identifier for the record |
+| `name` | User facing name of the endpoint |
+| `description` | User facing description of the endpoint|
+| `icon32` | 32 by 32 pixel- icon of the endpoint |
+| `icon128` | 128 by 128 pixels icon of the endpoint |
+| `icon512` | 512 by 512 pixels icon of the endpoint |
+| `pairingApiUrl` | The URL of the pairing API of the endpoint |
+| `regions` | Array of regions in which this endpoint operates, as defined by the ISO 3166-1 alpha-2 country code |
+| `status` | Status of the endpoint, can either be `testing` or `public` |
+| `cem` | Boolean indicating if the endpoint represents CEM nodes |
+| `rm` | Boolean indicating if the endpoint represents RM nodes |
 
-### LAN-LAN
-A LAN scenario where both RM and CEM are running on the same local network. Discovery through DNS-SD.
+In order to filter out the relevant endpoint records the API supports the following filters:
 
-> NOTE: the DNS-SD service specification will be published soon
+* Region in which the endpoint claims to be active
+* Status, which can be `testing` or `public` (when no value provided, the default value will be `public`)
+* Whether the endpoint contains CEM nodes
+* Whether the endpoint contains RM nodes
+
+In addition, the number of responses can be limited. An offset can also be provided in order to split the results over multiple requests.
 
 ### DNS-SD based discovery
 DNS-SD is used for automatically discover nodes from an node that is deployed in the LAN. This method can be used in three ways.
 
 * To discover another node that is deployed in the LAN, which is the responder node
-* To advertise a [long polling endpoint](#long-polling) so other initiator nodes in the LAN could connect to this node
+* To advertise a [long polling URL](#long-polling) so other initiator nodes in the LAN could connect to this node
 * To discover an node of which the RM is deployed in the WAN, but that also has a presence in the LAN.
 
 S2 Connect uses the service type `s2connect` and exclusively uses tcp, since it is an HTTP based protocol. S2 Connect uses the following DNS-SD values:
@@ -650,7 +666,7 @@ Before two node can be paired, the following preconditions must be met.
 
 1. The HTTP server and the HTTP client can only start with a pairing request when they are fully initialized and have all the details of the nodes it represents available. 
 2. The HTTP client must have the base URL of the pairing API (e.g. `https://hostname.local/pairing/`)
-3. The HTTP client must have selected the version on the pairing API that will be used (see [Selecting the version of the pairing or connection initiation API](#selecting-the-version-of-the-pairing-or-connection-initiation-api))
+3. The HTTP client must have selected the version on the pairing API that will be used (see [Selecting the version of the pairing or connection initiation API](#selecting-the-version-of-rest-apis))
 4. Both nodes must have a pairing token available. Either because they issued this token themselves, or because the end user has provided it through the user interface.
 
 > Note: The initiator node could be the HTTP server or the HTTP client
@@ -926,7 +942,7 @@ Before an node can initiate a connection, it needs three things.
 
 1. The HTTP server and the HTTP client can only start with a communication request when they are fully initialized and have all the details of the nodes it represents available. 
 2. The HTTP client must have the base URL of the connection API (e.g. `https://hostname.local/connection/`)
-3. The HTTP client must have selected the version on the pairing API that will be used (see [Selecting the version of the pairing or connection initiation API](#selecting-the-version-of-the-pairing-or-connection-initiation-api))
+3. The HTTP client must have selected the version on the pairing API that will be used (see [Selecting the version of the pairing or connection initiation API](#selecting-the-version-of-rest-apis))
 4. The two nodes must have been paired successfully and must have an accessToken for this pairing
 
 If the HTTP client does not fulfill these preconditions, it **cannot** send the first HTTP request of the connection process.
