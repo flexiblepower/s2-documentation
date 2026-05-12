@@ -529,13 +529,79 @@ Where:
 | `F`  | SHA256 fingerprint of the TLS server certificate of the HTTP server |
 | `\|\|` | Concatenation |
 
+## Getting endpoint information
+
+> This section is only applicable for LAN-LAN pairing
+
+Once a LAN endpoint has discovered a LAN pairing endpoint (through DNS-SD or by the end user manually entering the URL), it still knows very little about the endpoint. There are two REST operations that allow an HTTPS client to query information of a server endpoint: performing a GET on `/endpoint` and performing a GET on `/nodes`.
+
+These operations **must** be implemented by LAN deployed endpoints, but **must not** be implemented by WAN deployed endpoints. These operations can be used in the situation where the initiator node is the HTTPS client and the responder node is het HTTPS server (for the situation where it is the other way around see [Long-polling](#long-polling)).
+
+Before the HTTPS client can start interaction with the server, it must first select a version of the API to use. See [Selecting the version of the pairing or connection initiation API](#selecting-the-version-of-the-pairing-or-connection-initiation-api). For full normative details see the OpenAPI specification files.
+
+* The client can perform a HTTPS GET request on the path `/endpoint` to receive the endpoint details of the endpoint.
+* The client can perform a HTTPS GET request on the path `/nodes` to receive a list of node details for all the nodes represented by the endpoint.
+
+There is no authentication for these operations, but the server **must** check if the request originates from within the LAN (see [LAN deployment check](#lan-deployment-check)). If it does not, the server **must** respond with HTTP status code 401. The server **must** accept requests with a self-signed certificate.
+
 ## Pre-pairing interaction
 
 > This section is only applicable for LAN-LAN pairing
 
-> TODO: This section needs to be improved
+Once the end user has selected a responder node it wants the initiator node to pair with, the end user probably still has to retrieve the pairing code from the responder node. In order to improve the user experience, the initiator node can send a *prepare pairing* signal to the responder node. The responder node **may** use this signal to proactively show the pairing code in its user interface, for example in the form of a pop-up or notification. This saves the end user the trouble of searching where to find the pairing token in the user interface. It is also possible for the initiator node to send a *cancel prepare pairing* signal to the responder node, in case the end user has no longer selected the responder node it wants to pair with. Sending these signals **must** be implemented by the client, but only when there is a clear distinction between the moment the prepare pairing signal is sent and when the actual paring starts. The receiver of these signals **may** process these signals by showing the pairing token in its user interface. When the prepare pairing signal is sent, it is not guaranteed that a cancel prepare pairing or a pairing attempt will follow.
 
-The user visits the S2ClientNodeUI and the S2ServerNode has been discovered (so the S2ServerNode base URL is known) by the the S2ClientNode per [discovery](#discovery) as specified above. The S2ClientNode does a preparePairing HTTP request to let the S2ServerNode know that there is an S2ClientNode that wants to pair. It is up to the S2ServerNode implementation to decide what to do with this signal. It can be used to display a pop-up with the pairing token in its UI to improve the user experience. It must be implemented by the client, but only when there is a clear distinction between the moment preparePairing is called and when requestPairing is called. When preparePairing is called, it is not guaranteed that a call to pairingRequest or cancelPreparePairing will follow so it is recommended to put a time-out on showing the pairing token in the S2ServerNodeUI.
+These operations **must** be implemented by LAN deployed endpoints, but **must not** be implemented by WAN deployed endpoints. These operations can be used in the situation where the initiator node is the HTTPS client and the responder node is het HTTPS server (for the situation where it is the other way around see [Long-polling](#long-polling)).
+
+There is no authentication for these operations, but the server **must** check if the request originates from within the LAN (see [LAN deployment check](#lan-deployment-check)). If it does not, the server **must** respond with HTTP status code 401. The server **must** accept requests with a self-signed certificate.
+
+Before sending signals the HTTPS client **must** have selected the version on the pairing API that will be used (see [Selecting the version of the pairing or connection initiation API](#selecting-the-version-of-the-pairing-or-connection-initiation-api)).
+
+## Sending the prepare pairing signal
+
+The client can send the prepare pairing signal to the server by sending an HTTPS POST request to the path `/preparePairing`. The client must perform the following checks before sending information:
+
+| Check | How to proceed if check fails |
+| --- | --- |
+| Check TLS certificate | Sending signal failed, do not proceed with sending signal |
+| Check if the server is in the LAN | Sending signal failed, do not proceed with sending signal |
+
+The client **must** send the following information in the request. For full normative details see the OpenAPI specification files.
+
+| Property | Description |
+| --- | --- |
+| `clientNodeDescription` | Details of the node at the client that the end user intents to pair with the node at the server |
+| `clientEndpointDescription` | Details of the client endpoint |
+| `serverNodeId` | The node ID of the node at the server that the end user intents to pair weth the node at the client (see [Getting endpoint information](#getting-endpoint-information) for details on how to retrieve the server node ID) |
+
+The server **must** perform the checks in the table below. For the checks with HTTP status 400, a `PairingResponseErrorMessage` must be send. In that case, the contents of the `additionalInfo` field is supposed the be helpful and up to the implementer.
+
+| Check | Status code | Type of `PairingResponseErrorMessage` when check fails |
+| --- | --- | --- |
+| Did the request originate from within the same LAN? | 401 | n/a |
+| Is the request properly formatted and does it follow the schema? | 400 | `ParsingError` |
+| Does it recognize the `serverNodeId`? | 400 | `NodeNotFound` |
+| Are the endpoint and node ready for pairing? | 400 | `Other` |
+| Does the targeted node have a different role than the initiator node (i.e. you cannot pair two RM's or two CEM's)? | 400 | `InvalidCombinationOfRoles` |
+
+If no checks fail the server **should** respond with HTTP status code 204.
+
+## Cancelling the prepare pairing signal
+
+If the client sent a prepare pairing signal the the server, and the end user has indicated in some way that it is no longer indented to pair with the node, it **should** send a cancel prepare pairing signal. It can do that by sending an HTTPS POST request to the path `/cancelPreparePairing`. The client must perform the following checks before sending information:
+
+| Check | How to proceed if check fails |
+| --- | --- |
+| Check TLS certificate | Sending signal failed, do not proceed with sending signal |
+| Check if the server is in the LAN | Sending signal failed, do not proceed with sending signal |
+
+The client **must** send the following information in the request. For full normative details see the OpenAPI specification files.
+
+| Property | Description |
+| --- | --- |
+| `clientNodeId` | The node ID of the node at the client that the end user intents to pair weth the node at the server |
+| `serverNodeId` | The node ID of the node at the server that the end user intents to pair weth the node at the client |
+
+The server **must** check if the request originates from within the LAN. If it doesn't, the server responds with HTTP status code 401. In other cases it responds with HTTP status code 204 (even when it does not recognize the `clientNodeId` or `serverNodeId`).
 
 ## Long-polling
 
@@ -682,7 +748,7 @@ The client **must** perform the following checks during this request:
 | --- | --- |
 | Check TLS certificate | Pairing is failed, do not proceed with the pairing attempt |
 | If self-signed TLS certificate, check if server is local | Pairing is failed, do not proceed with the pairing attempt |
-| Check if same fingerprint is used as previous request | Pairing is failed, do not proceed with the pairing attempt | 
+| Check if same fingerprint is used as previous request (when applicable) | Pairing is failed, do not proceed with the pairing attempt | 
 
 If no checks fail the client **should** proceed to the next step.
 
