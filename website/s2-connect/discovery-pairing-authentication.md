@@ -507,7 +507,7 @@ The HMAC function itself uses a cryptographic hash function for its calculations
 
 It order to avoid man-in-the-middle attacks, information about the connection in also used as input for calculating the response. When both nodes are deployed in the LAN, the SHA256 fingerprint of the server certificate is used. In other scenario's, the domain name of the server is included in the calculation of the response.
 
-Note that the challenge and response binary data, that they and are encoded using Base64 and must also be decoded before they can be used. SHA256 certificate fingerprints are encoded as a hexadecimal string, and must be decoded as hexadecimal string before it can be used as input. The pairing token and domain name are strings, which need to be encoded into binary data using the ASCII table.
+Note that the challenge and response is binary data. Both are encoded using Base64 and must also be decoded before they can be used. SHA256 certificate fingerprints are encoded as a hexadecimal string, and must be decoded as hexadecimal string before it can be used as input. The pairing token and domain name are strings, which need to be encoded into binary data using the ASCII table.
 
 The exact function to calculate the response depends on the deployment of the nodes.
 
