@@ -505,9 +505,9 @@ The algorithm to calculate the response is based on the HMAC (hash-based message
 
 The HMAC function itself uses a cryptographic hash function for its calculations. Since cryptographic hash functions might contain vulnerabilities, this protocol uses a simple selection mechanism for the cryptographic hash function. The HTTP client sends with the requestPairing HTTP request a list of supported hash functions. In the response the HTTP server indicates which hash function it has selected from this list. This function **must** be used for all response calculations during het pairing attempt. Currently there is only one hash function available (SHA256), but other options might be added in the future.
 
-It order to avoid man-in-the-middle attacks when using self-signed certificates, the SHA256 fingerprint of the TLS *server certificate* can also be used as input for calculating the response.
+It order to avoid man-in-the-middle attacks, information about the connection in also used as input for calculating the response. When both nodes are deployed in the LAN, the SHA256 fingerprint of the server certificate is used. In other scenario's, the domain name of the server is included in the calculation of the response.
 
-> Note that the pairing token is encoded using Base64, so it must also be decoded using Base64 before it can be used in the challenge response function.
+Note that the challenge and response are binary data. Both are encoded using Base64 and must also be decoded before they can be used. SHA256 certificate fingerprints are encoded into a hexadecimal string, and must be decoded as hexadecimal string before it can be used as input (note that fingerprint strings usually contain colons to separate bytes). The pairing token and domain name are strings, which need to be converted into binary data using the ASCII table.
 
 The exact function to calculate the response depends on the deployment of the nodes.
 
@@ -516,18 +516,19 @@ When both nodes have a LAN deployment:
   R = HMAC(C, T || F)
 
 When at least one node has a WAN deployment:
-  R = HMAC(C, T)
+  R = HMAC(C, T || D)
 ```
 
 Where:
-| Symbol | meaning |
-| ------ | ------- |
-| `R` | Response
-| `HMAC` | HMAC function with the selected cryptographic hash function |
-| `C` | Challenge |
-| `T`  | Pairing token |
-| `F`  | SHA256 fingerprint of the TLS server certificate of the HTTP server |
-| `\|\|` | Concatenation |
+| Symbol | Type | Meaning |
+| ------ | ------- | ---- |
+| `R` | Binary data | Response |
+| `HMAC` | Function | HMAC function with the selected cryptographic hash function |
+| `C` | Binary data | Challenge |
+| `T` | Binary data | Pairing token |
+| `F` | Binary data | SHA256 fingerprint of the TLS server certificate (i.e. leaf certificate) |
+| `D` | Binary data | The domain name of the HTTP server, including subdomains, without protocol or trailing slashes (e.g. `pairing.s2.example.com`) |
+| `\|\|` | Function | Concatenation function |
 
 ## Pre-pairing interaction
 
