@@ -542,7 +542,7 @@ Before the HTTPS client can start interaction with the server, it must first sel
 * The client can perform an HTTPS GET request on the path `/endpoint` to receive the remote endpoint details.
 * The client can perform an HTTPS GET request on the path `/nodes` to receive a list of node details for all the nodes represented by the endpoint.
 
-There is no authentication for these operations, but the server **must** check if the request originates from within the LAN (see [LAN deployment check](#lan-deployment-check)). If it does not, the server **must** respond with HTTP status code 401. The server **must** accept requests with a self-signed certificate.
+Note that there is no authentication for these operations. It is assumed that these operations are only exposed within the LAN.
 
 ## Pre-pairing interaction
 
@@ -552,7 +552,7 @@ Once the end user has selected a responder node it wants the initiator node to p
 
 These operations **must** be implemented by LAN deployed endpoints, but **must not** be implemented by WAN deployed endpoints. These operations can be used in the situation where the initiator node is the HTTPS client and the responder node is het HTTPS server (for the situation where it is the other way around see [Long-polling](#long-polling)).
 
-There is no authentication for these operations, but the server **must** check if the request originates from within the LAN (see [LAN deployment check](#lan-deployment-check)). If it does not, the server **must** respond with HTTP status code 401. The client **must** accept requests with a self-signed certificate.
+Note that there is no authentication for these operations. It is assumed that these operations are only exposed within the LAN.
 
 Before sending signals the HTTPS client **must** have selected the version of the pairing API that will be used (see [Selecting the version of the pairing or connection initiation API](#selecting-the-version-of-the-pairing-or-connection-initiation-api)).
 
@@ -563,7 +563,6 @@ The client can send the prepare pairing signal to the server by sending an HTTPS
 | Check | How to proceed if check fails |
 | --- | --- |
 | Check TLS certificate | Sending signal failed, do not proceed with sending signal |
-| Check if the server is in the LAN | Sending signal failed, do not proceed with sending signal |
 
 The client **must** send the following information in the request. For full normative details see the OpenAPI specification files.
 
@@ -577,7 +576,6 @@ The server **must** perform the checks in the table below. For the checks with H
 
 | Check | Status code | Type of `PairingResponseErrorMessage` when check fails |
 | --- | --- | --- |
-| Did the request originate from within the same LAN? | 401 | n/a |
 | Is the request properly formatted and does it follow the schema? | 400 | `ParsingError` |
 | Does it recognize the `serverNodeId`? | 400 | `NodeNotFound` |
 | Are the endpoint and node ready for pairing? | 400 | `Other` |
@@ -592,7 +590,6 @@ If the client sent a prepare pairing signal the the server, and the end user has
 | Check | How to proceed if check fails |
 | --- | --- |
 | Check TLS certificate | Sending signal failed, do not proceed with sending signal |
-| Check if the server is in the LAN | Sending signal failed, do not proceed with sending signal |
 
 The client **must** send the following information in the request. For full normative details see the OpenAPI specification files.
 
@@ -601,7 +598,7 @@ The client **must** send the following information in the request. For full norm
 | `clientNodeId` | The node ID of the node at the client that the end user intents to pair weth the node at the server |
 | `serverNodeId` | The node ID of the node at the server that the end user intents to pair weth the node at the client |
 
-The server **must** check if the request originates from within the LAN. If it doesn't, the server responds with HTTP status code 401. In other cases it responds with HTTP status code 204 (even when it does not recognize the `clientNodeId` or `serverNodeId`).
+The server **should** respond with HTTP status code 204 (even when it does not recognize the `clientNodeId` or `serverNodeId`).
 
 ## Long-polling
 
