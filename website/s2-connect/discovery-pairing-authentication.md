@@ -297,7 +297,7 @@ This document serves as an overall specification of the S2 Connect protocol. How
 | S2 JSON message structure | The types of S2 messages that can be exchanges between nodes | JSON schema files | [Github](https://github.com/flexiblepower/s2-ws-json/tree/main/s2-json-schema) |
 
 ## Versioning of OpenAPI files
-The S2 Connect pairing API, the S2 Connect connection initiation API and the S2 Connect WAN pairing endpoint registry are formally defined in OpenAPI files. To accommodate future changes to these APIs, the OpenAPI files are versioned. Versioning is done using a `major.minor` scheme. All S2 Connect OpenAPI files share the same version number.
+The pairing API, the connection initiation API and the WAN pairing endpoint registry API are formally defined in OpenAPI files. To accommodate future changes to these APIs, the OpenAPI files are versioned. Versioning is done using a `major.minor` scheme. All S2 Connect OpenAPI files share the same version number.
 
 The minor version is increased when backwards compatible changes are made. Be aware that we consider adding items to certain lists of enums (e.g. the list of supported hash functions) backwards compatible. Other examples of backwards compatible changes are additional properties of JSON files or added operations.
 
