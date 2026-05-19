@@ -381,17 +381,17 @@ A CEM can be paired with multiple RM's a the same time. A RM can only be paired 
 
 ## Discovery
 
-In order to ease the pairing process, which is specified below, the discovery process provides a way for nodes to find each other without requiring a user to know the pairing endpoint of the other node. In other words, the discovery process is a way to provide an node with the URL of another node which is needed to start the pairing process. Alternatively, it **must** always possible to initiate the pairing by manually providing the URL by the end user.
+In order to ease the pairing process, which is specified below, the discovery process provides a way for nodes to find each other without requiring a user to know the pairing endpoint URL of the other node. In other words, the discovery process is a way to provide a node with the URL of another node which is needed to start the pairing process. Alternatively, it **must** always be possible to initiate the pairing by manually providing the URL by the end user.
 
-There are two mechanisms for discovery: For discovering WAN endpoints there is a central online registry. For discovering endpoints within the same LAN, DNS-SD is used. DNS-SD can also be used to discovery WAN endpoints of devices that have a presence in the LAN (typically an energy smart appliance which hosts the RM in the cloud).
+There are two mechanisms for discovery: For discovering WAN endpoints there is a central online registry. For discovering endpoints within the same LAN, DNS-SD is used. DNS-SD can also be used to discovery WAN endpoints of devices that have a presence in the LAN (typically an energy smart appliance of which the RM is deployed in the cloud).
 
 ### WAN pairing endpoint registry
 
 > Note: At this point the registry is specified, but not yet publicly available
 
-The task of the registry is to facilitate a more user friendly way to determine the URL of the WAN pairing endpoint. Owners of an S2 Connect WAN pairing endpoint can register their endpoint at the registry. The user interface of a CEM or RM could show a list of relevant endpoints to the user (e.g. in a list or drop down menu) with details that would be easily recognizable to the end user (e.g. name and icon). By querying the registry the user interface can always show an up-to-date list of endpoints. The registry contains filtering functionality to filter endpoints that are relevant in the context.
+The purpose of the registry is to facilitate a more user friendly way to determine the URL of the WAN pairing endpoint. Providers of an S2 Connect WAN pairing endpoint can register their endpoint at the registry. The user interface of a CEM or RM could show a list of relevant endpoints to the user (e.g., in a list or drop down menu) with details that would be easily recognizable to the end user (e.g., name and icon). By querying the registry, the user interface can always show an up-to-date list of endpoints. The registry contains filtering functionality to filter endpoints that are relevant in the context.
 
-The registry uses the same versioning mechanism as the other S2 Connect OpenAPI files. See [Selecting the version of REST APIs](#selecting-the-version-of-rest-apis) to see how the client can select the version of the API to use.
+The registry uses the same version negotiation mechanism as the other S2 Connect OpenAPI files. Refer to [Selecting the version of REST APIs](#selecting-the-version-of-rest-apis) for information on how clients can select the API version to use.
 
 The registry contains the following information for each endpoint. For full normative details see the OpenAPI specification files.
 
@@ -419,11 +419,11 @@ In order to filter out the relevant endpoint records the API supports the follow
 In addition, the number of responses can be limited. An offset can also be provided in order to split the results over multiple requests.
 
 ### DNS-SD based discovery
-DNS-SD is used for automatically discover nodes from an node that is deployed in the LAN. This method can be used in three ways.
+DNS-SD is used to automatically discover nodes from a node that is deployed in the LAN. This method can be used in three ways.
 
 * To discover another node that is deployed in the LAN, which is the responder node
 * To advertise a [long polling URL](#long-polling) so other initiator nodes in the LAN could connect to this node
-* To discover an node of which the RM is deployed in the WAN, but that also has a presence in the LAN.
+* To discover a node of which the RM is deployed in the WAN, but that also has a presence in the LAN.
 
 S2 Connect uses the service type `s2connect` and exclusively uses tcp, since it is an HTTP based protocol. S2 Connect uses the following DNS-SD values:
 
