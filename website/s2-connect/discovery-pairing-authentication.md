@@ -236,7 +236,7 @@ On of the main technologies the process relies on is HTTP REST. All interactions
 The first step is finding the responder node from the initiator node. In principle this is done based on the URL of the responder node. However, to improve user experience, two systems exist to find this URL in a more user friendly manner. For more details see [Discovery](#discovery).
 
 * If the responder node is deployed in the WAN, the end user can find the endpoint through the pairing endpoint registry. This would result in a list of vendors that offer nodes.
-* If both nodes are deployed in the LAN however, the responder node can be detected automatically through a process based on DNS-SD. This way the user only has to select the desired node to connect to from a list of nodes which were discovered in the LAN. This process can also be used when an node is deployed in the WAN, but the device also has a presence in the LAN.
+* If both nodes are deployed in the LAN however, the responder node can be detected automatically through a process based on DNS-SD. This way the user only has to select the desired node to connect to from a list of nodes which were discovered in the LAN.
 
 ### Pairing
 
@@ -383,7 +383,7 @@ A CEM can be paired with multiple RM's a the same time. A RM can only be paired 
 
 In order to ease the pairing process, which is specified below, the discovery process provides a way for nodes to find each other without requiring a user to know the pairing endpoint URL of the other node. In other words, the discovery process is a way to provide a node with the URL of another node which is needed to start the pairing process. Alternatively, it **must** always be possible to initiate the pairing by manually providing the URL by the end user.
 
-There are two mechanisms for discovery: For discovering WAN endpoints there is a central online registry. For discovering endpoints within the same LAN, DNS-SD is used. DNS-SD can also be used to discovery WAN endpoints of devices that have a presence in the LAN (typically an energy smart appliance of which the RM is deployed in the cloud).
+There are two mechanisms for discovery: For discovering WAN endpoints there is a central online registry. For discovering endpoints within the same LAN, DNS-SD is used.
 
 ### WAN pairing endpoint registry
 
@@ -419,11 +419,10 @@ In order to filter out the relevant endpoint records the API supports the follow
 In addition, the number of responses can be limited. An offset can also be provided in order to split the results over multiple requests.
 
 ### DNS-SD based discovery
-DNS-SD is used to automatically discover nodes from a node that is deployed in the LAN. This method can be used in three ways.
+DNS-SD is used to automatically discover nodes from a node that is deployed in the LAN. This method can be used in two ways.
 
 * To discover another node that is deployed in the LAN, which is the responder node
 * To advertise a [long polling URL](#long-polling) so other initiator nodes in the LAN could connect to this node
-* To discover a node of which the RM is deployed in the WAN, but that also has a presence in the LAN.
 
 S2 Connect uses the service type `s2connect` and exclusively uses tcp, since it is an HTTP based protocol. S2 Connect uses the following DNS-SD values:
 
@@ -445,30 +444,29 @@ Two DNS-SD subtypes are used for endpoints. Subtypes can be used to filter servi
  * `_rm` is used when the endpoint contains one or more RM node
  * `_cem` and `_rm` are both used when the endpoint contains both CEM and RM nodes
 
-S2 uses the following TXT records when registering for services. In the table below, M indicates a mandatory value and O indicates on optional value.
+S2 uses the following key-value pairs in the TXT record when registering for services. In the table below, M indicates a mandatory value and O indicates on optional value. Note that each value has a maximum length of 255 bytes.
 
 | Record name | M/O | Description
 | --- | --- | --- |
-| `txtver` | M | Version of this specification of usage of the TXT record. **Must** be the literal value `1` for this version |
+| `txtver` | M | Version of this specification of usage of the TXT record. **Must** be the literal string value `1` for this version |
 | `e_name` | O | The name of this endpoint (identical to the `name` property in the `EndpointDescription` object as defined in de OpenAPI specification) |
 | `e_logoUrl` | O | The logoUrl of this endpoint (identical to the `logoUrl` property in the `EndpointDescription` object as defined in de OpenAPI specification) |
-| `deployment` | M | **Must** be the literal value `LAN` or `WAN` (identical to the `logoUrl` property in the `EndpointDescription` object as defined in de OpenAPI specification) |
 | `pairingUrl` | O | The base URL of the pairing API of this endpoint, excluding the version name but including the last slash (e.g. `https://hostname.local/pairing/`). If no value is provided, a `longpollingUrl` **must** be provided.
 | `longpollingUrl` | O | The base URL of the pairing API of this endpoint on which the longpolling feature is implemented. The URL should be provided excluding the version name but including the last slash (e.g. `https://hostname.local/pairing/`). Only needs to be provided when longpolling is supported. Can only be provided if the value for `deployment` is equal to `LAN`.
 
 > Note: It is mandatory to provide a value for at least one of the properties `pairingUrl` and `longpollingUrl`. Providing both is also possible.
 
-The receiver of the service description **must** use the URL provided in the TXT records; not the hostname or IP-address and port associated with the service registry.
+The receiver of the service description **must** use the URL provided in the TXT record; not the hostname or IP-address and port associated with the service registry.
 
-> Note: You may have noticed that the full URL of the endpoint is used in the TXT records, even though the endpoint and port are already exposed by DNS-SD itself. This is done to avoid any problems with TLS certificates, which are pinned to a certain domain name. When using a WAN endpoint, the full URL needs to be specified as well, since no local service is actually being offered.
+> Note: You may have noticed that the full URL of the endpoint is used in the TXT record, even though the endpoint and port are already exposed by DNS-SD itself. This is done to avoid any problems with TLS certificates, which are bound to a certain mDNS domain name.
 
 > Scanning for endpoints could for example be done using the following [avahi](https://avahi.org/) command:
 > 
 > `avahi-browse -r _s2connect._tcp`
 > 
-> Registering an endpoint could for example be done using the folling avahi command:
+> Registering an endpoint could for example be done using the following avahi command:
 >
-> `avahi-publish-service -s "EVSE1038"  _s2connect._tcp 443 "txtvers=1" "e_name=brand" "deployment=LAN" "pairingUrl=https://EVSE1038.local:443/pairing/" --sub _rm._sub._s2connect._tcp`
+> `avahi-publish-service -s "EVSE1038"  _s2connect._tcp 443 "txtvers=1" "e_name=brand" "pairingUrl=https://EVSE1038.local:443/pairing/" --sub _rm._sub._s2connect._tcp`
 
 ## The pairing token, the node ID alias and the pairing code
 
