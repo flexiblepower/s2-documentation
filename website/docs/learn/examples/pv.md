@@ -3,7 +3,7 @@ title: "Example: PV Installation"
 hide_title: true
 ---
 
-![image not found](../../static/img/example-pv-header.png)
+![image not found](@site/static/img/example-pv-header.png)
 
 This page serves as a guide for implementing an S2 RM for a PV installation. It provides example S2 messages that help developers to understand how to interact with PV installations and what kind of flexibility they can offer.
 
@@ -32,7 +32,7 @@ Power Envelope Based Control is used for devices that can be influenced to use o
 ## Example of controlling an PV inverter using Power Envelope Based control (PEBC)
 This example describes how a PV inverter can expose its curtailment capabilities to the CEM and let the CEM control this inverter by sending it messages that will ask it to curtail itself.
 
-The following sequence diagram is an example of what a message exchange between a CEM and RM could look like, but messages could also be sent in a different order (see also [State of communication](/docs/communication-layer/discovery-pairing-authentication/#state-of-communication)). ReceptionStatus messages are omitted for readability.
+The following sequence diagram is an example of what a message exchange between a CEM and RM could look like, but messages could also be sent in a different order (see also [State of communication](/s2-connect/discovery-pairing-authentication/#state-of-communication)). ReceptionStatus messages are omitted for readability.
 
 First an overview of the messages is presented graphically, next sections will describe the example messages in more detail.
 

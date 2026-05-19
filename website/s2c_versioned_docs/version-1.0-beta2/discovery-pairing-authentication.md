@@ -80,7 +80,7 @@ Serialization: json.
 
 The short answer is: oAuth is mainly designed for accessing protected resources in the cloud and since the S2 CEM and RM would also need to be able to pair on a local network (even without requiring internet access) oAuth 2.0 is simply not a good fit. We have identified a way to make it work but since it is such non-typical way, we choose not to use oAuth 2.0. 
 
-For the long answer, please refer to [this page](why-not-oauth.md).
+For the long answer, please refer to [this page](/docs/learn/communication-layer/why-not-oauth).
 
 ## Security requirements
 
@@ -1207,4 +1207,4 @@ If the server is in local-local mode, and uses a self-signed CA certificate, the
 
 ## Cipher suites
 
-Security levels of cipher suites will change over time. To stay secure, the used cipher suites should be updates regularly and adhere to regular updates. All nodes **MUST** follow **ONLY** the accepted crypto libraries as defined in [Accepted crypto algorithms](./accepted-crypto.md). This list will be kept up-to-date. When changes are made to the list of accepted crypto libraries, all nodes **MUST** follow these changes within half a year.
+Security levels of cipher suites will change over time. To stay secure, the used cipher suites should be updates regularly and adhere to regular updates. All nodes **MUST** follow **ONLY** the accepted crypto libraries as defined in [Accepted crypto algorithms](/docs/learn/communication-layer/accepted-crypto). This list will be kept up-to-date. When changes are made to the list of accepted crypto libraries, all nodes **MUST** follow these changes within half a year.

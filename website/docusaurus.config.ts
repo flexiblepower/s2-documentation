@@ -26,6 +26,7 @@ const config: Config = {
   markdown: {
     hooks: {
       onBrokenMarkdownLinks: 'warn',
+      onBrokenMarkdownImages: 'warn',
     },
   },
 
@@ -44,6 +45,8 @@ const config: Config = {
         docs: {
           sidebarPath: './sidebars.ts',
           breadcrumbs: false,
+          // path: 'docs',
+          // routeBasePath: '/'
         },
         theme: {
           customCss: './src/css/custom.css',
@@ -64,7 +67,8 @@ const config: Config = {
       path: "s2-connect",
       routeBasePath: "s2-connect",
       breadcrumbs: false,
-      sidebarPath: false
+      sidebarPath: false,
+      includeCurrentVersion: true
     }],
     ['@docusaurus/plugin-client-redirects', {
       redirects: [
@@ -73,6 +77,15 @@ const config: Config = {
           from: ['/docs/communication-layer/discovery-pairing-authentication/'],
         },
       ],
+        createRedirects(existingPath: string) {
+          if (existingPath.startsWith('/docs/learn')) {
+            // Redirect from /docs/team/X to /community/X and /docs/support/X to /community/X
+            return [
+              existingPath.replace('/docs/learn', '/docs')
+            ];
+          }
+          return undefined; // Return a falsy value: no redirect created
+        }
     }]
   ],
 
@@ -94,24 +107,22 @@ const config: Config = {
           label: 'Learn',
         },
         {
-          to: 'model-reference/reading-this-documentation',
+          to: 'model-reference',
           activeBaseRegex: 'model-reference',
           position: 'left',
           label: 'Reference',
         },
-        // {
-        //   to: 's2-connect/discovery-pairing-authentication',
-        //   activeBaseRegex: 's2-connect',
-        //   position: 'left',
-        //   label: 'S2 Connect',
-        // },
+        {
+          type: 'docSidebar',
+          sidebarId: 'specsSidebar',
+          position: 'left',
+          label: 'Specifications',
+        },
         {
           type: 'docsVersionDropdown',
           position: 'right',
-          // props passed to the themed navbar item component - our themed override will read `showOn`
-          versions: ['current', '1.0-beta2'],
+          // versions: ['current', '1.0-beta2'],
           docsPluginId: 's2c',
-          // only show the dropdown when path starts with this prefix
         },
         {
           href: 'https://github.com/flexiblepower/s2-documentation',

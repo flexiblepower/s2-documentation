@@ -4,7 +4,7 @@ Describes a resource's control type(s).
 
 Control types describe how a resource is flexible. Typically, an RM will implement one control type, while a CEM will implement all five control types.
 """
-see_also = [{ name = "Guide to S2 control types", link = "https://docs.s2standard.org/docs/concepts/control-types/" }]
+see_also = [{ name = "Guide to S2 control types", link = "https://docs.s2standard.org/docs/learn/concepts/control-types/" }]
 
 [variants.POWER_ENVELOPE_BASED_CONTROL]
 variant_name = "POWER_ENVELOPE_BASED_CONTROL"

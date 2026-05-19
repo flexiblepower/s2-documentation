@@ -1,0 +1,18 @@
+---
+title: Overview
+---
+
+# Overview of specifications
+
+## The S2 Standard
+The official standard (EN 50491-12-2) that has been approved by European Standardization bodies through CEN/CENELEC. To acquire access to the standard please refer to a national standardization body that is member of CEN/CENELEC.
+
+## S2-Json
+A json-schema definition that describes all S2 messages.
+
+The json-schema can be found here: [s2-json](https://github.com/flexiblepower/s2-ws-json/tree/main/s2-json-schema).
+
+The data model is also represented on this documentation website, see [Reference](/model-reference).
+
+## S2-Connect
+The S2-Connect specification allows for full stack interoperable S2 solutions. It specifies how S2 appliances can discovery each other, how they pair and which communication protocol to use. The specification is published as open-access [here](/s2-connect/discovery-pairing-authentication).
