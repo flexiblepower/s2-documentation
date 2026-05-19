@@ -539,8 +539,8 @@ These operations **must** be implemented by LAN deployed endpoints, but **must n
 
 Before the HTTPS client can start interaction with the server, it must first select a version of the API to use. See [Selecting the version of the pairing or connection initiation API](#selecting-the-version-of-the-pairing-or-connection-initiation-api). For full normative details see the OpenAPI specification files.
 
-* The client can perform a HTTPS GET request on the path `/endpoint` to receive the endpoint details of the endpoint.
-* The client can perform a HTTPS GET request on the path `/nodes` to receive a list of node details for all the nodes represented by the endpoint.
+* The client can perform an HTTPS GET request on the path `/endpoint` to receive the remote endpoint details.
+* The client can perform an HTTPS GET request on the path `/nodes` to receive a list of node details for all the nodes represented by the endpoint.
 
 There is no authentication for these operations, but the server **must** check if the request originates from within the LAN (see [LAN deployment check](#lan-deployment-check)). If it does not, the server **must** respond with HTTP status code 401. The server **must** accept requests with a self-signed certificate.
 
@@ -548,13 +548,13 @@ There is no authentication for these operations, but the server **must** check i
 
 > This section is only applicable for LAN-LAN pairing
 
-Once the end user has selected a responder node it wants the initiator node to pair with, the end user probably still has to retrieve the pairing code from the responder node. In order to improve the user experience, the initiator node can send a *prepare pairing* signal to the responder node. The responder node **may** use this signal to proactively show the pairing code in its user interface, for example in the form of a pop-up or notification. This saves the end user the trouble of searching where to find the pairing token in the user interface. It is also possible for the initiator node to send a *cancel prepare pairing* signal to the responder node, in case the end user has no longer selected the responder node it wants to pair with. Sending these signals **must** be implemented by the client, but only when there is a clear distinction between the moment the prepare pairing signal is sent and when the actual paring starts. The receiver of these signals **may** process these signals by showing the pairing token in its user interface. When the prepare pairing signal is sent, it is not guaranteed that a cancel prepare pairing or a pairing attempt will follow.
+Once the end user has selected a responder node it wants the initiator node to pair with, the end user probably still has to retrieve the pairing code from the responder node. In order to improve the user experience, the initiator node can send a *prepare pairing* signal to the responder node. The responder node **may** use this signal to proactively show the pairing code in its user interface, for example in the form of a pop-up or notification. This saves the end user the trouble of searching where to find the pairing token in the user interface. It is also possible for the initiator node to send a *cancel prepare pairing* signal to the responder node, in case the end user has no longer selected the responder node it wants to pair with. Sending these signals **must** be implemented by the client, but only when there is a clear distinction between the moment the prepare pairing signal is sent and when the actual pairing starts. The receiver of these signals **may** process these signals by showing the pairing token in its user interface. When the prepare pairing signal is sent, it is not guaranteed that a cancel prepare pairing or a pairing attempt will follow.
 
 These operations **must** be implemented by LAN deployed endpoints, but **must not** be implemented by WAN deployed endpoints. These operations can be used in the situation where the initiator node is the HTTPS client and the responder node is het HTTPS server (for the situation where it is the other way around see [Long-polling](#long-polling)).
 
-There is no authentication for these operations, but the server **must** check if the request originates from within the LAN (see [LAN deployment check](#lan-deployment-check)). If it does not, the server **must** respond with HTTP status code 401. The server **must** accept requests with a self-signed certificate.
+There is no authentication for these operations, but the server **must** check if the request originates from within the LAN (see [LAN deployment check](#lan-deployment-check)). If it does not, the server **must** respond with HTTP status code 401. The client **must** accept requests with a self-signed certificate.
 
-Before sending signals the HTTPS client **must** have selected the version on the pairing API that will be used (see [Selecting the version of the pairing or connection initiation API](#selecting-the-version-of-the-pairing-or-connection-initiation-api)).
+Before sending signals the HTTPS client **must** have selected the version of the pairing API that will be used (see [Selecting the version of the pairing or connection initiation API](#selecting-the-version-of-the-pairing-or-connection-initiation-api)).
 
 ## Sending the prepare pairing signal
 
