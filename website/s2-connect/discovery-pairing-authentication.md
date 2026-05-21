@@ -252,7 +252,8 @@ The major version is increased when non-backwards compatible changes are made.
 
 The major version of the API is embedded in the base URL of the API as `/v[major]` (e.g. `/v1`). HTTP server and HTTP clients can decide to implement several major version of the API in parallel to increase interoperability. In that case server must server all version on the same base URL (e.g. `https://hostname.local/pairing/v1/...` and `https://hostname.local/pairing/v2/...`). The server **must** always (even when it only supports one major version of the API) serve an index (e.g. `https://hostname.local/pairing/`) which returns a JSON array with all supported versions as they are defined as port of the URL (e.g. `["v1", "v2"]`).
 
-> TODO: Versioning of S2 JSON Schema's needs to be explained
+## Versioning of JSON Schema files
+JSON Schema uses its own versioning scheme, which is based on an `major.minor.patch` scheme. When negotiating the S2 JSON version number, the exact version string **must** be used (e.g. `v1.0.0`).
 
 ## Addressing endpoints
 The URL of the pairing and connection API are used in the discovery process, pairing process and connection process, as wel as the basis for TLS certificates.
