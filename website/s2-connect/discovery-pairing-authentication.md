@@ -43,92 +43,39 @@ This version of this specification is based on the following versions of the und
 
 # Background (informative)
 
+## Context
+S2 Connect aims to provide a standard method for discovering, pairing and letting a Customer Energy Manager (CEM) and a Resource Manager (RM) communicate with each other over IP networks. S2 Connect builds upon two other projects:
+
+* The **S2 Standard** (formally known as EN50491-12-2) describes the data models and interactions for S2 based communication
+* The **S2 JSON** project formalizes the data models of the S2 standard into JSON Schemas for a messages based interaction between CEM and RM
+
+Both the S2 Standard ond S2 JSON can be used independently from S2 Connect.
+
 ## Requirements
+S2 Connect aims to provide a standard method for discovering, pairing and letting a Customer Energy Manager (CEM) and a Resource Manager (RM) communicate with each other. The CEM and RM are logical concepts within the S2 architecture, therefore the S2 standard does not make any assumptions on how and where the CEM and RM are deployed in a real life situation. In practice, the CEM could be deployed on a local gateway in a LAN or as a server somewhere on the internet (WAN), while the RM could be part of the device itself, deployed on an add-on module or on the internet as well. S2 Connect provides a single solution which can be used between devices connected through a LAN, on the internet, or a combination of those.
 
-> TODO: This section needs to be rewritten to better explain the design goals
+S2 Connect implements the following high-level requirements:
 
-The communication layer meets the following requirements:
+- Communication must be secure and remain secure, and must be resilient against attackers from the internet or from within the LAN
+- Communication between LAN and WAN must work without additional firewall or NAT configuration by the end user
+- S2 Connect must be based on widely accepted technology
+- Pairing two devices should be simple enough to execute by most end users
+- There must be a relatively consistent end user experience regardless of the deployment of the node
+- A local RM can run on a computer with constrained hardware
+- It must be possible to implement a RM without relying on a user interface for pairing
 
-The Customer Energy Manager (CEM) and Resource Manager (RM) are logical concepts within the S2 architecture, therefore the S2 standard does not make any assumptions on how and where the CEM and RM are deployed in a real life situation. In practice, the CEM could be deployed on a local gateway in a LAN or as a server somewhere on the internet (WAN), while the RM could be part of the device itself, deployed on an add-on module or on the internet as well. This means that the S2 communication layer **MUST** be able to deal with multiple scenarios that are depicted in the figure below.
-
-In addition to - and partly because of - supporting the various deployment options, the S2 communication layer has the following generic requirements:
-
-- Support for full duplex communication. Both sides **MUST** be able to send and receive data simultaneously.
-- Communication **MUST** be IP based.
-- Communication **MUST** be encrypted.
-- Communication latency between CEM and RM or vice versa **MUST** be ≤ 1 second.
-- Communication **MUST** work without additional firewall configuration by the end user.
-- Implementation of the communication layer **MUST** be based on a widely accepted technology and must be relatively easy to implement.
-- The pairing process **SHOULD** support extensibility for other application layer communication protocols.
-- Provide a relatively consistent user experience regardless of the deployment of the node
-- Run a local RM on a device with constrained hardware
-- A RM could not have a UI
-
-## Technical decisions
-Given the requirements, this specification is build on the following high-level technical choices:
-
-Application layer communication protocol: WebSocket Secure with bearer token authentication.
-
-Pairing: Custom HTTP API specified in OpenAPI.
-
-Discovery: DNS-SD (within a LAN) in combination with a central registry (for WAN deployments).
-
-Serialization: json.
-
-
-**Why not oAuth 2.0?**
-
-The short answer is: oAuth is mainly designed for accessing protected resources in the cloud and since the S2 CEM and RM would also need to be able to pair on a local network (even without requiring internet access) oAuth 2.0 is simply not a good fit. We have identified a way to make it work but since it is such non-typical way, we choose not to use oAuth 2.0. 
-
-For the long answer, please refer to [this page](why-not-oauth.md).
-
-## Security requirements
-
-The S2 Connect protocol ensures the following four requirements:
+The S2 Connect protocol ensures the following four security requirements:
 
 1. Mutual authentication
 2. Integrity of communication
 3. Confidentiality of communication
 4. Forward secrecy
 
-There is one guarantee that explicitly is not given by this protocol:
+Non-repudiation is explicitly not guaranteed by this protocol.
 
-5. Non-repudiation
+The entire trust model of S2 Connect is based on the fact that there is already a trust relation between the end user and the CEM and RM. If the CEM and RM do not use adequate security mechanisms, it might be possible to attack the system.
 
-
-### 1. Mutual authentication (guaranteed)
-
-The mutual authentication is based on the trust relation between the user and the Client/Server. Since it is assumed that the user already had a trust relation with both of them, this existing trust can be used for mutual authentication between the client and the server. Note that the this communication is not part of the S2 Connect specification.
-
-The end user requests a URL, and token from the server, and gives these to the client. Based on these data, the client can connect to the server, using a TLS connection, check the certificate and authenticate himself with the token. Note that if the server uses a self-signed certificate, the fingerprint will be shared during the pairing phase, so it can be verified by the client.
-
-### 2. Integrity of communication (guaranteed)
-
-Using TLS will ensure the integrity of the data.
-
-### 3. Confidentiality of communication (guaranteed)
-
-Using TLS will ensure the confidentiality of the data.
-
-### 4. Forward secrecy (guaranteed)
-
-Using TLS1.3 will ensure the forward secrecy of the data.
-
-### 5. Non-repudiation (NOT guaranteed)
-
-Non-repudiation is not guaranteed in this protocol. Individual messages are not signed by anyone and as a result both parties could deny sending a specific request. However, while no legal proof is given, since integrity and authenticity is guaranteed by TLS, each party always knows for sure which party made what statement.
-
-### Remaining risk
-
-There are two remaining vulnerable situations. In this section both will be explained.
-
-#### self-signed certificates
-
-In the case that a local RM and a local CEM communicate, it is not in every situation possible to generate a PKI-certificate that can be publicly validated. As a result, S2 accepts, **ONLY** in this situation, self-signed certificates. The risk for spoofing attacks are mitigated by including the certificate fingerprint in the challenge-response process as part of the pairing process, and pinning the self-signed CA certificate at the client side. As a result, the client can check for all connections whether or not it is connected with the correct server.
-
-#### Trust relations between the end-user and the Client/Server
-
-The entire trust model of S2 Connect is based on the fact that there is already a trust relation between the end-user and the client/server. If these clients/servers do not use adequate security mechanisms, it might be possible to attack the S2 system as well.
+>> "Why doesn't S2 Connect use oAuth?" is a common question. oAuth is mainly designed for accessing protected resources in the cloud and since the S2 CEM and RM would also need to be able to pair on a local network (even without requiring internet access) oAuth 2.0 is simply not a good fit. We have identified a way to make it work but since it is such non-typical way, we choose not to use oAuth 2.0. For more details see [here](why-not-oauth.md).
 
 # Terms and definitions (normative)
 
