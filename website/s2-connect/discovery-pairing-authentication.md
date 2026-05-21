@@ -1062,6 +1062,21 @@ Once the communication server has generated a new pending `accessToken`, it must
 
 If the communication client doesn't receive a response to confirming the new `accessToken` (step 7), it does not know if the server has activated the new `accessToken`, or if the old `accessToken` is still in place. It now has (at least) two `accessToken`s in its list, and does not know for certain which one is activate at the communication server. It should try all the accessTokens sequentially. If it finds an `accessToken` that is accepted by the communication server, it can remove the other `accessTokens`.
 
+## Reconnection strategy
+After connection initiation, the actual S2 communication starts via the selected transport protocol. At some point this connection will terminate. Unless the reason for termination is that the nodes have been unpaired, the communication client **must** try to reconnect with the communication server. In this case the client **must** always start with the connection initiation process (it is not allowed to reconnect using the transport protocol that was selected last time).
+
+An exponential back-off strategy for reconnecting **must** be used, increasing the time between reconnection attempts at every failed attempt. It is recommended to use the following strategy for calculating the delay for the n<sup>th</sup> attempt to reconnect. The delay time starts when a failed connecting attempt is finished.
+
+`delay_n = random(0, min(max_delay, base_delay × 2^n))`
+
+Where:
+
+| Variable | Description or recommended value |
+| --- | --- |
+| `n` | The number of the reconnection attempt (starting at 0) |
+| `base_delay` | 2 seconds |
+| `max_delay` | 600 seconds |
+
 ## WebSocket based communication
 
 This section specifies how to use WebSocket Secure as the S2-over-TCP/IP application layer protocol.
@@ -1111,12 +1126,6 @@ An S2 session can be terminated in different ways:
 * In case an node unexpectedly becomes unavailable, the WebSocket connection **CAN** timeout. This will cause an S2 session to be terminated. More details about the timeout can be found [in the heartbeat section](#keepalive--heartbeat-ping--pong)
 * an node **CAN** terminate the S2 session by sending the S2 terminate message, including an optional earliest time that the session can be restored. The other node can take this into account in planning and (in the case of a client) deciding when to attempt to reconnect.
 * After two nodes have unpaired, the S2 WebSocket connection **MUST** be terminated immediately.
-
-### Reconnection strategy
-
-Once an S2 session is terminated it cannot be resumed and if further communication is required, a new session needs to be started. an S2 client node may try to establish a WebSocket connection.
-
-An exponential back-off strategy **SHOULD** be used, increasing the time between reconnection attempts at every failed attempt. If a reconnection time was included in any termination, S2 client nodes are permitted to make an attempt to reconnect before this time. At the specified time the delay between reconnection attempts **SHOULD** be reset.
 
 ## Communication - JSON messages
 
