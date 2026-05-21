@@ -1128,7 +1128,9 @@ An S2 session can be terminated in different ways:
 
 ## Communication - JSON messages
 
-The S2 standard has been encoded into a JSON schema specification, for details see: [S2 JSON](https://github.com/flexiblepower/s2-ws-json)
+S2 Connect uses [S2 JSON](https://github.com/flexiblepower/s2-ws-json) for its JSON schema specification.
+
+When using S2 Connect, the `Handshake` and `HandshakeResponse` messages (as defined by S2 JSON) **can not** be sent. They are redundant by the pairing and connection initiation process.
 
 ### State of communication 
 
