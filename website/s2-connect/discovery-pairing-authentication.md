@@ -1112,14 +1112,11 @@ The WebSocket Protocol ([RFC6455](https://datatracker.ietf.org/doc/html/rfc6455)
 RFC 7692 is widely supported by WebSocket libraries and and we are exchanging JSON plain text messages, it is expected to save a large amount of data. Therefore, implementations of S2 WebSockets **SHOULD** support RFC 7692 and **SHOULD** enable it whenever possible.
 
 ### Keepalive & heartbeat (ping / pong)
-
 WebSockets by default have a **keepalive** and a **heartbeat mechanism**. Keepalive is designed to keep the connection open while heartbeat is designed to check the latency and check the connection is still working. This means that periodically a ping frame is sent to the server (endpoint) and in response a pong frame is sent.
 
-In order to reduce network traffic, S2 WebSocket implementations **SHOULD** not send ping frames more often than every 50 seconds. Ping & pong frames are control frames and **MAY** include payload of maximum 125 bytes.
+S2 WebSockets implementations **should** send a ping frame every 30 seconds, and **must not** wait more than 60 seconds between sending ping frames. Ping and pong frames **may** include a payload.
 
-[https://datatracker.ietf.org/doc/html/rfc6455#section-5.5.2](https://datatracker.ietf.org/doc/html/rfc6455#section-5.5.2%5C%5C)
-
-
+For more details see [RFC6455 Section 5.5.2](https://datatracker.ietf.org/doc/html/rfc6455#section-5.5.2%5C%5C).
 
 ### Termination
 
