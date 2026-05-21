@@ -226,7 +226,7 @@ There are however two situations where this is not possible:
 
 * **WAN initiator node and LAN responder node**: Since the LAN is usually shielded from the WAN through a firewall or NAT, it is assumed that it is not possible to approach a LAN HTTP server from a WAN client. This specifications offers two approaches to this problem:
   * Accept this limitation and not allow the WAN node to be the initiator node. Pairing can only be performed when the LAN node is the initiator node and the WAN node is the responder node. Special care must be taken to explain this to the end user.
-  * Many modern devices or EMS systems are connected to a cloud backend managed by the OEM. If this is the case, it is possible to implement the pairing HTTP server in the cloud, even though the node itself is in the WAN. If the pairing is performed successfully in the OEM backend, the result of the pairing must be communicated to the node via the existing connection between device/EMS and the OEM backend.
+  * Many modern devices or EMS systems are connected to a cloud backend managed by the OEM. If this is the case, it is possible to implement a pairing HTTP server in the cloud, even though the node itself is in the WAN. If the pairing is performed successfully in the OEM backend, the result of the pairing must be communicated to the node via the existing connection between device/EMS and the OEM backend. This solution is only intended for WAN clients. There must always be a method for purely LAN based pairing.
 * **LAN initiator RM and LAN responder RM**: Since one of the requirements is that a LAN RM instance can be implemented on restricted hardware, and a TLS enabled HTTP server is far more memory intensive than an HTTP client, there is an option to implement a LAN RM instance purely as an HTTP client. A long-polling mechanism is available to indicate to the HTTP Server that the node is available for pairing. This mechanism is also used to initiate the pairing process from the HTTP server. In other words: in this specific situation the initiator node behaves as the HTTP server, and the responder node only has to be an HTTP client.
 
 ![Pairing_direction](@site/static/img/communication-layer/pairing_direction.png)
@@ -994,6 +994,7 @@ The server **must** perform the checks in the table below to make sure that it c
 | Is there overlap between the communication protocols? | `CommunicationDetailsErrorMessage` with errorMessage `IncompatibleCommunicationProtocols` | Retry later |
 | Is there overlap between the S2 message versions? | `CommunicationDetailsErrorMessage` with errorMessage `IncompatibleS2MessageVersions` | Retry later |
 | Are the endpoint and node ready for pairing? | `CommunicationDetailsErrorMessage` with errorMessage `Other` | Retry later |
+| Is this is a WAN pairing server for a LAN endpoint, does the client have a WAN deployment? | `CommunicationDetailsErrorMessage` with errorMessage `Other` | Retry later |
 
 ### 2. Generate new pending `accessToken`
 
