@@ -1185,17 +1185,16 @@ Client and server **can** keep other (non-security) information for, for example
 
 # Security (normative)
 
-> TODO: This section needs to be expanded to explain measures against ddos
-
 ## Brute-force protection
-To prevent brute-force pairing request, the server **MUST** implement rate limiting on the requestPairing endpoint. It is up to the server implementation to define the type of rate limiting.
+To prevent brute-force pairing request, the server **must** implement rate limiting on the requestPairing endpoint. For more details see [2. Calculate clientHmacChallengeResponse](#2-calculate-clienthmacchallengeresponse).
 
+## DDoS countermeasures
+Especilly WAN endpoints are vulnerable for DDoS attacks. It is recommended for WAN endpoints to take countermeasures against these attacks. The nature of these countermeasures are outside of the scope of this spefication.
 
 ## TLS Certificates
+All HTTP and WebSocket communication uses TCP over TLS with server certificates. The server certificates **must** be exchanged and validated during the initiation of the connection (HTTPS and WSS). This is default usage of most networking libraries.
 
-All HTTP and WebSocket communication uses TCP over TLS with server certificates. The server certificates **MUST** be exchanged and validated during the initiation of the connection (HTTPS and WSS). This is default usage of most networking libraries.
-
-There are two possible types of certificates for TLS communication. The first option is using a public server certificate, that is created through a Public Key Infrastructure (PKI) and thus signed by a public CA. The other option (only applicable to LAN servers) is to use a self-signed certificate. The latter is needed because a LAN server is not able to obtain a certificate that has been issued by a CA for its local domain name. This is also the only situation where self-signed certificates are allowed.
+There are two possible types of certificates for TLS communication. The first option is using a public server certificate, that is created through a Public Key Infrastructure (PKI) and thus signed by a public CA. The other option (only applicable to LAN servers) is to use a self-signed certificate. The latter is needed because a LAN server is not able to obtain a certificate that has been issued by a CA for its local mDNS domain name. This is also the only situation where self-signed certificates are allowed.
 
 The following image shows the difference. On the left a public root CA that is publicly known and trusted, on the right, a self-signed root certificate, that is unknown and its trustworthiness has to be achieved in another way.
 
@@ -1225,18 +1224,18 @@ SelfSignedCA --> LocalServerCertificate
 
 
 ### Trusting a self-signed root certificate
+LAN deployed nodes will have a self-signed root certificate, and a server (leaf) certificate which is signed by the self-signed root certificate.
 
-The self-signed root certificate is by default not trusted. However during the pairing phase, the server with the self-signed root certificate will share the fingerprint of the certificate during the pairing phase as part of the challenge. This will enable the client to verify the self-signed root certificate, and create trust. In this case, the [pairing code](#the-pairing-token-the-node-id-alias-and-the-pairing-code) **MUST** include the first 9 bytes, encodes as 12 base64 encoded characters, of the fingerprint of this self-signed CA certificate and the client **MUST** check this fingerprint. From this moment on, the client will store the complete fingerprint of the self-signed root certificate, and use it to verify the server certificate for all future connections.
+The `endpoint`, `nodes`, `preparePairing` and `cancelPreparePairing` operations can be called before the pairing has happened. For these operations the client **must** accept the self-signed certificates.
 
-Note that the `preparePairing` and `cancelPreparePairing` endpoints can be called before the pairing has happened. So in the case the server is running on a LAN (and thus uses self-signed certificates), the client can skip the certificate validation steps on those endpoint. This means that the HTTP client **must** be configured to accept self-signed certificates during the pairing process. Since the pairing process consists of several HTTP requests, the HTTP client **must** check that for every request the same self-signed certificate is used by the HTTP server. If this is not the case, the HTTP client **cannot** proceed with the request.
+Also when attempting pairing (the `requestPairing` operation) the client **must** accept the self signed certificate. During the pairing attempt process trust is esteblished through a two-sided challenge response mechanism. If the two-sided challenge response succeeds, that means that the client can now trust this node. The client **must** store the self-signed root certificate used by the server. Alternatively, when the pairing server becomes the communication client, the pairing client will send the fingerprint of the self-signed root certificate that the communication server will use (see [6B. POST /[version]/postConnectionDetails](#6b-post-versionpostconnectiondetails)).
 
+When performig connection initiation and unpairing the communication client **must** validate that server cerificate and validate check that the certificate was signed by the self-signed root certificate that was stored in the previous step.
 
 ### Updating the certificates
+A server can update its leaf certificate. When a cloud server updates its certificate, it **MUST** be signed by a CA, so a client can check its validity. A server **SHOULD** update its server certificate at least once every 6 months.
 
-A server can update its certificate. When a cloud server updates its certificate, it **MUST** be signed by a CA, so a client can check its validity. A server **SHOULD** update its server certificate at least once every 6 months.
-
-If the server is in local-local mode, and uses a self-signed CA certificate, the CA certificate **SHOULD** be created with a validity period which is long enough for the expected lifetime of the server. If the used crypto for the the CA certificate is broken, or the lifetime of the server is longer than the validity of the certificate, the server **MUST** create a new self-signed CA certificate and all clients need to be paired again. Like cloud servers, a local server **SHOULD** update its server certificate at least once every 6 months.
-
+If the server is deployed in the LAN, and thus uses a self-signed root certificate, the root certificate **SHOULD** be created with a validity period which is long enough for the expected lifetime of the server (or the device that hosts the server). If the used crypto for the the CA certificate is broken, or the lifetime of the server is longer than the validity of the certificate, the server **MUST** create a new self-signed CA certificate and all clients need to be paired again. Like cloud servers, a local server **SHOULD** update its leaf certificate at least once every 6 months.
 
 ## Cipher suites
 
