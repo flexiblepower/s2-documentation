@@ -307,6 +307,10 @@ If the HTTP client does not support any of the provided versions, it means that 
 ### 3. Decide pairing version
 From the provided list of major versions of the pairing API, the HTTP client **must** select one that is implement by the HTTP client itself (typically the highest supported version). The client **should** select the most recent version.
 
+## HTTPS usage
+All HTTP-based interaction in S2 Connect is strictly based on HTTPS (i.e., HTTP over TLS). HTTP (without TLS) **may not** be used for S2 Connect, and it is **recommended** to not run an HTTP (without TLS) server.
+
+HTTP clients and servers **must** support HTTP version 1.1. It is **recommended** to support more recent version of HTTP as well.
 
 # Pairing process (normative)
 
