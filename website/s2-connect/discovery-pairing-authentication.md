@@ -1101,6 +1101,8 @@ The client **must** perform the following checks during this request:
 
 If no checks fail the client **should** proceed to the next step.
 
+### Opening the connection
+Opening the WebSocket connection is performed by sending a GET request to the URL as provided during the connecting initiation process together with an upgrade request, as specified by [RFC6455](https://datatracker.ietf.org/doc/html/rfc6455). When using HTTP/2, also refer to [RFC8441](https://datatracker.ietf.org/doc/html/rfc8441).
 
 ### Authentication
 For each S2 WebSocket session the client **must** authenticate itself using the commToken in the authorization header of the websocket connection request, following [RFC 6750 - The OAuth 2.0 Authorization Framework: Bearer Token Usage](https://datatracker.ietf.org/doc/html/rfc6750).
