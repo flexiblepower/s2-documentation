@@ -480,10 +480,10 @@ Note that the challenge and response are binary data. Both are encoded using Bas
 The exact function to calculate the response depends on the deployment of the nodes.
 
 ```
-When both nodes have a LAN deployment:
+When the pairing server is deployed in the LAN:
   R = HMAC(C, T || F)
 
-When at least one node has a WAN deployment:
+When the pairing server is deployed in the WAN:
   R = HMAC(C, T || D)
 ```
 
@@ -491,7 +491,7 @@ Where:
 | Symbol | Type | Meaning |
 | ------ | ------- | ---- |
 | `R` | Binary data | Response |
-| `HMAC` | Function | HMAC function with the selected cryptographic hash function |
+| `HMAC` | Function | HMAC function for the selected cryptographic hash function. The first argument is the secret key, the second argument is the message. |
 | `C` | Binary data | Challenge |
 | `T` | Binary data | Pairing token |
 | `F` | Binary data | SHA256 fingerprint of the TLS server certificate (i.e. leaf certificate) |
