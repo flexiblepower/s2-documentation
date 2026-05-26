@@ -734,6 +734,7 @@ The server **must** perform the checks in the table below to make sure that it c
 | Is there overlap between the S2 message versions? | `IncompatibleS2MessageVersions` | Yes |
 | If the targeted node on the HTTP server is the initiator node, did the end user provide a valid pairing token? | `NoValidPairingTokenOnPairingServer` | No |
 | If the targeted node on the HTTP server is the responder node, does the node have a pairing token which has not expired? | `NoValidPairingTokenOnPairingServer` | No |
+| Is this is a WAN pairing server for a LAN endpoint, does the client have a WAN deployment? | `Other` | No |
 
 > Note: If the node that is being paired is an RM which is already paired, the pairing process proceeds. When the paring process is finished successfully the existing pairing relation must be unpaired.
 
@@ -1000,7 +1001,6 @@ The server **must** perform the checks in the table below to make sure that it c
 | Is there overlap between the communication protocols? | `CommunicationDetailsErrorMessage` with errorMessage `IncompatibleCommunicationProtocols` | Retry later |
 | Is there overlap between the S2 message versions? | `CommunicationDetailsErrorMessage` with errorMessage `IncompatibleS2MessageVersions` | Retry later |
 | Are the endpoint and node ready for connecting? | `CommunicationDetailsErrorMessage` with errorMessage `Other` | Retry later |
-| Is this is a WAN pairing server for a LAN endpoint, does the client have a WAN deployment? | `CommunicationDetailsErrorMessage` with errorMessage `Other` | Retry later |
 
 ### 2. Generate new pending `accessToken`
 
