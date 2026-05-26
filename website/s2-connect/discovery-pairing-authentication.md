@@ -49,7 +49,7 @@ S2 Connect aims to provide a standard method for discovering, pairing and lettin
 * The **S2 Standard** (formally known as EN50491-12-2) describes the data models and interactions for S2 based communication
 * The **S2 JSON** project formalizes the data models of the S2 standard into JSON Schemas for a messages based interaction between CEM and RM
 
-Both the S2 Standard ond S2 JSON can be used independently from S2 Connect.
+Both the S2 Standard and S2 JSON can be used independently from S2 Connect.
 
 ## Requirements
 S2 Connect aims to provide a standard method for discovering, pairing and letting a Customer Energy Manager (CEM) and a Resource Manager (RM) communicate with each other. The CEM and RM are logical concepts within the S2 architecture, therefore the S2 standard does not make any assumptions on how and where the CEM and RM are deployed in a real life situation. In practice, the CEM could be deployed on a local gateway in a LAN or as a server somewhere on the internet (WAN), while the RM could be part of the device itself, deployed on an add-on module or on the internet as well. S2 Connect provides a single solution which can be used between devices connected through a LAN, on the internet, or a combination of those.
@@ -227,7 +227,7 @@ There are however two situations where this is not possible:
 
 * **WAN initiator node and LAN responder node**: Since the LAN is usually shielded from the WAN through a firewall or NAT, it is assumed that it is not possible to approach a LAN HTTP server from a WAN client. This specifications offers two approaches to this problem:
   * Accept this limitation and not allow the WAN node to be the initiator node. Pairing can only be performed when the LAN node is the initiator node and the WAN node is the responder node. Special care must be taken to explain this to the end user.
-  * Many modern devices or EMS systems are connected to a cloud backend managed by the OEM. If this is the case, it is possible to implement a pairing HTTP server in the cloud, even though the node itself is in the WAN. If the pairing is performed successfully in the OEM backend, the result of the pairing must be communicated to the node via the existing connection between device/EMS and the OEM backend. This solution is only intended for WAN clients. There must always be a method for purely LAN based pairing.
+  * Many modern devices or EMS systems are connected to a cloud backend managed by the OEM. If this is the case, it is possible to implement a pairing HTTP server in the cloud, even though the node itself is in the LAN. If the pairing is performed successfully in the OEM backend, the result of the pairing must be communicated to the node via the existing connection between device/EMS and the OEM backend. This solution is only intended for WAN clients and must not be used by LAN clients. There must always be a method for purely LAN based pairing.
 * **LAN initiator RM and LAN responder RM**: Since one of the requirements is that a LAN RM instance can be implemented on restricted hardware, and a TLS enabled HTTP server is far more memory intensive than an HTTP client, there is an option to implement a LAN RM instance purely as an HTTP client. A long-polling mechanism is available to indicate to the HTTP Server that the node is available for pairing. This mechanism is also used to initiate the pairing process from the HTTP server. In other words: in this specific situation the initiator node behaves as the HTTP server, and the responder node only has to be an HTTP client.
 
 ![Pairing_direction](@site/static/img/communication-layer/pairing_direction.png)
@@ -959,12 +959,12 @@ Before an node can initiate a session, it needs three things.
 
 1. The HTTP server and the HTTP client can only start with a communication request when they are fully initialized and have all the details of the nodes it represents available. 
 2. The HTTP client must have the base URL of the session initiation API (e.g. `https://hostname.local/connection/`)
-3. The HTTP client must have selected the version on the pairing API that will be used (see [Selecting the version of the pairing or session initiation API](#selecting-the-version-of-rest-apis))
+3. The HTTP client must have selected the version on the session initiation API that will be used (see [Selecting the version of the pairing or session initiation API](#selecting-the-version-of-rest-apis))
 4. The two nodes must have been paired successfully and must have an accessToken for this pairing
 
 If the HTTP client does not fulfill these preconditions, it **cannot** send the first HTTP request of the session initiation process.
 
-### 1. POST /[version]/initiateConnection
+### 1. POST /[version]/initiateSession
 Since there are situations in which the client cannot know for sure which `accessToken` the communication server uses for this pairing, the communication client must keep a persisted list of `accessTokens` (which will typically contain only one `accessToken`).
 
 The client **must** perform the following checks during this request:
@@ -999,7 +999,7 @@ The server **must** perform the checks in the table below to make sure that it c
 | Is this the correct `accessToken` for this node ID?  | Status code 401 | Try with other `accessToken` if possible. Otherwise do not retry, inform end user |
 | Is there overlap between the communication protocols? | `CommunicationDetailsErrorMessage` with errorMessage `IncompatibleCommunicationProtocols` | Retry later |
 | Is there overlap between the S2 message versions? | `CommunicationDetailsErrorMessage` with errorMessage `IncompatibleS2MessageVersions` | Retry later |
-| Are the endpoint and node ready for pairing? | `CommunicationDetailsErrorMessage` with errorMessage `Other` | Retry later |
+| Are the endpoint and node ready for connecting? | `CommunicationDetailsErrorMessage` with errorMessage `Other` | Retry later |
 | Is this is a WAN pairing server for a LAN endpoint, does the client have a WAN deployment? | `CommunicationDetailsErrorMessage` with errorMessage `Other` | Retry later |
 
 ### 2. Generate new pending `accessToken`
@@ -1031,7 +1031,7 @@ The client **must** perform the checks in the table below to make sure that it c
 | Was the selected communication protocol offered in the request? | Do not proceed and try again later with step 1 |
 
 ### 4. Store pending accessToken
-It client adds the pending `accessToken` to its list of `accessTokens`, but does not yet remove the old one. If the client is not able to persist the pending `accessToken` (e.g. because the storage device or the DBMS is not available), the client does not proceed with the process. Once the client is able to persist `accessTokens` again, it can retry to set up a session starting with step 1.
+The client adds the pending `accessToken` to its list of `accessTokens`, but does not yet remove the old one. If the client is not able to persist the pending `accessToken` (e.g. because the storage device or the DBMS is not available), the client does not proceed with the process. Once the client is able to persist `accessTokens` again, it can retry to set up a session starting with step 1.
 
 ### 5. POST /[version]/confirmAccessToken
 The client confirms to the server that it has successfully persisted the pending `accessToken`. The **pending** `accessToken` is provided through the header of the request.
@@ -1235,9 +1235,9 @@ LAN deployed nodes will have a self-signed root certificate, and a server (leaf)
 
 The `endpoint`, `nodes`, `preparePairing` and `cancelPreparePairing` operations can be called before the pairing has happened. For these operations the client **must** accept the self-signed certificates.
 
-Also when attempting pairing (the `requestPairing` operation) the client **must** accept the self signed certificate. During the pairing attempt process trust is esteblished through a two-sided challenge response mechanism. If the two-sided challenge response succeeds, that means that the client can now trust this node. The client **must** store the self-signed root certificate used by the server. Alternatively, when the pairing server becomes the communication client, the pairing client will send the fingerprint of the self-signed root certificate that the communication server will use (see [6B. POST /[version]/postConnectionDetails](#6b-post-versionpostconnectiondetails)).
+Also when attempting pairing (the `requestPairing` operation) the client **must** accept the self-signed certificate. During the pairing process trust is established through a two-sided challenge response mechanism. If the two-sided challenge response succeeds, that means that the client can now trust the server of the node it is paired with. The client **must** store the self-signed root certificate used by the server. Alternatively, when the pairing server becomes the communication client, the pairing client will send the fingerprint of the self-signed root certificate that the communication server will use (see [6B. POST /[version]/postConnectionDetails](#6b-post-versionpostconnectiondetails)).
 
-When performig session initiation and unpairing the communication client **must** validate that server cerificate and validate check that the certificate was signed by the self-signed root certificate that was stored in the previous step.
+When performig session initiation and unpairing the communication client **must** validate that server cerificate and check that the certificate was signed by the self-signed root certificate that was stored in the previous step.
 
 ### Updating the certificates
 A server can update its leaf certificate. When a cloud server updates its certificate, it **MUST** be signed by a CA, so a client can check its validity. A server **SHOULD** update its server certificate at least once every 6 months.
