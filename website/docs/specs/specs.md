@@ -15,4 +15,6 @@ The json-schema can be found here: [s2-json](https://github.com/flexiblepower/s2
 The data model is also represented on this documentation website, see [Reference](/model-reference).
 
 ## S2-Connect
-The S2-Connect specification allows for full stack interoperable S2 solutions. It specifies how S2 appliances can discovery each other, how they pair and which communication protocol to use. The specification is published as open-access [here](/s2-connect/discovery-pairing-authentication).
+S2 Connect is a protocol specification enabling communication between an Energy Management System (EMS) and an Energy Smart Appliance (ESA) based on the S2 (EN50491‑12‑2) standard. It defines how devices discover, pair, communicate and unpair across local, cloud, and hybrid environments. It allows for a secure and fully interoperable solution between EMS and ESA.
+
+[The specification](/s2-connect/discovery-pairing-authentication) is published as open-access.
