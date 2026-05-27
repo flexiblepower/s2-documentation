@@ -177,7 +177,7 @@ The endpoint is basically the application that hosts the nodes. In a LAN deploym
 
 An S2 connection basically consists of four steps: discovery, pairing, communication and unpairing. For these steps different types of technology are used.
 
-On of the main technologies the process relies on is HTTP REST. All interactions based on HTTP are formally described in OpenAPI specification files. [OpenAPI](https://swagger.io/specification/) is a formal language for specifying HTTP based API's. It can be used to generate reference documentation for developers, as well as stub code for many programming languages.
+One of the main technologies the process relies on is HTTP REST. All interactions based on HTTP are formally described in OpenAPI specification files. [OpenAPI](https://swagger.io/specification/) is a formal language for specifying HTTP based API's. It can be used to generate reference documentation for developers, as well as stub code for many programming languages.
 
 ### Discovery
 
@@ -540,7 +540,7 @@ The client **must** send the following information in the request. For full norm
 | --- | --- |
 | `clientNodeDescription` | Details of the node at the client that the end user intents to pair with the node at the server |
 | `clientEndpointDescription` | Details of the client endpoint |
-| `serverNodeId` | The node ID of the node at the server that the end user intents to pair weth the node at the client (see [Getting endpoint information](#getting-endpoint-information) for details on how to retrieve the server node ID) |
+| `serverNodeId` | The node ID of the node at the server that the end user intents to pair with the node at the client (see [Getting endpoint information](#getting-endpoint-information) for details on how to retrieve the server node ID) |
 
 The server **must** perform the checks in the table below. For the checks with HTTP status 400, a `PairingResponseErrorMessage` must be send. In that case, the contents of the `additionalInfo` field is supposed the be helpful and up to the implementer.
 
