@@ -330,7 +330,7 @@ For each pairing attempt, one endpoint must be the HTTP server, while the other 
 
 > A LAN deployed RM implementation can choose if it implements the HTTP server, or that it implements the HTTP client and uses long-polling. This feature exists to accommodate RM implementations with constrained hardware.
 
-A CEM can be paired with multiple RM's a the same time. A RM can only be paired with one CEM at a time. a node is always available for pairing. When a RM that is already paired with an CEM is paired with another CEM, the initial pairing is automatically unpaired. This automatic unpairing only happens after the new pairing is successfully completed. When a CEM and a RM are being paired when they already are paired with each other, it should be considered as an unpairing and new pairing (which means that a new `accessToken` is being used, and the current communication session should be terminated).
+A CEM can be paired with multiple RM's a the same time. A RM can only be paired with one CEM at a time. A node is always available for pairing. When a RM that is already paired with an CEM is paired with another CEM, the initial pairing is automatically unpaired. This automatic unpairing only happens after the new pairing is successfully completed. When a CEM and a RM are being paired when they already are paired with each other, it should be considered as an unpairing and new pairing (which means that a new `accessToken` is being used, and the current communication session should be terminated).
 
 ## Discovery
 
