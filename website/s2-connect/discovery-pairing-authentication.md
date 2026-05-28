@@ -1241,7 +1241,7 @@ If the server is deployed in the LAN, and thus uses a self-signed root certifica
 
 ### Certificate validation
 Certificate checks are mentioned several times in this specification. The check consists of these parts:
-- Authenticity: In case of a WAN server, is the certificate issued by a trusted CA (using the chain of trust)? In case of a LAN server, is the root certificate the same as during the pairing?
+- Authenticity: In case of a WAN server, is the certificate issued by a trusted CA (using the chain of trust)? For a LAN server, is the root certificate pinned to the server’s domain name?
 - Domain name validation: has the certificate been issued for the (local) domain name of the server?
 - Expiration data: has the certificate not been expired?
 - Integrity: Has the certificate not been tampered with? This is verified by checking whether the signature is valid.
