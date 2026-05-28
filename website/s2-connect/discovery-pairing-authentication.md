@@ -1245,7 +1245,7 @@ Certificate checks are mentioned several times in this specification. The check 
 - Domain name validation: has the certificate been issued for the (local) domain name of the server?
 - Expiration data: has the certificate not been expired?
 - Integrity: Has the certificate not been tampered with? This is verified by checking whether the signature is valid.
-- Security check: has an allowed crypto algorithm been used? See the section on [Cipher suites](#cipher-suites).
+- Cryptography check: has an allowed crypto algorithm been used? See the section on [Cipher suites](#cipher-suites).
 
 With the exemption of some cases where the authenticity cannot be verified yet, all checks must be performed every time a TLS connection is set up.
 
