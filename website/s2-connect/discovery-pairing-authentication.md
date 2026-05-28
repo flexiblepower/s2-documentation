@@ -294,9 +294,9 @@ The client **must** perform the following checks during this request:
 
 | Check | How to proceed if check fails |
 | --- | --- |
-| Check TLS certificate | Pairing is failed, do not proceed with the pairing attempt |
-| If self-signed TLS certificate, check if server is local | Pairing is failed, do not proceed with the pairing attempt |
-| Store fingerprint of TLS certificate for later check | | 
+| [Check TLS certificate](#certificate-validation) (with exemption of authenticity) | Pairing is failed, do not proceed with the pairing attempt |
+
+The fingerprint of TLS certificate must be stored for later check.
 
 If no checks fail the client **should** proceed to the next step.
 
@@ -532,7 +532,7 @@ The client can send the prepare pairing signal to the server by sending an HTTPS
 
 | Check | How to proceed if check fails |
 | --- | --- |
-| Check TLS certificate | Sending signal failed, do not proceed with sending signal |
+| [Check TLS certificate](#certificate-validation) | Sending signal failed, do not proceed with sending signal |
 
 The client **must** send the following information in the request. For full normative details see the OpenAPI specification files.
 
@@ -559,7 +559,7 @@ If the client sent a prepare pairing signal the the server, and the end user has
 
 | Check | How to proceed if check fails |
 | --- | --- |
-| Check TLS certificate | Sending signal failed, do not proceed with sending signal |
+| [Check TLS certificate](#certificate-validation) | Sending signal failed, do not proceed with sending signal |
 
 The client **must** send the following information in the request. For full normative details see the OpenAPI specification files.
 
@@ -713,8 +713,7 @@ The client **must** perform the following checks during this request:
 
 | Check | How to proceed if check fails |
 | --- | --- |
-| Check TLS certificate | Pairing is failed, do not proceed with the pairing attempt |
-| If self-signed TLS certificate, check if server is local | Pairing is failed, do not proceed with the pairing attempt |
+| [Check TLS certificate](#certificate-validation) | Pairing is failed, do not proceed with the pairing attempt |
 | Check if same fingerprint is used as previous request (when applicable) | Pairing is failed, do not proceed with the pairing attempt | 
 
 If no checks fail the client **should** proceed to the next step.
@@ -801,8 +800,7 @@ The client **must** perform the following checks during this request:
 
 | Check | How to proceed if check fails |
 | --- | --- |
-| Check TLS certificate | Pairing is failed, do not proceed with the pairing attempt |
-| If self-signed TLS certificate, check if server is local | Pairing is failed, do not proceed with the pairing attempt |
+| [Check TLS certificate](#certificate-validation) | Pairing is failed, do not proceed with the pairing attempt |
 | Check if TLS certificate is pinned | Pairing is failed, do not proceed with the pairing attempt | 
 
 If no checks fail the client **should** proceed to the next step.
@@ -843,8 +841,7 @@ The client **must** perform the following checks during this request:
 
 | Check | How to proceed if check fails |
 | --- | --- |
-| Check TLS certificate | Pairing is failed, do not proceed with the pairing attempt |
-| If self-signed TLS certificate, check if server is local | Pairing is failed, do not proceed with the pairing attempt |
+| [Check TLS certificate](#certificate-validation) | Pairing is failed, do not proceed with the pairing attempt |
 | Check if TLS certificate is pinned | Pairing is failed, do not proceed with the pairing attempt | 
 
 If no checks fail the client **should** proceed to the next step.
@@ -875,9 +872,9 @@ The client **must** perform the following checks during this request:
 
 | Check | How to proceed if check fails |
 | --- | --- |
-| Check TLS certificate | Pairing is failed, do not proceed with the pairing attempt |
-| If self-signed TLS certificate, check if server is local | Pairing is failed, do not proceed with the pairing attempt |
-| Check if TLS certificate is pinned | Pairing is failed, do not proceed with the pairing attempt | 
+| [Check TLS certificate](#certificate-validation) | Pairing is failed, do not proceed with the pairing attempt |
+| If self-signed TLS certificate, check if TLS certificate is pinned  | Pairing is failed, do not proceed with the pairing attempt |
+
 
 If no checks fail the client **should** proceed to the next step.
 
@@ -956,7 +953,7 @@ Client -> Client : 8. Remove old accessToken
 
 ### 0. Precondition
 
-Before an node can initiate a session, it needs three things.
+Before an node can initiate a session, it needs four things.
 
 1. The HTTP server and the HTTP client can only start with a communication request when they are fully initialized and have all the details of the nodes it represents available. 
 2. The HTTP client must have the base URL of the session initiation API (e.g. `https://hostname.local/connection/`)
@@ -972,9 +969,8 @@ The client **must** perform the following checks during this request:
 
 | Check | How to proceed if check fails |
 | --- | --- |
-| Check TLS certificate | Initiation is failed, do not proceed with the initiation attempt |
-| If self-signed TLS certificate, check if server is local | Initiation is failed, do not proceed with the initiation attempt |
-| Check if TLS certificate is pinned | Initiation is failed, do not proceed with the initiation attempt | 
+| [Check TLS certificate](#certificate-validation) | Initiation is failed, do not proceed with the initiation attempt |
+| If self-signed TLS certificate, check if TLS certificate is pinned  | Initiation is failed, do not proceed with the initiation attempt |
 
 If no checks fail the client **should** proceed to the next step.
 
@@ -1040,9 +1036,9 @@ The client **must** perform the following checks during this request:
 
 | Check | How to proceed if check fails |
 | --- | --- |
-| Check TLS certificate | Do not proceed with session, try again later |
-| If self-signed TLS certificate, check if server is local | Do not proceed with session, try again later |
-| Check if TLS certificate is pinned | Do not proceed with session, try again later | 
+| [Check TLS certificate](#certificate-validation) | Do not proceed with session, try again later |
+| If self-signed TLS certificate, check if certificate is pinned  | Do not proceed with session, try again later |
+
 
 If no checks fail the client **should** proceed.
 
@@ -1096,9 +1092,8 @@ The client **must** perform the following checks during this request:
 
 | Check | How to proceed if check fails |
 | --- | --- |
-| Check TLS certificate | Websocket connection failed, do not proceed with the connection attempt |
-| If self-signed TLS certificate, check if server is local | Websocket connection failed, do not proceed with the connection attempt |
-| Check if TLS certificate is pinned | Websocket connection failed, do not proceed with the connection attempt | 
+| [Check TLS certificate](#certificate-validation) | Websocket connection failed, do not proceed with the connection attempt |
+| If self-signed TLS certificate, check if certificate is pinned | Websocket connection failed, do not proceed with the connection attempt |
 
 If no checks fail the client **should** proceed to the next step.
 
@@ -1233,16 +1228,26 @@ SelfSignedCA --> LocalServerCertificate
 ### Trusting a self-signed root certificate
 LAN deployed nodes will have a self-signed root certificate, and a server (leaf) certificate which is signed by the self-signed root certificate.
 
-The `endpoint`, `nodes`, `preparePairing` and `cancelPreparePairing` operations can be called before the pairing has happened. For these operations the client **must** accept the self-signed certificates.
+The `endpoint`, `nodes`, `preparePairing` and `cancelPreparePairing` operations can be called before the pairing has happened. For these operations the client **must** accept the self-signed certificates, even though it cannot trust the root certificate.
 
 Also when attempting pairing (the `requestPairing` operation) the client **must** accept the self-signed certificate. During the pairing process trust is established through a two-sided challenge response mechanism. If the two-sided challenge response succeeds, that means that the client can now trust the server of the node it is paired with. The client **must** store the self-signed root certificate used by the server. Alternatively, when the pairing server becomes the communication client, the pairing client will send the fingerprint of the self-signed root certificate that the communication server will use (see [6B. POST /[version]/postConnectionDetails](#6b-post-versionpostconnectiondetails)).
 
-When performig session initiation and unpairing the communication client **must** validate that server cerificate and check that the certificate was signed by the self-signed root certificate that was stored in the previous step.
+When performing session initiation and unpairing the communication client **must** validate that server certificate and check that the certificate was signed by the self-signed root certificate that was stored in the previous step.
 
 ### Updating the certificates
 A server can update its leaf certificate. When a cloud server updates its certificate, it **MUST** be signed by a CA, so a client can check its validity. A server **SHOULD** update its server certificate at least once every 6 months.
 
 If the server is deployed in the LAN, and thus uses a self-signed root certificate, the root certificate **SHOULD** be created with a validity period which is long enough for the expected lifetime of the server (or the device that hosts the server). If the used crypto for the the CA certificate is broken, or the lifetime of the server is longer than the validity of the certificate, the server **MUST** create a new self-signed CA certificate and all clients need to be paired again. Like cloud servers, a local server **SHOULD** update its leaf certificate at least once every 6 months.
+
+### Certificate validation
+Certificate checks are mentioned several times in this specification. The check consists of these parts:
+- Authenticity: In case of a WAN server, is the certificate issued by a trusted CA (using the chain of trust)? In case of a LAN server, is the root certificate the same as during the pairing?
+- Domain name validation: has the certificate been issued for the (local) domain name of the server?
+- Expiration data: has the certificate not been expired?
+- Integrity: Has the certificate not been tampered with? This is verified by checking whether the signature is valid.
+- Security check: has an allowed crypto algorithm been used? See the section on [Cipher suites](#cipher-suites).
+
+With the exemption of some cases where the authenticity cannot be verified yet, all checks must be performed every time a TLS connection is set up.
 
 ## Cipher suites
 
