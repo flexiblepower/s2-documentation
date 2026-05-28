@@ -801,7 +801,7 @@ The client **must** perform the following checks during this request:
 | Check | How to proceed if check fails |
 | --- | --- |
 | [Check TLS certificate](#certificate-validation) | Pairing is failed, do not proceed with the pairing attempt |
-| Check if TLS certificate is pinned | Pairing is failed, do not proceed with the pairing attempt | 
+| If self-signed TLS certificate, check if certificate is pinned | Pairing is failed, do not proceed with the pairing attempt | 
 
 If no checks fail the client **should** proceed to the next step.
 
@@ -842,7 +842,7 @@ The client **must** perform the following checks during this request:
 | Check | How to proceed if check fails |
 | --- | --- |
 | [Check TLS certificate](#certificate-validation) | Pairing is failed, do not proceed with the pairing attempt |
-| Check if TLS certificate is pinned | Pairing is failed, do not proceed with the pairing attempt | 
+| If self-signed TLS certificate, check if certificate is pinned | Pairing is failed, do not proceed with the pairing attempt | 
 
 If no checks fail the client **should** proceed to the next step.
 
@@ -873,7 +873,7 @@ The client **must** perform the following checks during this request:
 | Check | How to proceed if check fails |
 | --- | --- |
 | [Check TLS certificate](#certificate-validation) | Pairing is failed, do not proceed with the pairing attempt |
-| If self-signed TLS certificate, check if TLS certificate is pinned  | Pairing is failed, do not proceed with the pairing attempt |
+| If self-signed TLS certificate, check if certificate is pinned | Pairing is failed, do not proceed with the pairing attempt |
 
 
 If no checks fail the client **should** proceed to the next step.
@@ -970,7 +970,7 @@ The client **must** perform the following checks during this request:
 | Check | How to proceed if check fails |
 | --- | --- |
 | [Check TLS certificate](#certificate-validation) | Initiation is failed, do not proceed with the initiation attempt |
-| If self-signed TLS certificate, check if TLS certificate is pinned  | Initiation is failed, do not proceed with the initiation attempt |
+| If self-signed TLS certificate, check if certificate is pinned  | Initiation is failed, do not proceed with the initiation attempt |
 
 If no checks fail the client **should** proceed to the next step.
 
