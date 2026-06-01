@@ -296,7 +296,7 @@ The client **must** perform the following checks during this request:
 | --- | --- |
 | [Check TLS certificate](#certificate-validation) (with exemption of authenticity) | Pairing is failed, do not proceed with the pairing attempt |
 
-The fingerprint of TLS certificate must be stored for later check.
+If the root certificate is self-signed and there is no pinned certificate for this domain name, the fingerprint of TLS certificate must be stored for later check.
 
 If no checks fail the client **should** proceed to the next step.
 
