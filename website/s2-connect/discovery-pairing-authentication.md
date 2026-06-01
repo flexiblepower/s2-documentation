@@ -777,8 +777,7 @@ The HTTP client checks the `clientHmacChallengeResponse` provided by the HTTP se
 
 If the result is identical, the client **should** proceed to the next step. If the result is not identical, the client **must** stop the pairing attempt. It **must** attempt to inform the HTTP server of this by doing an HTTP request to `finalizePairing` where the value of `success` must be `false`.
 
-Note that in case of a local server, the TLS certificate fingerprint is part of the challenge. So if the challenge succeeds, the certificate fingerprint is correct, and the certificate can be trusted. The client **must** pin this certificate, and trust this certificate for future use.
-
+Note that in case of a local server, the TLS certificate fingerprint is part of the challenge. So if the challenge succeeds, the certificate fingerprint is correct, and the certificate can be trusted. The client **must** pin the self-signed CA (root) certificate, and trust this certificate for the remainder of the pairing relation.
 
 ### 5. Calculate serverHmacChallengeResponse
 The HTTP client calculates a response to the provided `serverHmacChallenge` using the hashing algorithm as indicated in the `selectedHmacHashingAlgorithm`. For details see [Challenge response process](#challenge-response-process).
@@ -801,7 +800,6 @@ The client **must** perform the following checks during this request:
 | Check | How to proceed if check fails |
 | --- | --- |
 | [Check TLS certificate](#certificate-validation) | Pairing is failed, do not proceed with the pairing attempt |
-| If self-signed TLS certificate, check if certificate is pinned | Pairing is failed, do not proceed with the pairing attempt | 
 
 If no checks fail the client **should** proceed to the next step.
 
@@ -828,7 +826,7 @@ If the response is understood and properly formatted, the HTTP client **should**
 
 The HTTP sends the connection details to the HTTP server. This request also serves as a way to send the HTTP server the `serverHmacChallengeResponse` calculated in step 5. 
 
-In this case the pairing server will become the communication client. Once the pairing server becomes the communication client, it does not know what the certificate that the communication server will use. That is why it needs to provide it using the property `certificateFingerprint`. This property is a map, where the key of the map is the hashing algorithm used to generate the fingerprint, and the value is the fingerprint itself. The hashing function `SHA256` and the related fingerprint **must** always be provided.
+In this case the pairing server will become the communication client. Once the pairing server becomes the communication client, it does not know what the certificate that the communication server will use. That is why it needs to provide the fingerprint of its CA (root) certificate using the property `certificateFingerprint`. This property is a map, where the key of the map is the hashing algorithm used to generate the fingerprint, and the value is the fingerprint itself. The hashing function `SHA256` and the related fingerprint **must** always be provided. The communication client **must** pin this certificate to the domain name of the communication server.
 
 | Information | Description |
 | --- | --- |
@@ -842,7 +840,6 @@ The client **must** perform the following checks during this request:
 | Check | How to proceed if check fails |
 | --- | --- |
 | [Check TLS certificate](#certificate-validation) | Pairing is failed, do not proceed with the pairing attempt |
-| If self-signed TLS certificate, check if certificate is pinned | Pairing is failed, do not proceed with the pairing attempt | 
 
 If no checks fail the client **should** proceed to the next step.
 
@@ -873,8 +870,6 @@ The client **must** perform the following checks during this request:
 | Check | How to proceed if check fails |
 | --- | --- |
 | [Check TLS certificate](#certificate-validation) | Pairing is failed, do not proceed with the pairing attempt |
-| If self-signed TLS certificate, check if certificate is pinned | Pairing is failed, do not proceed with the pairing attempt |
-
 
 If no checks fail the client **should** proceed to the next step.
 
@@ -970,7 +965,6 @@ The client **must** perform the following checks during this request:
 | Check | How to proceed if check fails |
 | --- | --- |
 | [Check TLS certificate](#certificate-validation) | Initiation is failed, do not proceed with the initiation attempt |
-| If self-signed TLS certificate, check if certificate is pinned  | Initiation is failed, do not proceed with the initiation attempt |
 
 If no checks fail the client **should** proceed to the next step.
 
@@ -1037,8 +1031,6 @@ The client **must** perform the following checks during this request:
 | Check | How to proceed if check fails |
 | --- | --- |
 | [Check TLS certificate](#certificate-validation) | Do not proceed with session, try again later |
-| If self-signed TLS certificate, check if certificate is pinned  | Do not proceed with session, try again later |
-
 
 If no checks fail the client **should** proceed.
 
@@ -1093,7 +1085,6 @@ The client **must** perform the following checks during this request:
 | Check | How to proceed if check fails |
 | --- | --- |
 | [Check TLS certificate](#certificate-validation) | Websocket connection failed, do not proceed with the connection attempt |
-| If self-signed TLS certificate, check if certificate is pinned | Websocket connection failed, do not proceed with the connection attempt |
 
 If no checks fail the client **should** proceed to the next step.
 
@@ -1230,20 +1221,20 @@ LAN deployed nodes will have a self-signed root certificate, and a server (leaf)
 
 The `endpoint`, `nodes`, `preparePairing` and `cancelPreparePairing` operations can be called before the pairing has happened. For these operations the client **must** accept the self-signed certificates, even though it cannot trust the root certificate.
 
-Also when attempting pairing (the `requestPairing` operation) the client **must** accept the self-signed certificate. During the pairing process trust is established through a two-sided challenge response mechanism. If the two-sided challenge response succeeds, that means that the client can now trust the server of the node it is paired with. The client **must** store the self-signed root certificate used by the server. Alternatively, when the pairing server becomes the communication client, the pairing client will send the fingerprint of the self-signed root certificate that the communication server will use (see [6B. POST /[version]/postConnectionDetails](#6b-post-versionpostconnectiondetails)).
+Also when attempting pairing (the `requestPairing` operation) the client **must** accept the self-signed certificate. During the pairing process trust is established through a two-sided challenge response mechanism. If the two-sided challenge response succeeds, that means that the client can now trust the server of the node it is paired with. The client **must** pin the CA (root) certificate to the domain name. This means that it must check for every furter interaction (for the duration of the pairing relation with this server) if it still uses the same CA (root) certificate. Alternatively, when the pairing server becomes the communication client, the pairing client will send the fingerprint of the self-signed CA (root) certificate that the communication server will use (see [6B. POST /[version]/postConnectionDetails](#6b-post-versionpostconnectiondetails)).
 
-When performing session initiation and unpairing the communication client **must** validate that server certificate and check that the certificate was signed by the self-signed root certificate that was stored in the previous step.
+When performing session initiation and unpairing the communication client **must** validate that server certificate and check that the certificate was signed by the self-signed root certificate that was pinned in the previous step.
 
 ### Updating the certificates
 A server can update its leaf certificate. When a cloud server updates its certificate, it **MUST** be signed by a CA, so a client can check its validity. A server **SHOULD** update its server certificate at least once every 6 months.
 
-If the server is deployed in the LAN, and thus uses a self-signed root certificate, the root certificate **SHOULD** be created with a validity period which is long enough for the expected lifetime of the server (or the device that hosts the server). If the used crypto for the the CA certificate is broken, or the lifetime of the server is longer than the validity of the certificate, the server **MUST** create a new self-signed CA certificate and all clients need to be paired again. Like cloud servers, a local server **SHOULD** update its leaf certificate at least once every 6 months.
+If the server is deployed in the LAN, and thus uses a self-signed root certificate, the root certificate **SHOULD** be created with a validity period which is long enough for the expected lifetime of the server (or the device that hosts the server). If the used crypto for the the CA (root) certificate is broken, or the lifetime of the server is longer than the validity of the certificate, the server **MUST** create a new self-signed CA certificate and all clients need to be paired again. Like cloud servers, a local server **SHOULD** update its leaf certificate at least once every 6 months.
 
 ### Certificate validation
 Certificate checks are mentioned several times in this specification. The check consists of these parts:
 - Authenticity: In case of a WAN server, is the certificate issued by a trusted CA (using the chain of trust)? For a LAN server, is the root certificate pinned to the server’s domain name?
 - Domain name validation: has the certificate been issued for the (local) domain name of the server?
-- Expiration data: has the certificate not been expired?
+- Expiration date: has the certificate not been expired?
 - Integrity: Has the certificate not been tampered with? This is verified by checking whether the signature is valid.
 - Cryptography check: has an allowed crypto algorithm been used? See the section on [Cipher suites](#cipher-suites).
 
