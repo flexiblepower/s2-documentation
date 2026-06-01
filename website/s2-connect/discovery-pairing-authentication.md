@@ -436,8 +436,6 @@ S2 Connect uses the service type `s2connect` and exclusively uses tcp, since it 
 
 An endpoint deployed in the LAN **should** publish it service through DNS-SD once it is ready for pairing, and until it shuts down.
 
-A device has a presence in the LAN (e.g. a heat pump which is connected to the internet via the end user's WiFi), but has its RM deployed in the WAN, can still use DNS-SD to advertise its endpoint to any local nodes (e.g. a physical energy management device containing an CEM). In this case the device doesn't have to offer any actual service in the LAN; it merely uses the TXT record to advertise its WAN endpoint URL. An arbitrary port may be specified.
-
 Two DNS-SD subtypes are used for endpoints. Subtypes can be used to filter services.
 
  * `_cem` is used when the endpoint contains one or more CEM node
