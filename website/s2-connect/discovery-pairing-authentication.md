@@ -496,7 +496,17 @@ Where:
 | `D` | Binary data | The domain name of the HTTPS server, including subdomains, without protocol or trailing slashes (e.g. `pairing.s2.example.com`) |
 | `\|\|` | Function | Concatenation function |
 
-## Getting endpoint information
+## LAN-LAN only interactions
+
+The are several REST operations that are only to be implemented by LAN endpoints, and that can only be used by other LAN endpoints. They are described in this section.
+
+WAN endpoints **cannot** implement these operations. It is **recommended** that WAN endpoints respond with status code 404 when they receive requests for these operations.
+
+Since these operations are only intended for WAN endpoints within the same LAN, the pairing server must check if the requests originates from within the same LAN. Therefore the pairing server **must** check if the request originated from the same subnet. This functionality **must** be implemented in such a way that it works with both IPv4 and IPv6. When a request does not originate from the same subnet the server **must** respond with status code 401.
+
+> Note: There are some network configurations imaginable where it would be desirable to pair two LAN nodes that are not in the same subnet. In that case automatic discovery via DNS-SD will not work, but pairing by manually entering the pairing URL and pairing code can still be used in those cases.
+
+### Getting endpoint information
 
 > This section is only applicable for LAN-LAN pairing
 
@@ -511,7 +521,7 @@ Before the HTTPS client can start interaction with the server, it must first sel
 
 Note that there is no authentication for these operations. It is assumed that these operations are only exposed within the LAN.
 
-## Pre-pairing interaction
+### Pre-pairing interaction
 
 > This section is only applicable for LAN-LAN pairing
 
@@ -523,7 +533,7 @@ Note that there is no authentication for these operations. It is assumed that th
 
 Before sending signals the HTTPS client **must** have selected the version of the pairing API that will be used (see [Selecting the version of REST APIs](#selecting-the-version-of-rest-apis)).
 
-## Sending the prepare pairing signal
+#### Sending the prepare pairing signal
 
 The client can send the prepare pairing signal to the server by sending an HTTPS POST request to the path `/preparePairing`. The client must perform the following checks before sending information:
 
@@ -547,10 +557,11 @@ The server **must** perform the checks in the table below. For the checks with H
 | Does it recognize the `serverNodeId`? | 400 | `NodeNotFound` |
 | Are the endpoint and node ready for pairing? | 400 | `Other` |
 | Does the targeted node have a different role than the initiator node (i.e. you cannot pair two RM's or two CEM's)? | 400 | `InvalidCombinationOfRoles` |
+| Does the request originate from inside the subnet? | 401 | n/a |
 
 If no checks fail the server **should** respond with HTTP status code 204.
 
-## Cancelling the prepare pairing signal
+#### Cancelling the prepare pairing signal
 
 If the client sent a prepare pairing signal the the server, and the end user has indicated in some way that it is no longer indented to pair with the node, it **should** send a cancel prepare pairing signal. It can do that by sending an HTTPS POST request to the path `/cancelPreparePairing`. The client must perform the following checks before sending information:
 
@@ -565,9 +576,9 @@ The client **must** send the following information in the request. For full norm
 | `clientNodeId` | The node ID of the node at the client that the end user intents to pair with the node at the server |
 | `serverNodeId` | The node ID of the node at the server that the end user intents to pair with the node at the client |
 
-The server **should** respond with HTTP status code 204 (even when it does not recognize the `clientNodeId` or `serverNodeId`).
+The server **should** respond with HTTP status code 204 (even when it does not recognize the `clientNodeId` or `serverNodeId`). However, if the request originated from outside the subnet the server **must** respond with status 401. 
 
-## Long-polling
+### Long-polling
 
 > This section is only applicable for LAN-LAN pairing
 
@@ -589,13 +600,15 @@ The long-polling feature fulfills the following functionality:
 * Send the signal from the server to the client to initiate pairing for a particular node ID
 * Send an error message from the client to the server when pairing cannot be performed
 
+Before the HTTPS client can start interaction with the server, it must first select a version of the API to use. See [Selecting the version of REST APIs](#selecting-the-version-of-rest-apis). For full normative details see the OpenAPI specification files.
+
 A client capable of long-polling **should** initiates long-polling when it encounters a endpoint through DNS-SD that indicates that is available for long-polling requests. When the endpoint represents zero nodes the client **cannot** attempt long-polling. When the endpoint advertisement itself, or only its long-polling indication disappears from DNS-SD the client **should** stop the long-polling process for that server. The client **must** also stop when it is no longer capable of pairing.
 
 The server **must** always respond within 25 seconds after receiving the request. The client **must** use a request time-out of at least 30 seconds.
 
-> TODO: Move the OpenAPI version selection process to its own section so we don't have to explain it every time
-
 The client starts the process by doing a POST request to the `/waitForPairing` path. For full normative details see the OpenAPI specification files. The request body contains a list of objects. The client **must** always provide an object for each node ID it represents. The items in the list have a mandatory property `clientNodeId` and optional parameters `clientNodeDescription`, `clientEndpointDescription`. The client should only provide values for these properties when requested by the server. The object also contains the optional property `errorMessage`, which only should be used when an error has occurred before pairing.
+
+The server **must** check if the requests originates from within the same subnet. If it does not, it **must** reply with HTTP status code 401.
 
 When the server wants the client to immediately do a new request, it responds with status code 204. When it wants the client to do something, it responds with status 200 and a response body containing a list. This list contains an object only for node IDs represented by the client, that the server wants to do something with. This object contains the mandatory properties `clientNodeId` and `action`. The `action` property is an enumeration indicating an action the server wants to execute for a specific node. The possible action values are `sendNodeDescription`, `preparePairing`, `cancelPreparePairing` and `requestPairing`.
 
