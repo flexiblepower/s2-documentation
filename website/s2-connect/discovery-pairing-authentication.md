@@ -502,7 +502,7 @@ The are several REST operations that are only to be implemented by LAN endpoints
 
 WAN endpoints **cannot** implement these operations. It is **recommended** that WAN endpoints respond with status code 404 when they receive requests for these operations.
 
-Since these operations are only intended for WAN endpoints within the same LAN, the pairing server must check if the requests originates from within the same LAN. Therefore the pairing server **must** check if the request originated from the same subnet. This functionality **must** be implemented in such a way that it works with both IPv4 and IPv6. When a request does not originate from the same subnet the server **must** respond with status code 401.
+Since these operations are only intended for endpoints within the same LAN, the pairing server must check if the requests originates from within the same LAN. Therefore the pairing server **must** check if the request originated from the same subnet. This functionality **must** be implemented in such a way that it works with both IPv4 and IPv6. When a request does not originate from the same subnet the server **must** respond with status code 401.
 
 > Note: There are some network configurations imaginable where it would be desirable to pair two LAN nodes that are not in the same subnet. In that case automatic discovery via DNS-SD will not work, but pairing by manually entering the pairing URL and pairing code can still be used in those cases.
 
