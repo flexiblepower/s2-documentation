@@ -100,6 +100,7 @@ This specification uses the concepts that are defined below.
 | Pairing endpoint registry | The central registry that keeps track of publicly available pairing servers. |
 | Pairing server | The endpoint that behaves as the HTTPS server when pairing with a node. |
 | Pairing token | A secret string of characters, which acts as a proof of the trust relationship between the end user and a node. Also see [The pairing token, the node ID alias and the pairing code](#the-pairing-token-the-node-id-alias-and-the-pairing-code). |
+| Pairing URL | The URL of the pairing API on an endpoint (see [Pairing URL](#pairing-url)) |
 | Responder node |  The node that responds to a request to pair. This is the node that issued the pairing code. It is the counterpart of the initiator node. Also see [Pairing and unpairing from the perspective of the end user](#pairing-and-unpairing-from-the-perspective-of-the-end-user). |
 | Session | A stateful exchange of S2 messages between two S2 nodes |
 | User interface | A user interface through which an end user can interact with a node. Interactions between the end user and the user interface must be secure, but this is out of scope for this specification. Examples of a user interface are a web interface, an app or a physical interface (HMI) on a device. |
@@ -182,7 +183,7 @@ One of the main technologies the process relies on is HTTPS REST. All interactio
 
 ### Discovery
 
-The first step is finding the responder node from the initiator node. In principle this is done based on the URL of the responder node. However, to improve user experience, two systems exist to find this URL in a more user friendly manner. For more details see [Discovery](#discovery).
+The first step is finding the responder node from the initiator node. In principle this is done based on the pairing URL of the responder node. However, to improve user experience, two systems exist to find the pairing URL in a more user friendly manner. For more details see [Discovery](#discovery).
 
 * If the responder node is deployed in the WAN, the end user can find the endpoint through the pairing endpoint registry. This would result in a list of vendors that offer nodes.
 * If both nodes are deployed in the LAN however, the responder node can be detected automatically through a process based on DNS-SD. This way the user only has to select the desired node to connect to from a list of nodes which were discovered in the LAN.
@@ -252,7 +253,7 @@ The minor version is increased when backwards compatible changes are made. Be aw
 
 The major version is increased when non-backwards compatible changes are made.
 
-The major version of the API is embedded in the base URL of the API as `/v[major]` (e.g. `/v1`). HTTPS server and HTTPS clients can decide to implement several major version of the API in parallel to increase interoperability. In that case server must server all version on the same base URL (e.g. `https://hostname.local/pairing/v1/...` and `https://hostname.local/pairing/v2/...`). The server **must** always (even when it only supports one major version of the API) serve an index (e.g. `https://hostname.local/pairing/`) which returns a JSON array with all supported versions as they are defined as port of the URL (e.g. `["v1", "v2"]`).
+The major version of the API is embedded in the base URL of the API as `/v[major]` (e.g. `/v1`). HTTPS server and HTTPS clients can decide to implement several major version of the API in parallel to increase interoperability. In that case server must server all version on the same base URL (e.g. `https://hostname.local/pairing/v1/...` and `https://hostname.local/pairing/v2/...`). The server **must** always (even when it only supports one major version of the API) serve an index (e.g. `https://hostname.local/pairing/`) which returns a JSON array with all supported versions as they are defined as part of the URL (e.g. `["v1", "v2"]`).
 
 ## Versioning of JSON Schema files
 JSON Schema uses its own versioning scheme, which is based on an `major.minor.patch` scheme. When negotiating the S2 JSON version number, the exact version string **must** be used (e.g. `v1.0.0`).
@@ -262,7 +263,9 @@ The URL of the pairing and session initiation API are used in the discovery proc
 
 For **WAN** deployed endpoints, the URL **must** be based on a DNS domain name.
 
-For **LAN** deployed endpoints, the URL **must** be based on an mDNS alias or hostname (e.g. `hostname.local`). It is important that these names are *unique* and *stable*. Unique since there could be multiple instance within the same LAN, and stable because if it changes, the endpoint cannot be found by other endpoints. It should also be noted that the alias used by DNS-SD, and is presented to the end user. It recommended to choose a name that the end user should recognize and an element for the end user to make a distinction between two devices of the same type, such as a serial number.
+For **LAN** deployed endpoints, the URL **must** be based on an mDNS alias or hostname (e.g. `hostname.local`). It is important that these names are *unique* and *stable*. Unique since there could be multiple instances within the same LAN, and stable because if it changes, the endpoint cannot be found by other endpoints. It should also be noted that the alias used by DNS-SD, and is presented to the end user. It recommended to choose a name that the end user should recognize and an element for the end user to make a distinction between two devices of the same type, such as a serial number.
+
+Also see [Pairing URL](#pairing-url).
 
 ## Selecting the version of REST APIs
 As explained in the section [Versioning of OpenAPI files](#version) the pairing server, the session initiation server and the WAN pairing endpoint registry can implement multiple versions of the API specification in parallel. As a result, the client **must** always first determine which version of the API it will use, before it can start interacting with the API.
@@ -333,9 +336,16 @@ For each pairing attempt, one endpoint must be the HTTPS server, while the other
 
 A CEM can be paired with multiple RM's a the same time. A RM can only be paired with one CEM at a time. A node is always available for pairing. When a RM that is already paired with an CEM is paired with another CEM, the initial pairing is automatically unpaired. This automatic unpairing only happens after the new pairing is successfully completed. When a CEM and a RM are being paired when they already are paired with each other, it should be considered as an unpairing and new pairing (which means that a new `accessToken` is being used, and the current communication session should be terminated).
 
+## Pairing URL
+The start of each pairing related interaction is the initiator node contacting the responder node via the *pairing URL*. Although discovery provides an option to retrieve this URL in a user friendly manner, entering the pairing URL manually **must** always be an option. Therefore, every responder node **should** display its pairing URL somewhere (e.g. in its UI), and every initiator node **should** have an option to pair based on a pairing URL which is manually entered by the end user.
+
+The pairing URL is the base URL of the pairing API of an endpoint. It **must** include the protocol (`https://`), it **must not** include the version of the API, but it **must** include a trailing slash (e.g. `https://hostname.local/pairing/`).
+
+For information about the domain name used in the URL see [Addressing endpoints](#addressing-endpoints).
+
 ## Discovery
 
-In order to ease the pairing process, which is specified below, the discovery process provides a way for nodes to find each other without requiring a user to know the pairing endpoint URL of the other node. In other words, the discovery process is a way to provide a node with the URL of another node which is needed to start the pairing process. Alternatively, it **must** always be possible to initiate the pairing by manually providing the URL by the end user.
+In order to ease the pairing process, which is specified below, the discovery process provides a way for nodes to find each other without requiring a user to know the pairing URL of the other node. In other words, the discovery process is a way to provide a node with the pairing URL of another node which is needed to start the pairing process. Alternatively, it should always be possible to initiate the pairing by manually providing the URL by the end user (see [Pairing URL](#pairing-url)).
 
 There are two mechanisms for discovery: For discovering WAN endpoints there is a central online registry. For discovering endpoints within the same LAN, DNS-SD is used.
 
@@ -343,7 +353,7 @@ There are two mechanisms for discovery: For discovering WAN endpoints there is a
 
 > Note: At this point the registry is specified, but not yet publicly available
 
-The purpose of the registry is to facilitate a more user friendly way to determine the URL of the WAN pairing endpoint. Providers of an S2 Connect WAN pairing endpoint can register their endpoint at the registry. The user interface of a CEM or RM could show a list of relevant endpoints to the user (e.g., in a list or drop down menu) with details that would be easily recognizable to the end user (e.g., name and icon). By querying the registry, the user interface can always show an up-to-date list of endpoints. The registry contains filtering functionality to filter endpoints that are relevant in the context.
+The purpose of the registry is to facilitate a more user friendly way to determine the pairing URL of the WAN endpoint. Providers of an S2 Connect WAN pairing endpoint can register their endpoint at the registry. The user interface of a CEM or RM could show a list of relevant endpoints to the user (e.g., in a list or drop down menu) with details that would be easily recognizable to the end user (e.g., name and icon). By querying the registry, the user interface can always show an up-to-date list of endpoints. The registry contains filtering functionality to filter endpoints that are relevant in the context.
 
 The registry uses the same version negotiation mechanism as the other S2 Connect OpenAPI files. Refer to [Selecting the version of REST APIs](#selecting-the-version-of-rest-apis) for information on how clients can select the API version to use.
 
@@ -357,7 +367,7 @@ The registry contains the following information for each endpoint. For full norm
 | `icon32` | 32 by 32 pixel- icon of the endpoint |
 | `icon128` | 128 by 128 pixels icon of the endpoint |
 | `icon512` | 512 by 512 pixels icon of the endpoint |
-| `pairingApiUrl` | The URL of the pairing API of the endpoint |
+| `pairingUrl` | The pairing URL of the endpoint |
 | `regions` | Array of regions in which this endpoint operates, as defined by the ISO 3166-1 alpha-2 country code |
 | `status` | Status of the endpoint, can either be `testing` or `public` |
 | `cem` | Boolean indicating if the endpoint represents CEM nodes |
@@ -403,7 +413,7 @@ S2 uses the following key-value pairs in the TXT record when registering for ser
 | `txtver` | M | Version of this specification of usage of the TXT record. **Must** be the literal string value `1` for this version |
 | `e_name` | O | The name of this endpoint (identical to the `name` property in the `EndpointDescription` object as defined in de OpenAPI specification) |
 | `e_logoUrl` | O | The logoUrl of this endpoint (identical to the `logoUrl` property in the `EndpointDescription` object as defined in de OpenAPI specification) |
-| `pairingUrl` | O | The base URL of the pairing API of this endpoint, excluding the version name but including the last slash (e.g. `https://hostname.local/pairing/`). If no value is provided, a `longpollingUrl` **must** be provided.
+| `pairingUrl` | O | The base URL of the pairing API of this endpoint (see [Pairing URL](#pairing-url)). If no value is provided, a `longpollingUrl` **must** be provided.
 | `longpollingUrl` | O | The base URL of the pairing API of this endpoint on which the longpolling feature is implemented. The URL should be provided excluding the version name but including the last slash (e.g. `https://hostname.local/pairing/`). Only needs to be provided when longpolling is supported. Can only be provided if the value for `deployment` is equal to `LAN`.
 
 > Note: It is mandatory to provide a value for at least one of the properties `pairingUrl` and `longpollingUrl`. Providing both is also possible.
@@ -510,7 +520,7 @@ Since these operations are only intended for endpoints within the same LAN, the 
 
 > This section is only applicable for LAN-LAN pairing
 
-Once a LAN endpoint has discovered a LAN pairing endpoint (through DNS-SD or by the end user manually entering the URL), it still knows very little about the endpoint. There are two REST operations that allow an HTTPS client to query information of a server endpoint: performing a GET on `/endpoint` and performing a GET on `/nodes`.
+Once a LAN endpoint has discovered a LAN pairing endpoint (through DNS-SD), it still knows very little about the endpoint. There are two REST operations that allow an HTTPS client to query information of a server endpoint: performing a GET on `/endpoint` and performing a GET on `/nodes`.
 
 These operations **must** be implemented by LAN deployed endpoints, but **must not** be implemented by WAN deployed endpoints. These operations can be used in the situation where the initiator node is the HTTPS client and the responder node is het HTTPS server (for the situation where it is the other way around see [Long-polling](#long-polling)).
 
@@ -692,7 +702,7 @@ Note over Client, Server: Pairing finalized
 Before two node can be paired, the following preconditions must be met.
 
 1. The HTTPS server and the HTTPS client can only start with a pairing request when they are fully initialized and have all the details of the nodes it represents available. 
-2. The HTTPS client must have the base URL of the pairing API (e.g. `https://hostname.local/pairing/`)
+2. The HTTPS client must have the pairing URL of the endpoint (see [Pairing URL](#pairing-url))
 3. The HTTPS client must have selected the version on the pairing API that will be used (see [Selecting the version of the pairing or session initiation API](#selecting-the-version-of-rest-apis))
 4. Both nodes must have a pairing token available. Either because they issued this token themselves, or because the end user has provided it through the user interface.
 
@@ -826,7 +836,7 @@ The server responds with two pieces of information:
 
 | Information | Description |
 | --- | --- |
-| `initiateConnectionUrl` | The base URL for the connection process (does not include the version number) |
+| `initiateSessionUrl` | The base URL for the connection process (does not include the version number) |
 | `accessToken` | The access token that was generated for this node | 
 
 If the response is understood and properly formatted, the HTTPS client **should** proceed to the next step. Otherwise the HTTPS client **must** stop the pairing attempt. It **must** attempt to inform the HTTPS server of this by doing an HTTPS request to `finalizePairing` where the value of `success` must be `false`.
@@ -841,7 +851,7 @@ In this case the pairing server will become the communication client. Once the p
 | Information | Description |
 | --- | --- |
 | `serverHmacChallengeResponse` | The response for the challenge response process |
-| `initiateConnectionUrl` | The base URI for the connection process (does not include the version number) |
+| `initiateSessionUrl` | The base URI for the connection process (does not include the version number) |
 | `accessToken` | The access token that was generated for this node |
 | `certificateFingerprint` | A map with the fingerprint of the CA (root) certificate. The key of the map is the name of the hashing algorithm used to generate the fingerprint, the value is the fingerprint itself. The key `SHA256` must always be provided. |
 
