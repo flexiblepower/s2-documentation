@@ -25,7 +25,7 @@ OAuth 2.0 does not provide a means for discovery, so up to this point there is n
 
 If it's the first time that the client wants authorize at that authorization server, then follows a dynamic client registration (according to [RFC 7591](https://datatracker.ietf.org/doc/html/rfc7591)). This is needed because one of the requirements of the S2 pairing process is that the client and server cannot have prior knowledge about each other. This guarantees interoperability because it allows for any S2 client to be able to connect to any S2 server without a developer that needs to request a client identifier (and possible a client secret) and use that in the client application for a specific server.
 
-In case of deployments where both the RM and CEM are both running in the cloud, the typical use of OAuth 2.0 with the authorization code grand flow or the PKCE grand flow can be used. If only one the RM and CEM is running in the cloud and the other one is running locally, the PKCE or device code flow should be used.
+In case of deployments where both the RM and CEM are both running in the cloud, the typical use of OAuth 2.0 with the authorization code grand flow or the PKCE grand flow can be used. If only one of the RM and CEM is running in the cloud and the other one is running locally, the PKCE or device code flow should be used.
 
 The device code flow of OAuth 2.0 ([RFC 8628](https://www.rfc-editor.org/rfc/rfc8628)) is based on an out-of-band communication step where the user authenticates and is used for devices with very limited user interaction capabilities (e.g. the absence of a means to enter text). In order to allow the user to perform that step, it visits an authorization page on a secondary device (typically a smart phone). If the device has the capability to show a QR code, that will improve the UX, otherwise the user has to type in the URL of the authorization page where it needs to submit the device code and to enter the device code on that page.
 
@@ -81,7 +81,6 @@ The process above reveals the following disadvantages of using OAuth 2.0 in this
 * It is not possible to pair a device without a user interface.
 * The required functionality of OAuth 2.0 is separated in at least four different RFC's. This is an intentional design decision of OAuth 2.0 (which seems to be regretted considering the discussion around OAuth 2.1) but results in a pairing specification that elaborates extensively on _how_ to use OAuth 2.0 in this context.
 * Different deployment scenarios (RM/CEM deployed in WAN/LAN) and different user interface capabilities require different OAuth flows, leading to increased implementation complexity.
-* S2 Connect must to be usable in a local network, without internet connection. Although there are lightweight OAuth 2.0 authorization server implementations available, it would introduce extra dependencies that need to be maintained and for which it is uncertain how long it will be maintained if a new OAuth version comes along.
 
 ## Alternative OAuth 2.0 grants 
 
