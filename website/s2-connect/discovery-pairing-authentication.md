@@ -45,9 +45,11 @@ This version of this specification is based on the following versions of the und
 # Background (informative)
 
 ## Context
-S2 Connect aims to provide a standard method for discovering, pairing and letting a Customer Energy Manager (CEM) and a Resource Manager (RM) communicate with each other over IP networks. S2 Connect builds upon two other projects:
+S2 Connect aims to provide a standard method for discovering, pairing and letting a Customer Energy Manager (CEM) and a Resource Manager (RM) communicate with each other over IP networks. The general architecture is described in the S2 architecture standard introducing CEM and RM functions are defined in EN 50491-12-1:2018, in which also the S2 interface is defined between CEM and RM. 
 
-* The **S2 Standard** (formally known as EN50491-12-2) describes the data models and interactions for S2 based communication
+S2 Connect builds upon two other projects:
+
+* The **S2 Data model standard** (formally known as EN50491-12-2:2022) describes the data models and interactions for S2 based communication
 * The **S2 JSON** project formalizes the data models of the S2 standard into JSON Schemas for a messages-based interaction between CEM and RM
 
 Both the S2 Standard and S2 JSON can be used independently from S2 Connect.
@@ -76,7 +78,7 @@ Non-repudiation is explicitly not guaranteed by this protocol.
 
 The entire trust model of S2 Connect is based on the fact that there is already a trust relation between the end user and the CEM and RM. If the CEM and RM do not use adequate security mechanisms, it might be possible to attack the system.
 
->> "Why doesn't S2 Connect use oAuth?" is a common question. oAuth is mainly designed for accessing protected resources in the cloud and since the S2 CEM and RM would also need to be able to pair on a local network (even without requiring internet access) oAuth 2.0 is simply not a good fit. We have identified a way to make it work but since it is such non-typical way, we choose not to use oAuth 2.0. For more details see [here](why-not-oauth.md).
+>> "Why doesn't S2 Connect use oAuth?" is a common question. oAuth is mainly designed for accessing protected resources in the cloud and since the S2 CEM and RM would also need to be able to pair on a local network (even without requiring internet access) oAuth 2.0 is simply not a good fit. There is a way to make it work, but since it is such a non-typical way the decision was made to not use oAuth 2.0 for pairing. For more details see [here](why-not-oauth.md).
 
 # Terms and definitions (normative)
 
@@ -90,18 +92,18 @@ This specification uses the concepts that are defined below.
 | End user | A person or entity that manages nodes. For the purpose of this specification it is assumed that there is already a trust relationship in place between this person and the nodes. This means that the way the trust relationship has been established is out of scope for this specification. |
 | End user environment | A restricted area within an application that contains all the nodes that belong to the end user. Also see [Deployment of nodes](#deployment-of-nodes). |
 | Endpoint | A service which can handle pairing requests or initiates pairing requests itself. An endpoint can represent one node, but could also represent many. |
-| Initiator node | The node that takes the initiative to pair with a responder node. This is typically the node from which the user initiates the pairing process. It is the counterpart of the responder node. Also see [Pairing and unpairing from the perspective of the end user](#pairing-and-unpairing-from-the-perspective-of-the-end-user). |
+| Initiator node | The node that takes the initiative to pair with a Responder node. This is typically the node from which the user initiates the pairing process. It is the counterpart of the Responder node. Also see [Pairing and unpairing from the perspective of the end user](#pairing-and-unpairing-from-the-perspective-of-the-end-user). |
 | Node | Refers to an instance of either a CEM or a RM as defined in EN 50491-12-1 and implementing this specification. S2 communication between two nodes can only be established if one of the nodes is a CEM and the other a RM. These nodes must also have the same end user. |
 | Node ID | A globally unique identifier for a node in the UUID format. |
 | Node ID alias | A short identifier for a node, which is unique in the context of a single endpoint. Also see [The pairing token, the node ID alias and the pairing code](#the-pairing-token-the-node-id-alias-and-the-pairing-code). |
 | Pairing attempt | The process of pairing two nodes. The process can be completed successfully or unsuccessfully. |
 | Pairing client | The endpoint that behaves as the HTTPS client when pairing with a node. |
-| Pairing code | The pairing code is the string of characters the end user has to copy from the responder node user interface to the initiator node user interface, in order to pair the two nodes. The pairing code consists of a pairing token and if required a node ID alias. Also see [The pairing token, the node ID alias and the pairing code](#the-pairing-token-the-node-id-alias-and-the-pairing-code). |
+| Pairing code | The pairing code is the string of characters the end user has to copy from the Responder node user interface to the Initiator node user interface, in order to pair the two nodes. The pairing code consists of a pairing token and if required a node ID alias. Also see [The pairing token, the node ID alias and the pairing code](#the-pairing-token-the-node-id-alias-and-the-pairing-code). |
 | Pairing endpoint registry | The central registry that keeps track of publicly available pairing servers. |
 | Pairing server | The endpoint that behaves as the HTTPS server when pairing with a node. |
 | Pairing token | A secret string of characters, which acts as a proof of the trust relationship between the end user and a node. Also see [The pairing token, the node ID alias and the pairing code](#the-pairing-token-the-node-id-alias-and-the-pairing-code). |
 | Pairing URL | The URL of the pairing API on an endpoint (see [Pairing URL](#pairing-url)) |
-| Responder node |  The node that responds to a request to pair. This is the node that issued the pairing code. It is the counterpart of the initiator node. Also see [Pairing and unpairing from the perspective of the end user](#pairing-and-unpairing-from-the-perspective-of-the-end-user). |
+| Responder node |  The node that responds to a request to pair. This is the node that issued the pairing code. It is the counterpart of the Initiator node. Also see [Pairing and unpairing from the perspective of the end user](#pairing-and-unpairing-from-the-perspective-of-the-end-user). |
 | Session | A stateful exchange of S2 messages between two S2 nodes |
 | User interface | A user interface through which an end user can interact with a node. Interactions between the end user and the user interface must be secure, but this is out of scope for this specification. Examples of a user interface are a web interface, an app or a physical interface (HMI) on a device. |
 
@@ -115,8 +117,8 @@ This specification is concerned with connecting an instance of a CEM with an ins
 
 Nodes can be deployed locally within the LAN, or somewhere on a server in the WAN. Although their deployment doesn't significantly affect the working of these nodes, there are some key differences between these types of deployment.
 
-* **WAN** nodes are typically part of a large application that run on many servers and/or on some kind of cloud computing platform. A single application usually serves many users. Each user could have one or multiple nodes. This could for example be a cloud-based energy management system that can connect to many devices. It could also be a cloud environment of a device manufacturer that hosts the RM instances in the cloud. An end user could own multiple devices from this manufacturer, thus the application could host multiple RM instances for this particular user. We call a group of nodes that a single user can manage within one application an *end user environment*. It is also possible that an end user environment contains both CEM and RM instances. The user interface is typically a web interface or a smartphone app.
-* **LAN** nodes are typically part of an application that runs on an embedded computer device somewhere in the building. Such a device could be a physical energy management system, an energy flexible device such as a home battery, heat pump or EV charger, or a gateway device which connects to an energy flexible device through some kind of protocol. Often an application will only host a single node, but it is also possible that an application hosts multiple nodes. A device could function completely on its own, but it could also be connected to an internet based application of the manufacturer. The user interface could be a physical human-machine interface on the device, but also be a smartphone app that connects directly to the device (e.g. via Bluetooth), or a smartphone app or web interface that connects to an internet based application of the manufacturer. For energy flexible devices, it is assumed that they could also have no user interface at all, or that they are very constrained when it comes to computing power. It is assumed that a CEM always has a user interface.
+* **WAN** nodes are typically part of a large application that run on many servers and/or on some kind of cloud computing platform. A single application usually serves many users. Each user could have one or multiple nodes. This could for example be a cloud-based energy management system that can connect to many devices. It could also be a cloud environment of a device manufacturer that hosts the RM instances in the cloud. An end user could own multiple devices from this manufacturer, thus the application could host multiple RM instances for this particular user. A group of nodes that a single user can manage within one application is called an *end user environment*. It is also possible that an end user environment contains both CEM and RM instances. The user interface is typically a web interface or a smartphone app.
+* **LAN** nodes are typically part of an application that runs on an embedded computer device somewhere in the building. Such a device could be a physical energy management system, an energy flexible device such as a home battery, heat pump or EV charger, or a gateway device which connects to an energy flexible device through some kind of protocol. Often an application will only host a single node, but it is also possible that an application hosts multiple nodes. A device could function completely on its own, but it could also be connected to an internet based application of the manufacturer. The user interface could be a physical human-machine interface on the device, but also be a smartphone app that connects directly to the device (e.g. via Bluetooth), or a smartphone app or web interface that connects to an internet based application of the manufacturer. For energy flexible devices, it is assumed that they could also have no user interface at all, or that they are very constrained when it comes to computing power or memory. It is assumed that a CEM always has a user interface.
 
 ![Deployment_options](@site/static/img/communication-layer/deployment_options.png)
 
@@ -124,25 +126,27 @@ There are three types of S2 connections between nodes possible:
 
 * **WAN-WAN**: A connection between two nodes deployed in a WAN. Connecting between them is straightforward and can be done based on URLs, based on DNS domain names. It is possible to rely on TLS certificates that can be validated thanks to a public key infrastructure.
 * **WAN-LAN**: A connection between a LAN deployed node a WAN deployed node. Since there is almost always a firewall and/or NAT between these two, it is assumed that it is only possible to set up a connection from the LAN to the WAN; not the other way around. Connecting from the LAN node to the WAN node can be done based on a URL, and common TLS certificates can be used thanks to public key infrastructure.
-* **LAN-LAN**: A connection between two LAN deployed nodes. It is assumed that in this situation we cannot rely an internet connection, making it impossible to rely on a public key infrastructure for TLS certificates. That is why for this type of connection self-signed TLS certificates are used. Connections are made based on hostnames that are resolved to IP-addresses using Multicast DNS (mDNS), since IP-addresses are not guaranteed to be stable. Discovering another node could be done using DNS Service Discovery (DNS-SD).
+* **LAN-LAN**: A connection between two LAN deployed nodes. It is assumed that in this situation an internet connection might not be available, making it impossible to rely on a public key infrastructure for TLS certificates. That is why for this type of connection self-signed TLS certificates are used. Connections are made based on hostnames that are resolved to IP-addresses using Multicast DNS (mDNS), since IP-addresses are not guaranteed to be stable. Discovering another node could be done using DNS Service Discovery (DNS-SD).
 
 ## Pairing and unpairing from the perspective of the end user
-The end user can take the initiative to *pair* a single CEM instance with a single RM instance. This process has to be started with one of the nodes. Which node this is depends on the deployment and implementation decisions of the node, but ideally it could be either one. The node however needs to have a user interface. We'll call the node that user uses to start the pairing process the *initiator*. We'll call the other node the *responder*.
+The end user can take the initiative to *pair* a single CEM instance with a single RM instance. This process has to be started with one of the nodes. Which node this is depends on the deployment and implementation decisions of the node, but ideally it could be either one. The node however needs to have a user interface. The node that a user uses to start the pairing process is called the **Initiator node**. The other node receiving the pairing request is called the **Responder node**.
 
-The first step of pairing is establishing a connection from the initiator node to the responder node. This can be done in several ways:
-* Enter the responder node address manually at the initiator node.
-* If the responder node is deployed in the WAN, the URL could be retrieved through a registry. The end user would have to select the type of node from a list of known node services in its region.
-* If both nodes are deployed in the LAN however, nodes can be automatically be detected. The end user would have to select the node from a list of automatically discovered nodes.
+The first step of pairing is establishing a connection from the Initiator node to the Responder node. This can be done in several ways:
+* Enter the Responder node address manually at the Initiator node.
+* If the Responder node is deployed in the WAN, the URL could be retrieved through a registry. The end user would have to select the type of node from a list of known node services in its region.
+* If both nodes are deployed in the LAN however, nodes can be automatically be discovered. The end user would have to select the node from a list of automatically discovered nodes.
 
-The second step is entering the pairing code of the responder node. This is a means for the end user to confirm that these two nodes are allowed to send control signals through S2 to each other. The pairing code can be obtained from the responder node. The pairing code is a (seemingly) random string of characters. This pairing code is typically displayed somewhere in the user interface of the other node. We recommend to use a dynamic token which expires after 5 minutes. However, if the node has a physical presence in the building and doesn't have user interface, there is also the option to have a static pairing code which can be printed on the device.
+The second step is entering the pairing code of the Responder node. This is a means for the end user to confirm that these two nodes are allowed to send control signals to each other. The pairing code can be obtained from the Responder node. The pairing code is a (seemingly) random string of characters. This pairing code is typically displayed somewhere in the user interface of the Responder node. It is recommended to use a dynamic token which expires after 5 minutes. However, if the Responder node has a physical presence in the building and doesn't have user interface, there is also the option to have a static pairing code which can be printed on the device.
 
-Optionally, the initiator node can send a signal to the responder node to indicate that the end user has started the pairing process and has selected the responder node. This could trigger the user interface of the responder node to proactively show the pairing code (e.g. through a pop-up) to improve the user experience.
+Optionally, the Initiator node can send a signal to the Responder node to indicate that the end user has started the pairing process and has selected the Responder node. This could trigger the user interface of the Responder node to proactively show the pairing code (e.g. through a pop-up) to improve the user experience.
 
-Once the pairing code is known to the initiator node, the pairing process is started. It is established that both nodes are compatible and it is verified that the entered pairing code is correct. Pairing could either fail or succeed.
+Once the pairing code is known to the Initiator node, the pairing process is started. It is established that both nodes are compatible and it is verified that the entered pairing code is correct. Pairing could either fail or succeed.
 
 If pairing is performed successfully, the CEM and RM instances should establish a session with each other and communicate through the exchange of S2 messages. If the connection is interrupted, the instances will automatically try to reestablish the connection.
 
-Once a CEM is paired, the user has to possibility to command either of the nodes to *unpair*. After unpairing the CEM and RM instances can no longer communicate through S2 (unless the end user pairs them again).
+Once a CEM is paired, the user has the possibility to command either of the nodes to *unpair*. After unpairing the CEM and RM instances can no longer communicate through S2 (unless the end user pairs them again).
+
+The pairing process is depicted in the figure below:
 
 ![Pairing_process_user](@site/static/img/communication-layer/pairing_process_user.png)
 
@@ -169,46 +173,46 @@ iui->e: Pairing result (success or failure)
 
 ## The node and the endpoint
 
-Within this protocol we make a clear distinction between two types of identities: the one of the *endpoint* and the one of the *node* itself.
+Within this protocol a clear distinction is made between two types of identities: the one of the **Endpoint** and the one of the **Node** itself.
 
-A node is an instance of a CEM or a RM. It is either a specific energy management system or service, or the representative of a physical energy flexible device, such as a heat pump or a home battery. It is typically easily recognized by the end user by its brand, device type, model name or maybe even a user given name.
+A **Node** is an instance of a CEM or a RM. It is either a specific energy management system or service, or the representative of a physical energy flexible device, such as a heat pump or a home battery. It is typically easily recognized by the end user by its brand, device type, model name or maybe even a user given name.
 
-The endpoint is basically the application that hosts the nodes. In a LAN deployment an endpoint might only host one node, and these identities may seem very similar. But in a WAN deployment, an endpoint could host all kinds of different types of nodes. It could for example be that a certain endpoint hosts RM instances for several brands of devices. Therefore an endpoint needs its own identity, which can be recognized by the end user. 
+The **Endpoint** is the application that hosts the nodes. In a LAN deployment an endpoint might only host one node, and these identities may seem very similar. But in a WAN deployment, an endpoint could host all kinds of different types of nodes. It could for example be that a certain endpoint hosts RM instances for several brands of devices. Therefore an endpoint needs its own identity, which can be recognized by the end user. 
 
 ## Used technology for pairing and communication
 
-An S2 connection basically consists of four steps: discovery, pairing, communication and unpairing. For these steps different types of technology are used.
+An S2 connection consists of four steps: discovery, pairing, communication and unpairing. For these steps different types of technology are used.
 
 One of the main technologies the process relies on is HTTPS REST. All interactions based on HTTPS are formally described in OpenAPI specification files. [OpenAPI](https://swagger.io/specification/) is a formal language for specifying HTTP(S) based API's. It can be used to generate reference documentation for developers, as well as stub code for many programming languages.
 
 ### Discovery
 
-The first step is finding the responder node from the initiator node. In principle this is done based on the pairing URL of the responder node. However, to improve user experience, two systems exist to find the pairing URL in a more user friendly manner. For more details see [Discovery](#discovery).
+The first step is finding the Responder node from the Initiator node. In principle this is done based on the pairing URL of the Responder node. However, to improve user experience, two systems exist to find the pairing URL in a more user friendly manner. For more details see [Discovery](#discovery).
 
-* If the responder node is deployed in the WAN, the end user can find the endpoint through the pairing endpoint registry. This would result in a list of vendors that offer nodes.
-* If both nodes are deployed in the LAN however, the responder node can be detected automatically through a process based on DNS-SD. This way the user only has to select the desired node to connect to from a list of nodes which were discovered in the LAN.
+* If the Responder node is deployed in the WAN, the end user can find the endpoint through the pairing endpoint registry. This would result in a list of vendors that offer nodes.
+* If both nodes are deployed in the LAN however, the Responder node can be detected automatically through a process based on DNS-SD. This way the user only has to select the desired node to connect to from a list of nodes which were discovered in the LAN.
 
 ### Pairing
 
 The pairing process itself is completely based on HTTPS REST. One node behaves as the HTTPS server, and the other as the HTTPS client. This process is described in an OpenAPI file. The process consists of multiple steps. If the pairing process is completed successfully, the nodes will agree on an access token. This token is used to initiate communication or to unpair.
 
-We'll refer to the endpoint that behaves as the HTTPS server during the pairing process as the *pairing server*, and the client as the *pairing client*.
+The endpoint that behaves as the HTTPS server during the pairing process is defined as the *pairing server*, and the client is defined as the *pairing client*.
 
 Pairing interaction is always TLS based (i.e. HTTPS is used). For WAN deployments, normal certificates (signed by a Certificate Authority) are being used. For LAN deployments self-signed certificates are used. For more information about the use of self-signed certificates, check [Trusting a self-signed root certificate](###Trusting-a-self-signed-root-certificate)
 
 ### Communication
 
-Communication is setting up the actual session, where S2 messages are being exchanged.
+A communication process is used to set up the actual session that enables the exchange of S2 messages.
 
-The process always starts with HTTPS based communication, but then is handed over to a protocol which supports a two-way messages based communication channel. Currently the only protocol that is being used is WebSockets, but there are plans to add other options in the future. The HTTPS interface is also specified in an OpenAPI file, together with the unpairing process.
+The process always starts with HTTPS based communication, but then is handed over to a protocol which supports a two-way messages based communication channel. Currently the main protocol that is being used is WebSockets, but there are plans to add other options in the future, such as MQTT. This communication setup process using a HTTPS interface is also specified in an OpenAPI file, together with the unpairing process.
 
-We'll refer to the endpoint that behaves as the HTTPS server during the communication process as the *communication server*, and the client as the *communication client*.
+The endpoint that behaves as the HTTPS server during the communication process is called the **Communication server**, and the client is called the **Communication client**.
 
 It should be noted that pairing and communication are two separate HTTPS interfaces, that don't have to be used in the same way. It could be that a node is an pairing client, but then becomes a communication server. This depends on the deployment of the nodes (see [Pairing details for different deployments](#pairing-details-for-different-deployments)).
 
 Communication interaction is always TLS based (i.e. HTTPS is used). For WAN deployments, normal certificates (signed by a Certificate Authority) are being used. For LAN-LAN deployments self-signed certificates are used. For more information about the use of self-signed certificates, check [Trusting a self-signed root certificate](###Trusting-a-self-signed-root-certificate)
 
-After the HTTPS interaction a WebSocket is established (other transport protocols will be added in the future). The communication server is always the WebSocket server. This server must use the same TLS certificate as the HTTPS server.
+After the HTTPS interaction communication with the selected communication protocol is established (WebSocket, other transport protocols such as MQTT will be added in the future). For WebSocket communication, the communication server is always the WebSocket server. This server must use the same TLS certificate as the HTTPS server.
 
 ### Unpairing
 
@@ -219,20 +223,22 @@ Unpairing interaction is always TLS based (i.e. HTTPS is used). For WAN deployme
 
 ## Pairing details for different deployments
 
-As explained, the pairing process is based on HTTPS REST calls. That means that for every pairing attempt, one node behaves as the HTTPS server, and one node behaves as the HTTPS client. The logical solution would be to make the initiator node the HTTPS client and the responder node the HTTPS server. After all, it is the HTTPS client that takes the initiative to contact the HTTPS server. The HTTPS server cannot take the initiative to contact the HTTPS client.
+As explained, the pairing process is based on HTTPS REST calls. That means that for every pairing attempt, one node behaves as the HTTPS server, and one node behaves as the HTTPS client. The logical solution would be to make the Initiator node the HTTPS client and the Responder node the HTTPS server. After all, it is the HTTPS client that takes the initiative to contact the HTTPS server. The HTTPS server cannot take the initiative to contact the HTTPS client.
 
-The objective is to have all nodes be able to be the initiator node, as well as the responder node. This is necessary to provide a consistent user experience. The end user might not be aware which node is deployed in the LAN or in the WAN, and then it might be confusing that, for example, his energy management system both provides pairing codes and asks for pairing codes.
+The objective is to have all nodes be able to be the Initiator node, as well as the Responder node. This is necessary to provide a consistent user experience. The end user might not be aware which node is deployed in the LAN or in the WAN, and then it might be confusing that, for example, his energy management system both provides pairing codes and asks for pairing codes.
 
-If every node must be able to be the initiator node in certain situations, and the responder node in other situations, and the easiest solution is to implement the initiator as HTTPS client and the responder as HTTPS server, you might come to the conclusion that every node needs to be able to behave both as an HTTPS server and as an HTTPS client.
+If every node must be able to be the Initiator node in certain situations, and the Responder node in other situations, and the easiest solution is to implement the initiator as HTTPS client and the responder as HTTPS server, you might come to the conclusion that every node needs to be able to behave both as an HTTPS server and as an HTTPS client.
 
 There are however two situations where this is not possible:
 
-* **WAN initiator node and LAN responder node**: Since the LAN is usually shielded from the WAN through a firewall or NAT, it is assumed that approaching a LAN HTTPS server from a WAN client is not possible. This specifications offers two approaches to this problem:
-  * Accept this limitation and not allow the WAN node to be the initiator node. Pairing can only be performed when the LAN node is the initiator node and the WAN node is the responder node. Special care must be taken to explain this to the end user.
+* **WAN Initiator node and LAN Responder node**: Since the LAN is usually shielded from the WAN through a firewall or NAT, it is assumed that approaching a LAN HTTPS server from a WAN client is not possible. This specifications offers two approaches to this problem:
+  * Accept this limitation and not allow the WAN node to be the Initiator node. Pairing can only be performed when the LAN node is the Initiator node and the WAN node is the Responder node. Special care must be taken to explain this to the end user.
   * Many modern devices or EMS systems are connected to a cloud backend managed by the OEM. If this is the case, it is possible to implement a pairing HTTPS server in the cloud, even though the node itself is in the LAN. If the pairing is performed successfully in the OEM backend, the result of the pairing must be communicated to the node via the existing connection between device/EMS and the OEM backend. This solution is only intended for WAN clients and must not be used by LAN clients. There must always be a method for purely LAN based pairing.
-* **LAN initiator RM and LAN responder RM**: Since one of the requirements is that a LAN RM instance can be implemented on restricted hardware, and a TLS enabled HTTPS server is far more memory intensive than an HTTPS client, there is an option to implement a LAN RM instance purely as an HTTPS client. A long-polling mechanism is available to indicate to the HTTPS server that the node is available for pairing. This mechanism is also used to initiate the pairing process from the HTTPS server. In other words: in this specific situation the initiator node behaves as the HTTPS server, and the responder node only has to be an HTTPS client.
+* **LAN initiator RM and LAN responder RM**: Since one of the requirements is that a LAN RM instance can be implemented on restricted hardware, and a TLS enabled HTTPS server is far more memory intensive than an HTTPS client, there is an option to implement a LAN RM instance purely as an HTTPS client. A long-polling mechanism is available to indicate to the HTTPS server that the node is available for pairing. This mechanism is also used to initiate the pairing process from the HTTPS server. In other words: in this specific situation the Initiator node behaves as the HTTPS server, and the Responder node only has to be an HTTPS client.
 
 ![Pairing_direction](@site/static/img/communication-layer/pairing_direction.png)
+
+>>>> **Ewoud**: Plaatje opsplitsen want dit is de veel pijltjes. Alternatief voor WAN-LAN heb ik gemaakt in powerpoitn
 
 
 # Formal specification and versioning (normative)
@@ -249,11 +255,11 @@ This document serves as an overall specification of the S2 Connect protocol. How
 ## Versioning of OpenAPI files
 The pairing API, the session initiation API and the WAN pairing endpoint registry API are formally defined in OpenAPI files. To accommodate future changes to these APIs, the OpenAPI files are versioned. Versioning is done using a `major.minor` scheme. All S2 Connect OpenAPI files share the same version number.
 
-The minor version is increased when backwards compatible changes are made. Be aware that we consider adding items to certain lists of enums (e.g. the list of supported hash functions) backwards compatible. Other examples of backwards compatible changes are additional properties of JSON files or added operations.
+The minor version is increased when backwards compatible changes are made. Be aware that adding items to certain lists of enums (e.g. the list of supported hash functions) is considered backwards compatible. Other examples of backwards compatible changes are additional properties of JSON files or added operations.
 
 The major version is increased when non-backwards compatible changes are made.
 
-The major version of the API is embedded in the base URL of the API as `/v[major]` (e.g. `/v1`). HTTPS server and HTTPS clients can decide to implement several major version of the API in parallel to increase interoperability. In that case server must server all version on the same base URL (e.g. `https://hostname.local/pairing/v1/...` and `https://hostname.local/pairing/v2/...`). The server **must** always (even when it only supports one major version of the API) serve an index (e.g. `https://hostname.local/pairing/`) which returns a JSON array with all supported versions as they are defined as part of the URL (e.g. `["v1", "v2"]`).
+The major version of the API is embedded in the base URL of the API as `/v[major]` (e.g. `/v1`). HTTPS server and HTTPS clients can decide to implement several major version of the API in parallel to increase interoperability. In that case server must serve all versions on the same base URL (e.g. `https://hostname.local/pairing/v1/...` and `https://hostname.local/pairing/v2/...`). The server **must** always (even when it only supports one major version of the API) serve an index (e.g. `https://hostname.local/pairing/`) which returns a JSON array with all supported versions as they are defined as part of the URL (e.g. `["v1", "v2"]`).
 
 ## Versioning of JSON Schema files
 JSON Schema uses its own versioning scheme, which is based on an `major.minor.patch` scheme. When negotiating the S2 JSON version number, the exact version string **must** be used (e.g. `v1.0.0`).
@@ -263,7 +269,7 @@ The URL of the pairing and session initiation API are used in the discovery proc
 
 For **WAN** deployed endpoints, the URL **must** be based on a DNS domain name.
 
-For **LAN** deployed endpoints, the URL **must** be based on an mDNS alias or hostname (e.g. `hostname.local`). It is important that these names are *unique* and *stable*. Unique since there could be multiple instances within the same LAN, and stable because if it changes, the endpoint cannot be found by other endpoints. It should also be noted that the alias used by DNS-SD, and is presented to the end user. It recommended to choose a name that the end user should recognize and an element for the end user to make a distinction between two devices of the same type, such as a serial number.
+For **LAN** deployed endpoints, the URL **must** be based on an mDNS alias or hostname (e.g. `hostname.local`). It is important that these names are *unique* and *stable*. Unique since there could be multiple instances within the same LAN, and stable because if it changes, the endpoint cannot be found by other endpoints. It should also be noted that the alias used by DNS-SD is presented to the end user. It recommended to choose a name that the end user should recognize and an element for the end user to make a distinction between two devices of the same type, such as a serial number.
 
 Also see [Pairing URL](#pairing-url).
 
@@ -273,6 +279,8 @@ As explained in the section [Versioning of OpenAPI files](#version) the pairing 
 The image below depicts the interactions between client and server for the process to determine the API version that will be used.
 
 ![image](@site/static/img/communication-layer/api_version_selection.png)
+
+>>>> **Ewoud**: GET / is een beetje verwarrend als de URL bijv. https://device.local/s2c/ is. Dus GET / vervangen door GET root of supplied URL? 
 
 <details>
 <summary>Image generated using the following PlantUML code:</summary>
@@ -334,10 +342,10 @@ For each pairing attempt, one endpoint must be the HTTPS server, while the other
 
 > A LAN deployed RM implementation can choose if it implements the HTTPS server, or that it implements the HTTPS client and uses long-polling. This feature exists to accommodate RM implementations with constrained hardware.
 
-A CEM can be paired with multiple RM's a the same time. A RM can only be paired with one CEM at a time. A node is always available for pairing. When a RM that is already paired with an CEM is paired with another CEM, the initial pairing is automatically unpaired. This automatic unpairing only happens after the new pairing is successfully completed. When a CEM and a RM are being paired when they already are paired with each other, it should be considered as an unpairing and new pairing (which means that a new `accessToken` is being used, and the current communication session should be terminated).
+A CEM can be paired with multiple RMs at the same time. A RM can only be paired with one CEM at a time. A node is always available for pairing. When a RM that is already paired with an CEM is paired with another CEM, the initial pairing is automatically unpaired. This automatic unpairing only happens after the new pairing is successfully completed. When a CEM and a RM are being paired when they already are paired with each other, it should be considered as an unpairing and new pairing (which means that a new `accessToken` is being used, and the current communication session should be terminated).
 
 ## Pairing URL
-The start of each pairing related interaction is the initiator node contacting the responder node via the *pairing URL*. Although discovery provides an option to retrieve this URL in a user friendly manner, entering the pairing URL manually **must** always be an option. Therefore, every responder node **should** display its pairing URL somewhere (e.g. in its UI), and every initiator node **should** have an option to pair based on a pairing URL which is manually entered by the end user.
+The start of each pairing related interaction is the Initiator node contacting the Responder node via the *pairing URL*. Although discovery provides an option to retrieve this URL in a user friendly manner, entering the pairing URL manually **must** always be an option. Therefore, every Responder node **should** display its pairing URL somewhere (e.g. in its UI), and every Initiator node **should** have an option to pair based on a pairing URL which is manually entered by the end user.
 
 The pairing URL is the base URL of the pairing API of an endpoint. It **must** include the protocol (`https://`), it **must not** include the version of the API, but it **must** include a trailing slash (e.g. `https://hostname.local/pairing/`).
 
@@ -382,11 +390,13 @@ In order to filter out the relevant endpoint records the API supports the follow
 
 In addition, the number of responses can be limited. An offset can also be provided in order to split the results over multiple requests.
 
+>>>> **Ewoud**: Stel ik heb een WP en wil deze aan mijn cloud EMS koppelen, zeg BeNext. Dus dan zoek 'BeNext' op in de public registry via de app van de WP, hoe selecteer ik dan *mijn* EMS instantie? Filter is dan NL/Public status/CEM. 
+
 ### DNS-SD based discovery
 DNS-SD is used to automatically discover nodes from a node that is deployed in the LAN. This method can be used in two ways.
 
-* To discover another node that is deployed in the LAN, which is the responder node
-* To advertise a [long polling URL](#long-polling) so other initiator nodes in the LAN could connect to this node
+* To discover another node that is deployed in the LAN, which is the Responder node
+* To advertise a [long polling URL](#long-polling) so other Initiator nodes in the LAN could connect to this node
 
 S2 Connect uses the service type `s2connect` and exclusively uses tcp, since it is an HTTPS based protocol. S2 Connect uses the following DNS-SD values:
 
@@ -432,9 +442,9 @@ The receiver of the service description **must** use the URL provided in the TXT
 
 ## The pairing token, the node ID alias and the pairing code
 
-The pairing token is a random string of characters that is generated by the responder node. It is a secret which is transferred by the end user to the initiator node, and then is verified during the pairing process. Since there will be many cases where the end user has to manually type in the pairing token, the pairing token has to be short enough to make it easy for the end user to type in, but long enough to make it secure. 
+The pairing token is a random string of characters that is generated by the Responder node. It is a secret which is transferred by the end user to the Initiator node, and then is verified during the pairing process. Since there will be many cases where the end user has to manually type in the pairing token, the pairing token has to be short enough to make it easy for the end user to type in, but long enough to make it secure. 
 
-The pairing token may consist out of lower case letters, upper case letters and numbers. The pairing token **must** be generated by a cryptographically secure pseudorandom number generator. The pairing token is typically dynamically generated when the user requests the pairing token at the user interface of the responder node. Dynamically generated pairing tokens **must** expire after a duration; five minutes is the recommended duration. However, energy flexible devices that do not have a user interface are allowed to have a static pairing token, that for example can be printed somewhere on the physical device. Static pairing tokens do not expire. Dynamic pairing tokens **must** contain at least 4 characters. Static paring tokens **must** contain at least 6 characters. Pairing tokens may be as long as the developer deems necessary.
+The pairing token may consist out of lower case letters, upper case letters and numbers. The pairing token **must** be generated by a cryptographically secure pseudorandom number generator. The pairing token is typically dynamically generated when the user requests the pairing token at the user interface of the Responder node. Dynamically generated pairing tokens **must** expire after a duration; five minutes is the recommended duration. However, energy flexible devices that do not have a user interface are allowed to have a static pairing token, that for example can be printed somewhere on the physical device. Static pairing tokens do not expire. Dynamic pairing tokens **must** contain at least 4 characters. Static paring tokens **must** contain at least 6 characters. Pairing tokens may be as long as the developer deems necessary.
 
 | Type of pairing token | Minimal length | Validity | Regular expression |
 | --- | --- | --- | --- |
@@ -466,7 +476,7 @@ Alternatively, the **pairing code** can be validated with the following regular 
 ^([0-9a-zA-Z]+-)?[0-9a-zA-Z]{4,}$
 ```
 
-The pairing code allows us to transfer two pieces of information by only bothering the end user once. Due to its format the initiator node can easily extract the node ID alias and the pairing token from the pairing code by splitting the string at the dash. 
+The pairing code allows us to transfer two pieces of information by only bothering the end user once. Due to its format the Initiator node can easily extract the node ID alias and the pairing token from the pairing code by splitting the string at the dash. 
 
 
 ## Challenge response process
@@ -481,7 +491,7 @@ The algorithm to calculate the response is based on the HMAC (hash-based message
 
 The HMAC function itself uses a cryptographic hash function for its calculations. Since cryptographic hash functions might contain vulnerabilities, this protocol uses a simple selection mechanism for the cryptographic hash function. The HTTPS client sends with the requestPairing HTTPS request a list of supported hash functions. In the response the HTTPS server indicates which hash function it has selected from this list. This function **must** be used for all response calculations during het pairing attempt. Currently there is only one hash function available (SHA256), but other options might be added in the future.
 
-It order to avoid man-in-the-middle attacks, information about the connection in also used as input for calculating the response. When both nodes are deployed in the LAN, the SHA256 fingerprint of the server certificate is used. In other scenarios, the domain name of the server is included in the calculation of the response.
+In order to avoid man-in-the-middle attacks, information about the connection is also used as input for calculating the response. When both nodes are deployed in the LAN, the SHA256 fingerprint of the server certificate is used. In other scenarios, the domain name of the server is included in the calculation of the response.
 
 Note that the challenge and response are binary data. Both are encoded using Base64 and must also be decoded before they can be used. SHA256 certificate fingerprints are encoded into a hexadecimal string, and must be decoded as hexadecimal string before it can be used as input (note that fingerprint strings usually contain colons to separate bytes). The pairing token and domain name are strings, which need to be converted into binary data using the ASCII table.
 
@@ -522,7 +532,7 @@ Since these operations are only intended for endpoints within the same LAN, the 
 
 Once a LAN endpoint has discovered a LAN pairing endpoint (through DNS-SD), it still knows very little about the endpoint. There are two REST operations that allow an HTTPS client to query information of a server endpoint: performing a GET on `/endpoint` and performing a GET on `/nodes`.
 
-These operations **must** be implemented by LAN deployed endpoints, but **must not** be implemented by WAN deployed endpoints. These operations can be used in the situation where the initiator node is the HTTPS client and the responder node is het HTTPS server (for the situation where it is the other way around see [Long-polling](#long-polling)).
+These operations **must** be implemented by LAN deployed endpoints, but **must not** be implemented by WAN deployed endpoints. These operations can be used in the situation where the Initiator node is the HTTPS client and the Responder node is het HTTPS server (for the situation where it is the other way around see [Long-polling](#long-polling)).
 
 Before the HTTPS client can start interaction with the server, it must first select a version of the API to use. See [Selecting the version of REST APIs](#selecting-the-version-of-rest-apis). For full normative details see the OpenAPI specification files.
 
@@ -535,9 +545,9 @@ Note that there is no authentication for these operations. It is assumed that th
 
 > This section is only applicable for LAN-LAN pairing
 
-Once the end user has selected a responder node it wants the initiator node to pair with, the end user probably still has to retrieve the pairing code from the responder node. In order to improve the user experience, the initiator node can send a *prepare pairing* signal to the responder node. The responder node **may** use this signal to proactively show the pairing code in its user interface, for example in the form of a pop-up or notification. This saves the end user the trouble of searching where to find the pairing token in the user interface. It is also possible for the initiator node to send a *cancel prepare pairing* signal to the responder node, in case the end user has no longer selected the responder node it wants to pair with. Sending these signals **must** be implemented by the client, but only when there is a clear distinction between the moment the prepare pairing signal is sent and when the actual pairing starts. The receiver of these signals **may** process these signals by showing the pairing token in its user interface. When the prepare pairing signal is sent, it is not guaranteed that a cancel prepare pairing or a pairing attempt will follow.
+Once the end user has selected a Responder node it wants the Initiator node to pair with, the end user probably still has to retrieve the pairing code from the Responder node. In order to improve the user experience, the Initiator node can send a *prepare pairing* signal to the Responder node. The Responder node **may** use this signal to proactively show the pairing code in its user interface, for example in the form of a pop-up or notification. This saves the end user the trouble of searching where to find the pairing token in the user interface. It is also possible for the Initiator node to send a *cancel prepare pairing* signal to the Responder node, in case the end user has no longer selected the Responder node it wants to pair with. Sending these signals **must** be implemented by the client, but only when there is a clear distinction between the moment the prepare pairing signal is sent and when the actual pairing starts. The receiver of these signals **may** process these signals by showing the pairing token in its user interface. When the prepare pairing signal is sent, it is not guaranteed that a cancel prepare pairing or a pairing attempt will follow.
 
-These operations **must** be implemented by LAN deployed endpoints, but **must not** be implemented by WAN deployed endpoints. These operations can be used in the situation where the initiator node is the HTTPS client and the responder node is het HTTPS server (for the situation where it is the other way around see [Long-polling](#long-polling)).
+These operations **must** be implemented by LAN deployed endpoints, but **must not** be implemented by WAN deployed endpoints. These operations can be used in the situation where the Initiator node is the HTTPS client and the Responder node is het HTTPS server (for the situation where it is the other way around see [Long-polling](#long-polling)).
 
 Note that there is no authentication for these operations. It is assumed that these operations are only exposed within the LAN.
 
@@ -566,7 +576,7 @@ The server **must** perform the checks in the table below. For the checks with H
 | Is the request properly formatted and does it follow the schema? | 400 | `ParsingError` |
 | Does it recognize the `serverNodeId`? | 400 | `NodeNotFound` |
 | Are the endpoint and node ready for pairing? | 400 | `Other` |
-| Does the targeted node have a different role than the initiator node (i.e. you cannot pair two RM's or two CEM's)? | 400 | `InvalidCombinationOfRoles` |
+| Does the targeted node have a different role than the Initiator node (i.e. you cannot pair two RM's or two CEM's)? | 400 | `InvalidCombinationOfRoles` |
 | Does the request originate from inside the subnet? | 401 | n/a |
 
 If no checks fail the server **should** respond with HTTP status code 204.
@@ -588,18 +598,18 @@ The client **must** send the following information in the request. For full norm
 
 The server **should** respond with HTTP status code 204 (even when it does not recognize the `clientNodeId` or `serverNodeId`). However, if the request originated from outside the subnet the server **must** respond with status 401. 
 
-### Long-polling
+### Long-polling for constrained endpoints in the LAN
 
 > This section is only applicable for LAN-LAN pairing
 
 The long-polling feature is intended to support endpoints that only want to implement an HTTPS client, and not an HTTPS server. Typically this is because the endpoint runs on constrained hardware. An endpoint is only allowed to only implement the client if it exclusively hosts nodes that have the RM role.
 
-Imagine we have endpoints, one only hosting a CEM node, and one only hosting a RM node. The RM runs on constrained hardware, and only implements the HTTPS client. We have two situations:
+Imagine having two endpoints, one only hosting a CEM node, and one only hosting a RM node. The RM runs on constrained hardware, and only implements the HTTPS client. Therefore there are are two situations:
 
-1. **The RM is the initiator node and the CEM is the responder node**: The CEM issues a pairing code, the end users enters the pairing code in the UI of the RM. The RM endpoint (HTTPS client) then sends a normal HTTPS request to the CEM endpoint (HTTPS server) to initiate pairing. The normal pairing process can be used, and long-polling is not required.
-2. **The CEM is the initiator node and the RM is the responder node**: The RM issues a pairing code (a dynamic pairing code through its UI, or a static pairing code for example through a sticker on the hardware), the end user enters the pairing code in the UI of the CEM. Now the CEM endpoint (HTTPS server) cannot use the normal pairing process, since it has no way to contact the RM endpoint (HTTPS client).
+1. **The RM is the Initiator node and the CEM is the Responder node**: The CEM issues a pairing code, the end users enters the pairing code in the UI of the RM. The RM endpoint (HTTPS client) then sends a normal HTTPS request to the CEM endpoint (HTTPS server) to initiate pairing. The normal pairing process can be used, and long-polling is not required.
+2. **The CEM is the Initiator node and the RM is the Responder node**: The RM issues a pairing code (a dynamic pairing code through its UI, or a static pairing code for example through a sticker on the hardware), the end user enters the pairing code in the UI of the CEM. Now the CEM endpoint (HTTPS server) cannot use the normal pairing process, since it has no way to contact the RM endpoint (HTTPS client), because the RM endpoint has no HTTPS server implementation.
 
-For the second situation the long-polling feature can be used. It can be used by the initiator node (the HTTPS server) to notify the responder node (the HTTPS client) it wants to pair.
+For the second situation the long-polling feature can be used. It can be used by the Initiator node (the HTTPS server) to notify the Responder node (the HTTPS client) it wants to pair.
 
 > Informative: Long-polling is a technique that allows the server to send signals to the client without a significant delay, and without relying on additional technologies such as Websockets or Server-Sent Events. The common alternative is polling, where the client sends a request on a regular interval; let's say every 30 seconds. Polling creates a delay from the perspective of the server. If the server wants to send something to the client, it has to wait until the client contacts the server; which in the worst case 30 seconds. With long-polling the server doesn't immediately respond the the request (a hanging HTTPS request). It responds immediately when the server wants the client to do something, or just before the request would time out. After receiving the response from the server the client immediately opens a new request to allow the server to send signals the client again.
 
@@ -612,7 +622,7 @@ The long-polling feature fulfills the following functionality:
 
 Before the HTTPS client can start interaction with the server, it must first select a version of the API to use. See [Selecting the version of REST APIs](#selecting-the-version-of-rest-apis). For full normative details see the OpenAPI specification files.
 
-A client capable of long-polling **should** initiates long-polling when it encounters a endpoint through DNS-SD that indicates that is available for long-polling requests. When the endpoint represents zero nodes the client **cannot** attempt long-polling. When the endpoint advertisement itself, or only its long-polling indication disappears from DNS-SD the client **should** stop the long-polling process for that server. The client **must** also stop when it is no longer capable of pairing.
+A client capable of long-polling **should** initiates long-polling when it encounters a endpoint through DNS-SD that indicates that is available for long-polling requests. When the endpoint represents zero nodes the client **cannot** attempt long-polling. When the endpoint stops advertising itself, or only its long-polling indication disappears from DNS-SD, the client **should** stop the long-polling process for that server. The client **must** also stop when it is no longer capable of pairing.
 
 The server **must** always respond within 25 seconds after receiving the request. The client **must** use a request time-out of at least 30 seconds.
 
@@ -636,7 +646,7 @@ The table below indicates how the client should respond to the requests of the s
 | 401 | n/a | n/a | Stop long-polling, do not attempt long-polling with this node again | n/a |
 | 500 | n/a | n/a | Wait before trying to send the next request | Only the `clientNodeId`|
 
-2. **The CEM is the initiator node and the RM is the responder node**: The RM issues a pairing code (a dynamic pairing code through its UI, or a static pairing code for example through a sticker on the hardware), the end user enters the pairing code in the UI of the CEM. Now the CEM endpoint (HTTPS server) cannot use the normal pairing process, since it has no way to contact the RM endpoint (HTTPS client).
+2. **The CEM is the Initiator node and the RM is the Responder node**: The RM issues a pairing code (a dynamic pairing code through its UI, or a static pairing code for example through a sticker on the hardware), the end user enters the pairing code in the UI of the CEM. Now the CEM endpoint (HTTPS server) cannot use the normal pairing process, since it has no way to contact the RM endpoint (HTTPS client).
 
 When the server sends the `requestPairing` action, the node on the client must already have issued a pairing token. If the node uses a dynamic pairing code, it could be the case that the pairing code has expired, or that no pairing code has been issued in the first place. In that case the client **must** perform a new request with an `errorMessage` containing the value `NoValidTokenOnPairingClient` in the object associated with the node ID of the node should have attempted to pair.
 
@@ -706,7 +716,7 @@ Before two node can be paired, the following preconditions must be met.
 3. The HTTPS client must have selected the version on the pairing API that will be used (see [Selecting the version of the pairing or session initiation API](#selecting-the-version-of-rest-apis))
 4. Both nodes must have a pairing token available. Either because they issued this token themselves, or because the end user has provided it through the user interface.
 
-> Note: The initiator node could be the HTTPS server or the HTTPS client
+> Note: The Initiator node could be the HTTPS server or the HTTPS client
 
 If the HTTPS client does not fulfill these preconditions, it **cannot** send the first HTTPS request of the pairing process. 
 
@@ -717,8 +727,8 @@ The client sends the following information (for full details see the OpenAPI spe
 
 | Information | Description |
 | --- | --- |
-| `clientNodeDescription` | Information about the node that wants to pair, such as brand, logo and type. Important fields include `id` (the node ID) and `role` of the initiator node |
-| `clientEndpointDescription` | Information about the client endpoint. An important field is the deployment. |
+| `clientNodeDescription` | Information about the node that wants to pair, such as brand, logo and type. Important fields include `id` (the node ID) and `role` of the Initiator node |
+| `clientEndpointDescription` | Information about the client endpoint. An important field is the deployment (LAN or WAN). |
 | `nodeId` | The nodeID of the node that is being targeted (this filed can be omitted if the client only knows the `nodeIdAlias` or when the endpoint only represents one node). |
 | `nodeIdAlias` | The nodeIdAlias of the node that is being targeted (this field can be omitted if the client only knows the `nodeId` or when the endpoint only represents one node) |  
 | `supportedCommunicationProtocols` | List of supported communications protocols of the client |
@@ -747,17 +757,17 @@ The server **must** perform the checks in the table below to make sure that it c
 | Does it recognize the `nodeIdAlias`? | `NodeNotFound` | No |
 | Are the endpoint and node ready for pairing? | `Other` | No |
 | If no `nodeIdAlias` provided, does this endpoint indeed only represent one node? | `NoNodeIdProvided` | No |
-| Does the targeted node have a different role than the initiator node (i.e. you cannot pair two RM's or two CEM's)? | `InvalidCombinationOfRoles` | No |
+| Does the targeted node have a different role than the Initiator node (i.e. you cannot pair two RM's or two CEM's)? | `InvalidCombinationOfRoles` | No |
 | Does the server accept any of the provided hashing algorithms for the challenge response process? | `IncompatibleHmacHashingAlgorithms` | No |
 | Is there overlap between the communication protocols? | `IncompatibleCommunicationProtocols` | Yes |
 | Is there overlap between the S2 message versions? | `IncompatibleS2MessageVersions` | Yes |
-| If the targeted node on the HTTPS server is the initiator node, did the end user provide a valid pairing token? | `NoValidPairingTokenOnPairingServer` | No |
-| If the targeted node on the HTTPS server is the responder node, does the node have a pairing token which has not expired? | `NoValidPairingTokenOnPairingServer` | No |
+| If the targeted node on the HTTPS server is the Initiator node, did the end user provide a valid pairing token? | `NoValidPairingTokenOnPairingServer` | No |
+| If the targeted node on the HTTPS server is the Responder node, does the node have a pairing token which has not expired? | `NoValidPairingTokenOnPairingServer` | No |
 | Is this is a WAN pairing server for a LAN endpoint, does the client have a WAN deployment? | `Other` | No |
 
 > Note: If the node that is being paired is an RM which is already paired, the pairing process proceeds. When the paring process is finished successfully the existing pairing relation must be unpaired.
 
-> Note: If the targeted node is already paired with the initiator node, the pairing process proceeds. When the paring process is finished successfully the existing pairing relation is maintained.
+> Note: If the targeted node is already paired with the Initiator node, the pairing process proceeds. When the paring process is finished successfully the existing pairing relation is maintained.
 
 > Note: This is the only step where it is checked if the pairing code has expired. If the pairing token expires after this step, but during the pairing process, the pairing process will continue. A pairing attempt is limited to 15 seconds.
 
@@ -776,7 +786,7 @@ The server responds with the following information (for full details see the Ope
 | Information | Description |
 | --- | --- |
 | `pairingAttemptId` | The generated identifier for this pairing attempt |
-| `serverNodeDescription` | Information about the node that is being targeted, such as brand, logo and type. Important fields include `id` (the node ID) and `role` of the responder node |
+| `serverNodeDescription` | Information about the node that is being targeted, such as brand, logo and type. Important fields include `id` (the node ID) and `role` of the Responder node |
 | `serverEndpointDescription` | Information about the server endpoint. An important field is the deployment. |
 | `selectedHmacHashingAlgorithm` | The hashing algorithm for the challenge response function as selected in step 2 |
 | `clientHmacChallengeResponse` | The response to the challenge provided by the HTTPS client as calculated in step 2 |
@@ -830,7 +840,7 @@ The HTTPS server checks the `serverHmacChallengeResponse` provided by the HTTPS 
 If the result is identical, the server **should** proceed to the next step. If the result is not identical, the server **must** stop the pairing attempt by responding with HTTP status code 403. The `pairingAttemptId` cannot be used by the HTTPS client anymore. If the HTTPS client wants to make another attempt, it **must** start again at step 1 (starting with the API version selection process is also allowed).
 
 ### 8A. Response status 200
-The server **must** generates an access token for the HTTPS client. The access token is random binary data and **must** be generated by a cryptographically secure pseudorandom number generator and **must** have a minimum length of 32 bytes. It is encoded using Base64. The access token **cannot** be used by the initiator node until the pairing process is completed.
+The server **must** generates an access token for the HTTPS client. The access token is random binary data and **must** be generated by a cryptographically secure pseudorandom number generator and **must** have a minimum length of 32 bytes. It is encoded using Base64. The access token **cannot** be used by the Initiator node until the pairing process is completed.
 
 The server responds with two pieces of information:
 
@@ -844,7 +854,7 @@ If the response is understood and properly formatted, the HTTPS client **should*
 ### 6B. POST /[version]/postConnectionDetails
 > Note: The `pairingAttemptId` must be provided through a header for this HTTPS request
 
-The HTTPS sends the connection details to the HTTPS server. This request also serves as a way to send the HTTPS server the `serverHmacChallengeResponse` calculated in step 5. 
+The HTTPS client sends the connection details to the HTTPS server. This request also serves as a way to send the HTTPS server the `serverHmacChallengeResponse` calculated in step 5. 
 
 In this case the pairing server will become the communication client. Once the pairing server becomes the communication client, it does not know what the certificate that the communication server will use. That is why it needs to provide the fingerprint of its CA (root) certificate using the property `certificateFingerprint`. This property is a map, where the key of the map is the hashing algorithm used to generate the fingerprint, and the value is the fingerprint itself. The hashing function `SHA256` and the related fingerprint **must** always be provided. The communication client **must** pin this certificate to the domain name of the communication server.
 
@@ -919,7 +929,7 @@ If the server receives a wrong HTTPS request (e.g. `/postConnectionDetails` whil
 
 After two nodes have been paired, the nodes exchange S2 messages over a secure connection. 
 
-The following mechanism **must** be used to initiate a secure connection between two nodes. Client authentication is based on a one-time use communication token that needs to be renewed every time a new S2 session is created. The communication client will always attempt to set up an S2 connecting with the communication server when there is no connection. For more details see [Reconnection strategy](#reconnection-strategy). 
+The following mechanism **must** be used to initiate a secure connection between two nodes. Client authentication is based on a one-time use communication token that needs to be renewed every time a new S2 session is created. The communication client will always attempt to set up an S2 connection with the communication server when there is no connection. For more details see [Reconnection strategy](#reconnection-strategy). 
 
 ## Mapping the CEM and RM to communication server or client
 
@@ -1122,7 +1132,7 @@ Communication over the WebSocket endpoint **must** be encrypted following [RFC 6
  
 The WebSocket Protocol ([RFC6455](https://datatracker.ietf.org/doc/html/rfc6455)) has an extension for compression: [**RFC 7692**](https://datatracker.ietf.org/doc/html/rfc7692.html) implementing so called per-message-deflate compression. https://datatracker.ietf.org/doc/html/rfc7692
 
-RFC 7692 is widely supported by WebSocket libraries and and we are exchanging JSON plain text messages, it is expected to save a large amount of data. Therefore, implementations of S2 WebSockets **SHOULD** support RFC 7692 and **SHOULD** enable it whenever possible.
+The RFC 7692 compression extension is widely supported by WebSocket libraries and since JSON is exchanged as plain text messages, it is expected to save a large amount of data. Therefore, implementations of S2 WebSockets **SHOULD** support RFC 7692 and **SHOULD** enable it whenever possible.
 
 ### Keepalive & heartbeat (ping / pong)
 WebSockets by default have a **keepalive** and a **heartbeat mechanism**. Keepalive is designed to keep the connection open while heartbeat is designed to check the latency and check the connection is still working. This means that periodically a ping frame is sent to the server (endpoint) and in response a pong frame is sent.
@@ -1181,6 +1191,8 @@ WebSocketDisconnected --> [*]
 | ControlType OMBC activated | OMBC.Instruction<br/>SelectControlType<br/>SessionRequest<br/>ReceptionStatus | OMBC.Status<br/>OMBC.SystemDescription<br/>OMBC.TimerStatus RevokeObject<br/>InstructionStatusUpdate<br/>ResourceManagerDetails<br/>PowerMeasurement<br/>PowerForecast<br/>SessionRequest<br/>ReceptionStatus |
 | ControlType FRBC activated | FRBC.Instruction<br/>SelectControlType<br/>SessionRequest<br/>ReceptionStatus | FRBC.ActuatorStatus<br/>FRBC.FillLevelTargetProfile<br/>FRBC.LeakageBehaviour<br/>FRBC.StorageStatus<br/>FRBC.SystemDescription<br/>FRBC.UsageForecast<br/>FRBC.TimerStatus<br/>RevokeObject<br/>InstructionStatusUpdate ResourceManagerDetails<br/>PowerMeasurement<br/>PowerForecast<br/>SessionRequest<br/>ReceptionStatus |
 | ControlType DDBC activated | DDBC.Instruction<br/>SelectControlType<br/>SessionRequest<br/>ReceptionStatus | DDBC.ActuatorStatus<br/>DDBC.AverageDemandRateForecast<br/>DDBC.SystemDescription<br/>DDBC.TimerStatus<br/>RevokeObject<br/>InstructionStatusUpdate<br/>ResourceManagerDetails<br/>PowerMeasurement PowerForecast<br/>SessionRequest<br/>ReceptionStatus |
+
+>>>> **Ewoud**: Ook `NO_CONTROL_TYPE` toevoegen?
 
 # Unpairing process (normative)
 
