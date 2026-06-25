@@ -370,7 +370,7 @@ The registry contains the following information for each endpoint. For full norm
 | `id` | Unique UUID identifier for the record |
 | `name` | User facing name of the endpoint |
 | `description` | User facing description of the endpoint|
-| `icon32` | 32 by 32 pixel- icon of the endpoint |
+| `icon32` | 32 by 32 pixels icon of the endpoint |
 | `icon128` | 128 by 128 pixels icon of the endpoint |
 | `icon512` | 512 by 512 pixels icon of the endpoint |
 | `pairingUrl` | The pairing URL of the endpoint |
@@ -1181,6 +1181,8 @@ WebSocketDisconnected --> [*]
 ```
 </details>
 
+> Note: When no Control Type is selected (i.e. `NO_CONTROL_TYPE`), the protocol is in the "WebSocket Connected" state.
+
 | State | Messages that can be sent by CEM /received by RM | Messages that can be sent by RM / received by CEM |
 | --- | --- | --- |
 | WebSocket Connected |  SelectControlType<br/>SessionRequest<br/>ReceptionStatus | ResourceManagerDetails<br/>PowerMeasurement<br/>PowerForecast<br/>SessionRequest<br/>ReceptionStatus |
@@ -1189,8 +1191,6 @@ WebSocketDisconnected --> [*]
 | ControlType OMBC activated | OMBC.Instruction<br/>SelectControlType<br/>SessionRequest<br/>ReceptionStatus | OMBC.Status<br/>OMBC.SystemDescription<br/>OMBC.TimerStatus RevokeObject<br/>InstructionStatusUpdate<br/>ResourceManagerDetails<br/>PowerMeasurement<br/>PowerForecast<br/>SessionRequest<br/>ReceptionStatus |
 | ControlType FRBC activated | FRBC.Instruction<br/>SelectControlType<br/>SessionRequest<br/>ReceptionStatus | FRBC.ActuatorStatus<br/>FRBC.FillLevelTargetProfile<br/>FRBC.LeakageBehaviour<br/>FRBC.StorageStatus<br/>FRBC.SystemDescription<br/>FRBC.UsageForecast<br/>FRBC.TimerStatus<br/>RevokeObject<br/>InstructionStatusUpdate ResourceManagerDetails<br/>PowerMeasurement<br/>PowerForecast<br/>SessionRequest<br/>ReceptionStatus |
 | ControlType DDBC activated | DDBC.Instruction<br/>SelectControlType<br/>SessionRequest<br/>ReceptionStatus | DDBC.ActuatorStatus<br/>DDBC.AverageDemandRateForecast<br/>DDBC.SystemDescription<br/>DDBC.TimerStatus<br/>RevokeObject<br/>InstructionStatusUpdate<br/>ResourceManagerDetails<br/>PowerMeasurement PowerForecast<br/>SessionRequest<br/>ReceptionStatus |
-
->>>> **Ewoud**: Ook `NO_CONTROL_TYPE` toevoegen?
 
 # Unpairing process (normative)
 
