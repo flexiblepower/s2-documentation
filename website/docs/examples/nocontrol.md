@@ -3,7 +3,7 @@ title: "Example: Non controllable assets"
 hide_title: true
 ---
 
-This page serves as a guide for implementing an S2 RM for a non-flexible device, or to give a CEM developer a better understanding of what to expect when controlling the energy flexibility of a non-flexible device. It provides some example S2 messages for same (fictional) non-flexible devices.
+This page serves as a guide for implementing an S2 RM for a non-flexible device, or to give a CEM developer a better understanding of what to expect when taking into account information from non-flexible device. It provides some example S2 messages for same (fictional) non-flexible devices. Some examples of non-flexible devices are a TV, an electric cooking appliance, lights and a non-curtailable PV system.
 
 ## Example: Non controllable assets
 
@@ -158,10 +158,10 @@ It can be quite useful for a CEM to know in advance what the future energy usage
       "duration": 3600000,
       "power_values": [
         {
-          "value_upper_limit": -3500.0,
-          "value_upper_95PPR": -3460.0,
-          "value_upper_68PPR": -3455.0,
-          "value_expected": -3450.1,
+          "value_upper_limit": 3500.0,
+          "value_upper_95PPR": 3460.0,
+          "value_upper_68PPR": 3455.0,
+          "value_expected": 3450.1,
           "value_lower_68PPR": -3445.0,
           "value_lower_95PPR": -3440.0,
           "value_lower_limit": -3400.0,
