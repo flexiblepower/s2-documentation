@@ -280,8 +280,6 @@ The image below depicts the interactions between client and server for the proce
 
 ![image](@site/static/img/communication-layer/api_version_selection.png)
 
->>>> **Ewoud**: GET / is een beetje verwarrend als de URL bijv. https://device.local/s2c/ is. Dus GET / vervangen door GET root of supplied URL? 
-
 <details>
 <summary>Image generated using the following PlantUML code:</summary>
 
@@ -290,7 +288,7 @@ The image below depicts the interactions between client and server for the proce
 participant "HTTPS Client" as Client
 participant "HTTPS Server" as Server
 
-Client->Server++: 1. GET / (index containing pairing API versions)
+Client->Server++: 1. GET to the Pairing URL
 Server-->Client: 2. Response status 200
 deactivate Server
 Client->Client: 3. Decide pairing version
@@ -299,8 +297,8 @@ Client->Client: 3. Decide pairing version
 ```
 </details>
 
-### 1. GET / (index containing pairing API versions)
-Since the HTTPS client does not know which major versions of the pairing API are implemented by the server, it must first do a GET request to the index (e.g. `https://hostname.local/pairing/`). 
+### 1. GET on the Pairing URL
+Since the HTTPS client does not know which major versions of the pairing API are implemented by the server, it must first perform a GET request to the [Pairing URL](#pairing-url) (e.g. `https://hostname.local/pairing/`).
 
 The client **must** perform the following checks during this request:
 
