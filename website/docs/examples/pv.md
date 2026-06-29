@@ -20,7 +20,7 @@ S2 supports five different control types for flexibility (and one for no control
 
 | Control&nbsp;capability&nbsp;of&nbsp;PV&nbsp;installation | Control type | Remark |
 |--------------------|:--------------:|---------|
-| No control possible |  NOT_CONTROLABLE  | As there is no way to control this PV installation, the `NOT_CONTROLABLE` ControlType should be selected. Although nothing can be controlled, devices can still send `PowerMeasurement`s and `PowerForecast`s |
+| No control possible |  NOT_CONTROLABLE  | As there is no way to control this PV installation, the `NOT_CONTROLABLE` ControlType should be selected. Although nothing can be controlled, devices can still send `PowerMeasurement`s and `PowerForecast`s. For an example of communication with a non-controllable device, please refer to [Non controllable assets](nocontrol.md). |
 | Set maximum output power | POWER_ENVELOPE_BASED_CONTROL (PEBC) | Based on the constraints of the PV installation (e.g. the minimum and maximum power output of the inverter), the CEM can provide the Resource Manager of the PV installation a PowerEnvelope that describes the minimum (usually 0) and maximum (e.g. -2kW, negative for production) that the inverter of the PV installation should produce  |
 
 The table shows two ways to interact with a PV installation: just using the power measurements such that the CEM can optimize based on the production of the PV installation and using Power Envelope Based Control, which allows the CEM to instruct the PV installation to curtail.
