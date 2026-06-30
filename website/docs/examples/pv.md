@@ -338,13 +338,13 @@ A PowerForcast can also incorporate uncertainty of the forecast in the values.
       "duration": 3600000,
       "power_values": [
         {
-          "value_upper_limit": -3500.0,
-          "value_upper_95PPR": -3460.0,
-          "value_upper_68PPR": -3455.0,
+          "value_upper_limit": -3400.0,
+          "value_upper_95PPR": -3440.0,
+          "value_upper_68PPR": -3445.0,
           "value_expected": -3450.1,
-          "value_lower_68PPR": -3445.0,
-          "value_lower_95PPR": -3440.0,
-          "value_lower_limit": -3400.0,
+          "value_lower_68PPR": -3455.0,
+          "value_lower_95PPR": -3460.0,
+          "value_lower_limit": -3500.0,
           "commodity_quantity": "ELECTRIC.POWER.L1"
         }
       ]
