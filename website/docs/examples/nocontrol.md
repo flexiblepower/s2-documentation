@@ -3,6 +3,8 @@ title: "Example: Non controllable assets"
 hide_title: true
 ---
 
+![image not found](../../static/img/example-inflexible-header.png)
+
 This page serves as a guide for implementing an S2 RM for a non-flexible device, or to give a CEM developer a better understanding of what to expect when taking into account information from non-flexible device. It provides some example S2 messages for same (fictional) non-flexible devices. Some examples of non-flexible devices are a TV, an electric cooking appliance, lights and a non-curtailable PV system.
 
 ## Example: Non controllable assets
