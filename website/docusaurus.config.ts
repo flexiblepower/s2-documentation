@@ -64,7 +64,15 @@ const config: Config = {
       path: "s2-connect",
       routeBasePath: "s2-connect",
       breadcrumbs: false,
-      sidebarPath: false
+      sidebarPath: false,
+      includeCurrentVersion:false,
+      // Only the latest version should be provided here because we use that trick to have the version number of the latest version in the URL (which is non default)
+      versions: {
+        "1.0.0": {
+          path: '1.0.0',
+          badge:true
+        },
+      },
     }],
     ['@docusaurus/plugin-client-redirects', {
       redirects: [
@@ -109,7 +117,7 @@ const config: Config = {
           type: 'docsVersionDropdown',
           position: 'right',
           // props passed to the themed navbar item component - our themed override will read `showOn`
-          versions: ['current', '1.0-beta2'],
+          versions: ['1.0.0'],
           docsPluginId: 's2c',
           // only show the dropdown when path starts with this prefix
         },
