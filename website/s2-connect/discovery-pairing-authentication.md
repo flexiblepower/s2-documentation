@@ -3,11 +3,11 @@ title: S2 Connect Specification
 sidebar_position: 2
 ---
 
-# S2 Connect - Specification
+
 
 Version: v1.0.0
 
-# Introduction
+## Introduction
 
 S2 Connect is a JSON-based protocol specification implementing the EN50491-12-2 "S2" standard for home and building energy management.
 
@@ -15,7 +15,7 @@ This specification addresses everything needed to create a secure and interopera
 
 The protocol is designed to specify communication between two devices, a resource (e.g. a heat pump or EV charger) and a (home) energy management system. It is worth noting that, while this specification focuses on describing the interaction between two components, a (home) energy management is likely to be communicating with multiple resources at the same time.
 
-# Version
+## Version
 
 This version of this specification is based on the following versions of the underlying formal specification files (see [Formal specification and versioning (normative)](#formal-specification-and-versioning-normative) for more details).
 
@@ -26,7 +26,7 @@ This version of this specification is based on the following versions of the und
 
 > Note: S2 Connect is not directly linked to the version of S2 JSON. The exact version of S2 JSON that is being used by the CEM and RM is negotiated during session initiation.
 
-# List of abbreviations
+## List of abbreviations
 
 |Abbreviation | Meaning
 |---|---|
@@ -44,9 +44,9 @@ This version of this specification is based on the following versions of the und
 | UUID | Universally Unique IDentifier (see [RFC 9562](https://www.rfc-editor.org/rfc/rfc9562)) |
 | WAN | Wide Area Network (i.e. the public internet) |
 
-# Background (informative)
+## Background (informative)
 
-## Context
+### Context
 S2 Connect aims to provide a standard method for discovering, pairing and letting a Customer Energy Manager (CEM) and a Resource Manager (RM) communicate with each other over IP networks. The general architecture is described in the S2 architecture standard introducing CEM and RM functions are defined in EN 50491-12-1:2018, in which also the S2 interface is defined between CEM and RM. 
 
 S2 Connect builds upon two other projects:
@@ -56,7 +56,7 @@ S2 Connect builds upon two other projects:
 
 Both the S2 Standard and S2 JSON can be used independently from S2 Connect.
 
-## Requirements
+### Requirements
 S2 Connect aims to provide a standard method for discovering, pairing and letting a Customer Energy Manager (CEM) and a Resource Manager (RM) communicate with each other. The CEM and RM are logical concepts within the S2 architecture, therefore, the S2 standard does not make any assumptions on how and where the CEM and RM are deployed in a real-life situation. In practice, the CEM could be deployed on a local gateway in a LAN or as a server somewhere on the internet (WAN), while the RM could be part of the device itself, deployed on an add-on module or on the internet as well. S2 Connect provides a single solution which can be used between devices connected through a LAN, on the internet, or a combination of those.
 
 S2 Connect implements the following high-level requirements:
@@ -82,7 +82,7 @@ The entire trust model of S2 Connect is based on the fact that there is already 
 
 >> "Why doesn't S2 Connect use oAuth?" is a common question. oAuth is mainly designed for accessing protected resources in the cloud and since the S2 CEM and RM would also need to be able to pair on a local network (even without requiring internet access) oAuth 2.0 is simply not a good fit. There is a way to make it work, but since it is such a non-typical way the decision was made to not use oAuth 2.0 for pairing. For more details see <a rel="test" href="/docs/communication-layer/why-not-oauth/">here</a>.
 
-# Terms and definitions (normative)
+## Terms and definitions (normative)
 
 This specification uses the concepts that are defined below.
 
@@ -110,10 +110,10 @@ This specification uses the concepts that are defined below.
 | User interface | A user interface through which an end user can interact with a node. Interactions between the end user and the user interface must be secure, but this is out of scope for this specification. Examples of a user interface are a web interface, an app or a physical interface (HMI) on a device. |
 
 
-# Architecture (informative)
+## Architecture (informative)
 This section explains the overall architecture and deployment options for CEM and RM instances.
 
-## Deployment of nodes
+### Deployment of nodes
 
 This specification is concerned with connecting an instance of a CEM with an instance of a RM. Either of these instances are referred to as *nodes*, which either have the CEM *role* or the RM *role*. Obviously, it is only possible to pair a node with the CEM role to a node with the RM role.
 
@@ -130,7 +130,7 @@ There are three types of S2 connections between nodes possible:
 * **WAN-LAN**: A connection between a LAN deployed node a WAN deployed node. Since there is almost always a firewall and/or NAT between these two, it is assumed that it is only possible to set up a connection from the LAN to the WAN; not the other way around. Connecting from the LAN node to the WAN node can be done based on a URL, and common TLS certificates can be used thanks to public key infrastructure.
 * **LAN-LAN**: A connection between two LAN deployed nodes. It is assumed that in this situation an internet connection might not be available, making it impossible to rely on a public key infrastructure for TLS certificates. That is why for this type of connection self-signed TLS certificates are used. Connections are made based on hostnames that are resolved to IP-addresses using Multicast DNS (mDNS), since IP-addresses are not guaranteed to be stable. Discovering another node could be done using DNS Service Discovery (DNS-SD).
 
-## Pairing and unpairing from the perspective of the end user
+### Pairing and unpairing from the perspective of the end user
 The end user can take the initiative to *pair* a single CEM instance with a single RM instance. This process has to be started with one of the nodes. Which node this is depends on the deployment and implementation decisions of the node, but ideally it could be either one. The node however needs to have a user interface. The node that a user uses to start the pairing process is called the **Initiator node**. The other node receiving the pairing request is called the **Responder node**.
 
 The first step of pairing is establishing a connection from the Initiator node to the Responder node. This can be done in several ways:
@@ -173,7 +173,7 @@ iui->e: Pairing result (success or failure)
 ```
 </details>
 
-## The node and the endpoint
+### The node and the endpoint
 
 Within this protocol a clear distinction is made between two types of identities: the one of the **Endpoint** and the one of the **Node** itself.
 
@@ -181,20 +181,20 @@ A **Node** is an instance of a CEM or a RM. A CEM instance typically belongs to 
 
 The **Endpoint** is the application that hosts the nodes. In a LAN deployment an endpoint might only host one node, and these identities may seem very similar. But in a WAN deployment, an endpoint could host thousands of nodes. It could host all kinds of different types of nodes. It could for example be that a certain endpoint hosts RM instances for several brands of devices. Therefore an endpoint needs its own identity, which can be recognized by the end user.
 
-## Used technology for pairing and communication
+### Used technology for pairing and communication
 
 An S2 connection consists of four steps: discovery, pairing, communication and unpairing. For these steps different types of technology are used.
 
 One of the main technologies the process relies on is HTTPS REST. All interactions based on HTTPS are formally described in OpenAPI specification files. [OpenAPI](https://swagger.io/specification/) is a formal language for specifying HTTP(S) based API's. It can be used to generate reference documentation for developers, as well as stub code for many programming languages.
 
-### Discovery
+#### Discovery
 
 The first step is finding the Responder node from the Initiator node. In principle this is done based on the pairing URL of the Responder node. However, to improve user experience, two systems exist to find the pairing URL in a more user friendly manner. For more details see [Discovery](#discovery).
 
 * If the Responder node is deployed in the WAN, the end user can find the endpoint through the pairing endpoint registry. This would result in a list of vendors that offer nodes.
 * If both nodes are deployed in the LAN however, the Responder node can be detected automatically through a process based on DNS-SD. This way the user only has to select the desired node to connect to from a list of nodes which were discovered in the LAN.
 
-### Pairing
+#### Pairing
 
 The pairing process itself is completely based on HTTPS REST. One node behaves as the HTTPS server, and the other as the HTTPS client. This process is described in an OpenAPI file. The process consists of multiple steps. If the pairing process is completed successfully, the nodes will agree on an access token. This token is used to initiate communication or to unpair.
 
@@ -202,7 +202,7 @@ The endpoint that behaves as the HTTPS server during the pairing process is defi
 
 Pairing interaction is always TLS based (i.e. HTTPS is used). For WAN deployments, normal certificates (signed by a Certificate Authority) are being used. For LAN deployments self-signed certificates are used. For more information about the use of self-signed certificates, check [Trusting a self-signed root certificate](###Trusting-a-self-signed-root-certificate)
 
-### Communication
+#### Communication
 
 A communication process is used to set up the actual session that enables the exchange of S2 messages.
 
@@ -216,14 +216,14 @@ Communication interaction is always TLS based (i.e. HTTPS is used). For WAN depl
 
 After the HTTPS interaction communication with the selected communication protocol is established (WebSocket, other transport protocols such as MQTT will be added in the future). For WebSocket communication, the communication server is always the WebSocket server. This server must use the same TLS certificate as the HTTPS server.
 
-### Unpairing
+#### Unpairing
 
 Either node can take the initiative to unpair from the other node. This is done using the same HTTPS OpenAPI specification and the same HTTPS server and client as the communication. The details for unpairing differ depending if it is the communication server or if it is the communication client that initiates the unpairing process.
 
 Unpairing interaction is always TLS based (i.e. HTTPS is used). For WAN deployments, normal certificates (signed by a Certificate Authority) are being used. For LAN-LAN deployments self-signed certificates are used. For more information about the use of self-signed certificates, check [Trusting a self-signed root certificate](###Trusting-a-self-signed-root-certificate)
 
 
-## Pairing details for different deployments
+### Pairing details for different deployments
 
 As explained, the pairing process is based on HTTPS REST calls. That means that for every pairing attempt, one node behaves as the HTTPS server, and one node behaves as the HTTPS client. The logical solution would be to make the Initiator node the HTTPS client and the Responder node the HTTPS server. After all, it is the HTTPS client that takes the initiative to contact the HTTPS server. The HTTPS server cannot take the initiative to contact the HTTPS client.
 
@@ -242,7 +242,7 @@ There are however two situations where this is not possible:
 
 **Figure:** Overview of all possible ways to pair two nodes
 
-# Formal specification and versioning (normative)
+## Formal specification and versioning (normative)
 
 This document serves as an overall specification of the S2 Connect protocol. However, where possible, the protocol has been specified in a formal specification language in order to minimize possibilities for different interpretations and allow tooling to assist the implementation of the specification. Since many details are better described in these formal specification files, they are not described in this document. **Where the formal specification files and this document overlap, the formal specification file takes precedence.**
 
@@ -253,7 +253,7 @@ This document serves as an overall specification of the S2 Connect protocol. How
 | S2 Connect WAN pairing endpoint registry API | HTTPS based interface to query the registry  | OpenAPI file | [Github](https://github.com/flexiblepower/s2-connect/blob/main/s2-connect-wan-endpoint-registry.yml) |
 | S2 JSON message structure | The types of S2 messages that can be exchanges between nodes | JSON schema files | [Github](https://github.com/flexiblepower/s2-ws-json/tree/main/s2-json-schema) |
 
-## Versioning of OpenAPI files
+### Versioning of OpenAPI files
 The pairing API, the session initiation API and the WAN pairing endpoint registry API are formally defined in OpenAPI files. To accommodate future changes to these APIs, the OpenAPI files are versioned. Versioning is done using a `major.minor` scheme. All S2 Connect OpenAPI files share the same version number.
 
 The minor version is increased when backwards compatible changes are made. Be aware that adding items to certain lists of enums (e.g. the list of supported hash functions) is considered backwards compatible. Other examples of backwards compatible changes are additional properties of JSON files or added operations.
@@ -262,10 +262,10 @@ The major version is increased when non-backwards compatible changes are made.
 
 The major version of the API is embedded in the base URL of the API as `/v[major]` (e.g. `/v1`). HTTPS server and HTTPS clients can decide to implement several major version of the API in parallel to increase interoperability. In that case server must serve all versions on the same base URL (e.g. `https://hostname.local/pairing/v1/...` and `https://hostname.local/pairing/v2/...`). The server **must** always (even when it only supports one major version of the API) serve an index (e.g. `https://hostname.local/pairing/`) which returns a JSON array with all supported versions as they are defined as part of the URL (e.g. `["v1", "v2"]`).
 
-## Versioning of JSON Schema files
+### Versioning of JSON Schema files
 JSON Schema uses its own versioning scheme, which is based on an `major.minor.patch` scheme. When negotiating the S2 JSON version number, the exact version string **must** be used (e.g. `v1.0.0`).
 
-## Addressing endpoints
+### Addressing endpoints
 The URL of the pairing and session initiation API are used in the discovery process, pairing process and session initiation process, as wel as the basis for TLS certificates.
 
 For **WAN** deployed endpoints, the URL **must** be based on a DNS domain name.
@@ -274,7 +274,7 @@ For **LAN** deployed endpoints, the URL **must** be based on an mDNS alias or ho
 
 Also see [Pairing URL](#pairing-url).
 
-## Selecting the version of REST APIs
+### Selecting the version of REST APIs
 As explained in the section [Versioning of OpenAPI files](#version) the pairing server, the session initiation server and the WAN pairing endpoint registry can implement multiple versions of the API specification in parallel. As a result, the client **must** always first determine which version of the API it will use, before it can start interacting with the API.
 
 The image below depicts the interactions between client and server for the process to determine the API version that will be used.
@@ -298,7 +298,7 @@ Client->Client: 3. Decide pairing version
 ```
 </details>
 
-### 1. GET on the Pairing URL
+#### 1. GET on the Pairing URL
 Since the HTTPS client does not know which major versions of the pairing API are implemented by the server, it must first perform a GET request to the [Pairing URL](#pairing-url) (e.g. `https://hostname.local/pairing/`).
 
 The client **must** perform the following checks during this request:
@@ -311,20 +311,20 @@ If the root certificate is self-signed and there is no pinned certificate for th
 
 If no checks fail the client **should** proceed to the next step.
 
-### 2. Response status 200
+#### 2. Response status 200
 The server responds with a list of implemented major versions of the pairing API. It is formatted as a JSON array containing all the supported version of the pairing API (e.g. `["v1"]`).
 
 If the HTTPS client does not support any of the provided versions, it means that the two endpoints are not compatible, and that further interaction is not possible.
 
-### 3. Decide pairing version
+#### 3. Decide pairing version
 From the provided list of major versions of the pairing API, the HTTPS client **must** select one that is implemented by the HTTPS client itself (typically the highest supported version). The client **should** select the most recent version.
 
-## HTTPS usage
+### HTTPS usage
 All HTTP-based interaction in S2 Connect is strictly based on HTTPS (i.e., HTTP over TLS). HTTP (without TLS) **may not** be used for S2 Connect, and it is **recommended** to not run an HTTP (without TLS) server.
 
 HTTPS clients and servers **must** support HTTP version 1.1. It is **recommended** to support more recent version of HTTP as well.
 
-# Pairing process (normative)
+## Pairing process (normative)
 
 The pairing process is based on the trust relation that the end user has with both the CEM and the RM instances. That trust relation is out of scope for this specification and is up to CEM and RM providers to implement.
 
@@ -343,20 +343,20 @@ For each pairing attempt, one endpoint must be the HTTPS server, while the other
 
 A CEM can be paired with multiple RMs at the same time. A RM can only be paired with one CEM at a time. A node is always available for pairing. When a RM that is already paired with an CEM is paired with another CEM, the initial pairing is automatically unpaired. This automatic unpairing only happens after the new pairing is successfully completed. When a CEM and a RM are being paired when they already are paired with each other, it should be considered as an unpairing and new pairing (which means that a new `accessToken` is being used, and the current communication session should be terminated).
 
-## Pairing URL
+### Pairing URL
 The start of each pairing related interaction is the Initiator node contacting the Responder node via the *pairing URL*. Although discovery provides an option to retrieve this URL in a user friendly manner, entering the pairing URL manually **must** always be an option. Therefore, every Responder node **should** display its pairing URL somewhere (e.g. in its UI), and every Initiator node **should** have an option to pair based on a pairing URL which is manually entered by the end user.
 
 The pairing URL is the base URL of the pairing API of an endpoint. It **must** include the protocol (`https://`), it **must not** include the version of the API, but it **must** include a trailing slash (e.g. `https://hostname.local/pairing/`).
 
 For information about the domain name used in the URL see [Addressing endpoints](#addressing-endpoints).
 
-## Discovery
+### Discovery
 
 In order to ease the pairing process, which is specified below, the discovery process provides a way for nodes to find each other without requiring a user to know the pairing URL of the other node. In other words, the discovery process is a way to provide a node with the pairing URL of another node which is needed to start the pairing process. Alternatively, it should always be possible to initiate the pairing by manually providing the URL by the end user (see [Pairing URL](#pairing-url)).
 
 There are two mechanisms for discovery: For discovering WAN endpoints there is a central online registry. For discovering endpoints within the same LAN, DNS-SD is used.
 
-### WAN pairing endpoint registry
+#### WAN pairing endpoint registry
 
 > Note: At this point the registry is specified, but not yet publicly available
 
@@ -391,7 +391,7 @@ In addition, the number of responses can be limited. An offset can also be provi
 
 > Note: Since the pairing code also contains an identifier for the node within the endpoint, the combination of pairing code and endpoint URL is sufficient information to start a pairing attempt.
 
-### DNS-SD based discovery
+#### DNS-SD based discovery
 DNS-SD is used to automatically discover nodes from a node that is deployed in the LAN. This method can be used in two ways.
 
 * To discover another node that is deployed in the LAN, which is the Responder node
@@ -439,7 +439,7 @@ The receiver of the service description **must** use the URL provided in the TXT
 >
 > `avahi-publish-service -s "EVSE1038"  _s2connect._tcp 443 "txtvers=1" "e_name=brand" "pairingUrl=https://EVSE1038.local:443/pairing/" --sub _rm._sub._s2connect._tcp`
 
-## The pairing token, the node ID alias and the pairing code
+### The pairing token, the node ID alias and the pairing code
 
 The pairing token is a random string of characters that is generated by the Responder node. It is a secret which is transferred by the end user to the Initiator node, and then is verified during the pairing process. Since there will be many cases where the end user has to manually type in the pairing token, the pairing token has to be short enough to make it easy for the end user to type in, but long enough to make it secure. 
 
@@ -478,7 +478,7 @@ Alternatively, the **pairing code** can be validated with the following regular 
 The pairing code allows us to transfer two pieces of information by only bothering the end user once. Due to its format the Initiator node can easily extract the node ID alias and the pairing token from the pairing code by splitting the string at the dash. 
 
 
-## Challenge response process
+### Challenge response process
 
 This protocol uses a two-way challenge response process to verify that both nodes have the same pairing token. For this process it doesn't matter which node has issued the pairing token and which node has the pairing token that was entered by the end user. The reason a two-way challenge response process is used to verify the pairing token is that it allows to establish trust without having to expose the pairing token. Both a challenge and a response are binary data, which are encoded using Base64.
 
@@ -515,7 +515,7 @@ Where:
 | `D` | Binary data | The domain name of the HTTPS server, including subdomains, without protocol or trailing slashes (e.g. `pairing.s2.example.com`) |
 | `\|\|` | Function | Concatenation function |
 
-## LAN-LAN only interactions
+### LAN-LAN only interactions
 
 The are several REST operations that are only to be implemented by LAN endpoints, and that can only be used by other LAN endpoints. They are described in this section.
 
@@ -525,7 +525,7 @@ Since these operations are only intended for endpoints within the same LAN, the 
 
 > Note: There are some network configurations imaginable where it would be desirable to pair two LAN nodes that are not in the same subnet. In that case automatic discovery via DNS-SD will not work, but pairing by manually entering the pairing URL and pairing code can still be used in those cases.
 
-### Getting endpoint information
+#### Getting endpoint information
 
 > This section is only applicable for LAN-LAN pairing
 
@@ -540,7 +540,7 @@ Before the HTTPS client can start interaction with the server, it must first sel
 
 Note that there is no authentication for these operations. It is assumed that these operations are only exposed within the LAN.
 
-### Pre-pairing interaction
+#### Pre-pairing interaction
 
 > This section is only applicable for LAN-LAN pairing
 
@@ -552,7 +552,7 @@ Note that there is no authentication for these operations. It is assumed that th
 
 Before sending signals the HTTPS client **must** have selected the version of the pairing API that will be used (see [Selecting the version of REST APIs](#selecting-the-version-of-rest-apis)).
 
-#### Sending the prepare pairing signal
+##### Sending the prepare pairing signal
 
 The client can send the prepare pairing signal to the server by sending an HTTPS POST request to the path `/preparePairing`. The client must perform the following checks before sending information:
 
@@ -580,7 +580,7 @@ The server **must** perform the checks in the table below. For the checks with H
 
 If no checks fail the server **should** respond with HTTP status code 204.
 
-#### Cancelling the prepare pairing signal
+##### Cancelling the prepare pairing signal
 
 If the client sent a prepare pairing signal the the server, and the end user has indicated in some way that it is no longer indented to pair with the node, it **should** send a cancel prepare pairing signal. It can do that by sending an HTTPS POST request to the path `/cancelPreparePairing`. The client must perform the following checks before sending information:
 
@@ -597,7 +597,7 @@ The client **must** send the following information in the request. For full norm
 
 The server **should** respond with HTTP status code 204 (even when it does not recognize the `clientNodeId` or `serverNodeId`). However, if the request originated from outside the subnet the server **must** respond with status 401. 
 
-### Long-polling for constrained endpoints in the LAN
+#### Long-polling for constrained endpoints in the LAN
 
 > This section is only applicable for LAN-LAN pairing
 
@@ -653,7 +653,7 @@ The activity diagram below summarizes the complete long-polling process from the
 
 ![image](./img/long-polling_activity_diagram.png)
 
-## Pairing interaction
+### Pairing interaction
 
 The pairing process itself consists of several HTTPS interactions between client and server. The image below depicts a successful pairing process between two nodes. 
 
@@ -706,7 +706,7 @@ Note over Client, Server: Pairing finalized
 ```
 </details>
 
-### 0. Precondition
+#### 0. Precondition
 
 Before two node can be paired, the following preconditions must be met.
 
@@ -719,7 +719,7 @@ Before two node can be paired, the following preconditions must be met.
 
 If the HTTPS client does not fulfill these preconditions, it **cannot** send the first HTTPS request of the pairing process. 
 
-### 1. POST /[version]/requestPairing
+#### 1. POST /[version]/requestPairing
 In the first POST request the client provides the server with same information about itself. The main purpose of this is to check if these two nodes are compatible.
 
 The client sends the following information (for full details see the OpenAPI specification file):
@@ -772,12 +772,12 @@ The server **must** perform the checks in the table below to make sure that it c
 
 If no checks fail the server **should** proceed to the next step.
 
-### 2. Calculate clientHmacChallengeResponse
+#### 2. Calculate clientHmacChallengeResponse
 The server selects an hashing algorithm for the challenge response function from the list that was provided by the client. This has to be a hashing algorithm that the server considers secure. The server calculates a response to the provided `clientHmacChallenge`. For details see [Challenge response process](#challenge-response-process).
 
 To mitigate brute-force attacks, the server **must** enforce a mandatory delay of one second before sending its response to the client (step 3). For any given node at the server, pairing attempts **must** be handled sequentially, such that each second only one pairing attempt can be processed for a node. Pairing attempts targeting different nodes **may** be processed in parallel. This way, a server representing multiple nodes is not globally limited to one pairing attempt per second, but instead enforces the one-second rate limit independently per node.
 
-### 3. Response status 200
+#### 3. Response status 200
 In order to formulate a response, the server **must** generate a `pairingAttemptId`. This is an identifier that **must** be generated by a cryptographically secure pseudorandom number generator and encoded using Base64. This identifier is used to keep track of all the HTTPS interactions during the pairing attempt, and **must** be provided by the HTTPS client as a header with all subsequent interactions. A pairing attempt **must** be completed within 15 seconds, or else the server **must** assume the pairing attempt has failed.
 
 The server responds with the following information (for full details see the OpenAPI specification file):
@@ -801,21 +801,21 @@ The client **must** perform the following checks of this data.
 
 If no checks fail the server **should** proceed to the next step.
 
-### 4. HTTPS Client checks clientHmacChallengeResponse
+#### 4. HTTPS Client checks clientHmacChallengeResponse
 The HTTPS client checks the `clientHmacChallengeResponse` provided by the HTTPS server in step 3. It does that by calculating the response itself, and checking if the results is identical to the `clientHmacChallengeResponse`.
 
 If the result is identical, the client **should** proceed to the next step. If the result is not identical, the client **must** stop the pairing attempt. It **must** attempt to inform the HTTPS server of this by doing an HTTPS request to `finalizePairing` where the value of `success` must be `false`.
 
 Note that in case of a local server, the TLS certificate fingerprint is part of the challenge. So if the challenge succeeds, the certificate fingerprint is correct, and the certificate can be trusted. The client **must** pin the self-signed CA (root) certificate, and trust this certificate for the remainder of the pairing relation.
 
-### 5. Calculate serverHmacChallengeResponse
+#### 5. Calculate serverHmacChallengeResponse
 The HTTPS client calculates a response to the provided `serverHmacChallenge` using the hashing algorithm as indicated in the `selectedHmacHashingAlgorithm`. For details see [Challenge response process](#challenge-response-process).
 
 From hereon the process branches into two scenarios, depending on if the HTTPS client will be the communication client or the communication server. See [Mapping the CEM and RM to communication server or client](#mapping-the-cem-and-rm-to-communication-server-or-client) for which node will perform which role for communication.
 
 If the HTTPS server will be the communication *server* steps 6A, 7A and 8A **should** follow. If the HTTPS server will be the communications *client* steps 6B, 7B en 8B **should** follow.
 
-### 6A. POST /[version]/requestConnectionDetails
+#### 6A. POST /[version]/requestConnectionDetails
 > Note: The `pairingAttemptId` must be provided through a header for this HTTPS request
 
 The HTTPS client makes a request for the connection details. This request also serves as a way to send the HTTPS server the `serverHmacChallengeResponse` calculated in step 5.
@@ -833,12 +833,12 @@ The client **must** perform the following checks during this request:
 If no checks fail the client **should** proceed to the next step.
 
 
-### 7A. HTTPS server checks serverHmacChallengeResponse
+#### 7A. HTTPS server checks serverHmacChallengeResponse
 The HTTPS server checks the `serverHmacChallengeResponse` provided by the HTTPS client in step 6A. It does that by calculating the response itself, and checking if the results is identical to the `serverHmacChallengeResponse`.
 
 If the result is identical, the server **should** proceed to the next step. If the result is not identical, the server **must** stop the pairing attempt by responding with HTTP status code 403. The `pairingAttemptId` cannot be used by the HTTPS client anymore. If the HTTPS client wants to make another attempt, it **must** start again at step 1 (starting with the API version selection process is also allowed).
 
-### 8A. Response status 200
+#### 8A. Response status 200
 The server **must** generates an access token for the HTTPS client. The access token is random binary data and **must** be generated by a cryptographically secure pseudorandom number generator and **must** have a minimum length of 32 bytes. It is encoded using Base64. The access token **cannot** be used by the Initiator node until the pairing process is completed.
 
 The server responds with two pieces of information:
@@ -850,7 +850,7 @@ The server responds with two pieces of information:
 
 If the response is understood and properly formatted, the HTTPS client **should** proceed to the next step. Otherwise the HTTPS client **must** stop the pairing attempt. It **must** attempt to inform the HTTPS server of this by doing an HTTPS request to `finalizePairing` where the value of `success` must be `false`.
 
-### 6B. POST /[version]/postConnectionDetails
+#### 6B. POST /[version]/postConnectionDetails
 > Note: The `pairingAttemptId` must be provided through a header for this HTTPS request
 
 The HTTPS client sends the connection details to the HTTPS server. This request also serves as a way to send the HTTPS server the `serverHmacChallengeResponse` calculated in step 5. 
@@ -881,15 +881,15 @@ The server **must** perform the following checks during this request:
 
 If no checks fail the server **should** proceed to the next step.
 
-### 7B. HTTPS server checks serverHmacChallengeResponse
+#### 7B. HTTPS server checks serverHmacChallengeResponse
 The HTTPS server checks the `serverHmacChallengeResponse` provided by the HTTPS client in step 6A. It does that by calculating the response itself, and checking if the results is identical to the `serverHmacChallengeResponse`.
 
 If the result is identical, the server **should** proceed to the next step. If the result is not identical, the client **must** stop the pairing attempt by responding with HTTP status code 403. The `pairingAttemptId` cannot be used by the HTTPS client anymore. If the HTTPS client wants to make another attempt, it **must** start again at step 1 (starting with the API version selection process is also allowed).
 
-### 8B. Response status 204
+#### 8B. Response status 204
 The server confirms it has accepted the response and received the connection details by responding with HTTP status 204.
 
-### 9. POST /[version]/finalizePairing
+#### 9. POST /[version]/finalizePairing
 > Note: The `pairingAttemptId` must be provided through a header for this HTTPS request
 
 If all interaction has been successful until this point, the HTTPS client **must** do a request to finalize the pairing attempt. The provided value for `success` **must** be `true`.
@@ -913,24 +913,24 @@ If no checks fail the server **should** proceed to the next step.
 
 Receiving a `/finalizePairing` request marks the completion of the pairing attempt for the HTTPS server. If the HTTPS server issued an access token during this pairing attempt, it can now be used by a communication client to set up an S2 connection. The `pairingAttemptId` can no longer be used by the HTTPS client.
 
-### 10. Response status 204
+#### 10. Response status 204
 To confirm the successful completion of the pairing attempt, the HTTPS server responds to the client with HTTP status code 204. This response marks the completion of the pairing attempt for the HTTPS client. If the HTTPS client issued an access token during this pairing attempt, it can now be used by a communication client to set up an S2 connection. The `pairingAttemptId` can no longer be used by the HTTPS client.
 
 If the HTTPS server was using a self-signed TLS certificate, the HTTPS client can now store the self-signed root certificate. The client **must** check that this is the CA certificate that is used for all future interaction with this endpoint. The HTTPS server is allowed to use a new self-signed server certificate, as long as it is signed by the self-signed CA certificate that was used during the pairing process.
 
-### Interruption of the process
+#### Interruption of the process
 A pairing attempt has a maximum duration of 15 seconds. That means that once a `pairingAttemptId` has been issued, this `pairingAttemptId` cannot be used after 15 seconds since it was issued. From the perspective of the HTTPS server, any pairing attempt that is not completed in 15 seconds (with success or not) is considered a failed attempt. From the perspective of the HTTPS client, if the server does not respond within 15 seconds since it received the `pairingAttemptId`, it must consider the pairing attempt as failed. If the HTTPS client wants to make another attempt, it should start again at step 1 (starting with the API version selection process is also allowed).
 
-### Invalid interactions
+#### Invalid interactions
 If the server receives a wrong HTTPS request (e.g. `/postConnectionDetails` while it was expecting `/requestConnectionDetails`) or when it receives the requests in the wrong order (e.g. `/finalizePairing` with `success` = `true` before calling `/requestConnectionDetails`) it **must** respond with a status 400 and consider the pairing attempt as failed. The only exception is receiving the same request twice.
 
-# S2 Connection (normative)
+## S2 Connection (normative)
 
 After two nodes have been paired, the nodes exchange S2 messages over a secure connection. 
 
 The following mechanism **must** be used to initiate a secure connection between two nodes. Client authentication is based on a one-time use communication token that needs to be renewed every time a new S2 session is created. The communication client will always attempt to set up an S2 connection with the communication server when there is no connection. For more details see [Reconnection strategy](#reconnection-strategy). 
 
-## Mapping the CEM and RM to communication server or client
+### Mapping the CEM and RM to communication server or client
 
 The CEM and RM roles defined by the S2 protocol are distinct from the server and client roles of the pairing process. The following rules apply to determine whether the RM or CEM acts as a client or server for the communication initialization.
 
@@ -948,7 +948,7 @@ There are four scenarios for CEM and RM deployment, and applying the rules above
 
 > Note: A device developed solely for use as an RM in a LAN setup will never function as a communication server.
 
-## Session initiation
+### Session initiation
 
 During the pairing process an `accessToken` is generated by the node which will be the communication server and sent to the node that will be the communication client. This `accessToken` can be used by the communication client to set up a session with the communication server for exchanging S2 messages. The `accessToken` does not expire, but it can only be used (successfully) once to set up a session. Each time a new session is made, the `accessToken` will be renewed. The communication server will generate a new `accessToken` and sends it to the communication client. Since this `accessToken` is the only means to connect two nodes once they are paired, the session initiation process makes sure that both nodes confirm that they have successfully persisted the new `accessToken` before invalidating the old `accessToken`.
 
@@ -975,7 +975,7 @@ Client -> Client : 8. Remove old accessToken
 
 </details>
 
-### 0. Precondition
+#### 0. Precondition
 
 Before a node can initiate a session, it needs four things.
 
@@ -986,7 +986,7 @@ Before a node can initiate a session, it needs four things.
 
 If the HTTPS client does not fulfill these preconditions, it **cannot** send the first HTTPS request of the session initiation process.
 
-### 1. POST /[version]/initiateSession
+#### 1. POST /[version]/initiateSession
 Since there are situations in which the client cannot know for sure which `accessToken` the communication server uses for this pairing, the communication client must keep a persisted list of `accessTokens` (which will typically contain only one `accessToken`).
 
 The client **must** perform the following checks during this request:
@@ -1021,13 +1021,13 @@ The server **must** perform the checks in the table below to make sure that it c
 | Is there overlap between the S2 message versions? | `CommunicationDetailsErrorMessage` with errorMessage `IncompatibleS2MessageVersions` | Retry later |
 | Are the endpoint and node ready for connecting? | `CommunicationDetailsErrorMessage` with errorMessage `Other` | Retry later |
 
-### 2. Generate new pending `accessToken`
+#### 2. Generate new pending `accessToken`
 
 For each paired node the server saves an active `accessToken`. In addition to that, the server also has a list for pending `accessToken`s, that were generated but not yet confirmed by the client. This list contains entries, each consisting of an `accessToken`, the node IDs of the client and server nodes and a timestamp.
 
 The server generates a new `accessToken` and saves this together with the node ID and the current time as in entry in the list of pending tokens. The `accessToken` **must** be generated by a cryptographically secure pseudorandom number generator.
 
-### 3. Response status 200
+#### 3. Response status 200
 
 In the request the client supplied a list of supported communication protocols and S2 messages versions. The server must select one of the options that were provided by the client.
 
@@ -1049,10 +1049,10 @@ The client **must** perform the checks in the table below to make sure that it c
 | Was the selected S2 message version offered in the request? | Do not proceed and try again later with step 1 |
 | Was the selected communication protocol offered in the request? | Do not proceed and try again later with step 1 |
 
-### 4. Store pending accessToken
+#### 4. Store pending accessToken
 The client adds the pending `accessToken` to its list of `accessTokens`, but does not yet remove the old one. If the client is not able to persist the pending `accessToken` (e.g. because the storage device or the DBMS is not available), the client does not proceed with the process. Once the client is able to persist `accessTokens` again, it can retry to set up a session starting with step 1.
 
-### 5. POST /[version]/confirmAccessToken
+#### 5. POST /[version]/confirmAccessToken
 The client confirms to the server that it has successfully persisted the pending `accessToken`. The **pending** `accessToken` is provided through the header of the request.
 
 The client **must** perform the following checks during this request:
@@ -1063,7 +1063,7 @@ The client **must** perform the following checks during this request:
 
 If no checks fail the client **should** proceed.
 
-### 6. Activate new `accessToken` for this node ID 
+#### 6. Activate new `accessToken` for this node ID 
 
 If the provided `accessToken` is in the list pending `accessToken`s, and the token was generated not more than **15 seconds** ago, the server now makes the pending `accessToken` the active `accessToken` for this pairing of nodes (thereby invalidating the old `accessToken`). Also, the entry is removed from the list of pending `accessToken`s.
 
@@ -1071,22 +1071,22 @@ If the provided `accessToken` is not in the list of pending `accessTokens`s, the
 
 If the server is not able to active the new `accessToken` (e.g. because the storage device or the DBMS is not available), the server must not accept the session and responds with an error code 500. The client can try again later starting at step 1.
 
-### 7. Response status 200
+#### 7. Response status 200
 
 The communication server sends the details and credentials to open a socket for communicating the S2 messages. The exact contents of this message depend on the selected communication protocol. In any case it will be a JSON object containing the field `communicationProtocol`. The presence on other fields will depend on the value of the `communicationProtocol` field.
 
 If the response is not understood by the communication client, the client **should** retry later.
 
-### 8. Remove old accessToken
+#### 8. Remove old accessToken
 
 Step 7 functions as a confirmation to the communication client that the communication server has activated the new `accessToken` for this pairing. The old `accessToken` cannot be used anymore, so the communication client must remove the old `accessToken` from the list of `accessToken`s.
 
-### Interruption of the process
+#### Interruption of the process
 Once the communication server has generated a new pending `accessToken`, it must be confirmed within 15 seconds by the communication client. If this doesn't happen, a client will have to start the process from step 1.
 
 If the communication client doesn't receive a response to confirming the new `accessToken` (step 7), it does not know if the server has activated the new `accessToken`, or if the old `accessToken` is still in place. It now has (at least) two `accessToken`s in its list, and does not know for certain which one is activate at the communication server. It should try all the accessTokens sequentially. If it finds an `accessToken` that is accepted by the communication server, it can remove the other `accessTokens`.
 
-## Reconnection strategy
+### Reconnection strategy
 After session initiation, the actual S2 communication starts via the selected transport protocol. At some point this session will terminate. Unless the reason for termination is that the nodes have been unpaired, the communication client **must** try to reconnect with the communication server. In this case the client **must** always start with the session initiation process (it is not allowed to reconnect using the transport protocol that was selected last time).
 
 An exponential back-off strategy for reconnecting **must** be used, increasing the time between reconnection attempts at every failed attempt. It is recommended to use the following strategy for calculating the delay for the n<sup>th</sup> attempt to reconnect. The delay time starts when a failed connecting attempt is finished.
@@ -1101,7 +1101,7 @@ Where:
 | `base_delay` | 2 seconds |
 | `max_delay` | 600 seconds |
 
-## WebSocket based communication
+### WebSocket based communication
 
 This section specifies how to use WebSocket Secure as the S2-over-TCP/IP application layer protocol.
 
@@ -1117,30 +1117,30 @@ The client **must** perform the following checks during this request:
 
 If no checks fail the client **should** proceed to the next step.
 
-### Opening the connection
+#### Opening the connection
 Opening the WebSocket connection is performed by sending a GET request to the URL as provided during the connecting initiation process together with an upgrade request, as specified by [RFC6455](https://datatracker.ietf.org/doc/html/rfc6455). When using HTTP/2, also refer to [RFC8441](https://datatracker.ietf.org/doc/html/rfc8441).
 
-### Authentication
+#### Authentication
 For each S2 WebSocket session the client **must** authenticate itself using the commToken in the authorization header of the websocket connection request, following [RFC 6750 - The OAuth 2.0 Authorization Framework: Bearer Token Usage](https://datatracker.ietf.org/doc/html/rfc6750).
 
-### Encrypted connection (WSS)
+#### Encrypted connection (WSS)
 
 Communication over the WebSocket endpoint **must** be encrypted following [RFC 6455 The WebSocket Protocol](https://datatracker.ietf.org/doc/html/rfc6455). S2 **MUST NOT** be sent over unencrypted channels. Therefore a wss connection (the URL starting with wss://) must be used. 
 
-### Compression
+#### Compression
  
 The WebSocket Protocol ([RFC6455](https://datatracker.ietf.org/doc/html/rfc6455)) has an extension for compression: [**RFC 7692**](https://datatracker.ietf.org/doc/html/rfc7692.html) implementing so called per-message-deflate compression. https://datatracker.ietf.org/doc/html/rfc7692
 
 The RFC 7692 compression extension is widely supported by WebSocket libraries and since JSON is exchanged as plain text messages, it is expected to save a large amount of data. Therefore, implementations of S2 WebSockets **SHOULD** support RFC 7692 and **SHOULD** enable it whenever possible.
 
-### Keepalive & heartbeat (ping / pong)
+#### Keepalive & heartbeat (ping / pong)
 WebSockets by default have a **keepalive** and a **heartbeat mechanism**. Keepalive is designed to keep the connection open while heartbeat is designed to check the latency and check the connection is still working. This means that periodically a ping frame is sent to the server (endpoint) and in response a pong frame is sent.
 
 S2 WebSockets implementations **should** send a ping frame every 30 seconds, and **must not** wait more than 60 seconds between sending ping frames. Ping and pong frames **may** include a payload.
 
 For more details see [RFC6455 Section 5.5.2](https://datatracker.ietf.org/doc/html/rfc6455#section-5.5.2%5C%5C).
 
-### Termination
+#### Termination
 
 An S2 session can be terminated in different ways:
 
@@ -1148,13 +1148,13 @@ An S2 session can be terminated in different ways:
 * a node **CAN** terminate the S2 session by sending the S2 terminate message, including an optional earliest time that the session can be restored. The other node can take this into account in planning and (in the case of a client) deciding when to attempt to reconnect.
 * After two nodes have unpaired, the S2 WebSocket connection **MUST** be terminated immediately.
 
-## Communication - JSON messages
+### Communication - JSON messages
 
 S2 Connect uses [S2 JSON](https://github.com/flexiblepower/s2-ws-json) for its JSON schema specification.
 
 When using S2 Connect, the `Handshake` and `HandshakeResponse` messages (as defined by S2 JSON) **can not** be sent. They are redundant by the pairing and session initiation process.
 
-### State of communication 
+#### State of communication 
 
 ![State of Communication](./img/state-of-communication.png)
 
@@ -1193,29 +1193,29 @@ WebSocketDisconnected --> [*]
 | ControlType FRBC activated | FRBC.Instruction<br/>SelectControlType<br/>SessionRequest<br/>ReceptionStatus | FRBC.ActuatorStatus<br/>FRBC.FillLevelTargetProfile<br/>FRBC.LeakageBehaviour<br/>FRBC.StorageStatus<br/>FRBC.SystemDescription<br/>FRBC.UsageForecast<br/>FRBC.TimerStatus<br/>RevokeObject<br/>InstructionStatusUpdate ResourceManagerDetails<br/>PowerMeasurement<br/>PowerForecast<br/>SessionRequest<br/>ReceptionStatus |
 | ControlType DDBC activated | DDBC.Instruction<br/>SelectControlType<br/>SessionRequest<br/>ReceptionStatus | DDBC.ActuatorStatus<br/>DDBC.AverageDemandRateForecast<br/>DDBC.SystemDescription<br/>DDBC.TimerStatus<br/>RevokeObject<br/>InstructionStatusUpdate<br/>ResourceManagerDetails<br/>PowerMeasurement PowerForecast<br/>SessionRequest<br/>ReceptionStatus |
 
-# Unpairing process (normative)
+## Unpairing process (normative)
 
 Unpairing can be initiated by either node, and **should** only be done when instructed by the end user. The node that did not take the initiative to unpair **should** try to inform the end user that the node is no longer paired.
 
-## Unpairing by the communication client
+### Unpairing by the communication client
 
 If the communication client takes the initiative to unpair, it first **should** close the communication session regarding this pairing (if there is one). Then it **must** call the `/[version]/unpair` HTTPS API endpoint of the server using its `accessToken` (after discovering the API version at the server, the same way as steps 1 to 3 as mentioned in [Session initiation](#session-initiation)). Upon receiving the unpair call from a client, the server node **must** remove all security information related to this pairing. Then the client **must** remove all security information of the communication server related to this pairing.
 
-## Unpairing by the communication server
+### Unpairing by the communication server
 
 If the server takes the initiative to unpair, first it **must** remove all security information related to client node. After that, if there is an active S2 session, it **should** send an S2 [SessionRequest](/model-reference/Common/SessionRequest/) message with type [RECONNECT](/model-reference/Common/SessionRequestType/) to the client. The next `/[version]/initiateConnection` HTTPS API request **must** fail with the `No longer paired` response to let the client know that it is not paired anymore.
 
 Client and server **can** keep other (non-security) information for, for example, user experience purposes.
 
-# Security (normative)
+## Security (normative)
 
-## Brute-force protection
+### Brute-force protection
 To prevent brute-force pairing request, the server **must** implement rate limiting on the requestPairing endpoint. For more details see [2. Calculate clientHmacChallengeResponse](#2-calculate-clienthmacchallengeresponse).
 
-## DDoS countermeasures
+### DDoS countermeasures
 Especially WAN endpoints are vulnerable for DDoS attacks. It is recommended for WAN endpoints to take countermeasures against these attacks. The nature of these countermeasures are outside of the scope of this specification.
 
-## TLS Certificates
+### TLS Certificates
 All HTTP and WebSocket communication uses TCP over TLS with server certificates. The server certificates **must** be exchanged and validated during the initiation of the connection (HTTPS and WSS). This is default usage of most networking libraries.
 
 There are two possible types of certificates for TLS communication. The first option is using a public server certificate, that is created through a Public Key Infrastructure (PKI) and thus signed by a public CA. The other option (only applicable to LAN servers) is to use a self-signed certificate. The latter is needed because a LAN server is not able to obtain a certificate that has been issued by a CA for its local mDNS domain name. This is also the only situation where self-signed certificates are allowed.
@@ -1247,7 +1247,7 @@ SelfSignedCA --> LocalServerCertificate
 </details>
 
 
-### Trusting a self-signed root certificate
+#### Trusting a self-signed root certificate
 LAN deployed nodes will have a self-signed root certificate, and a server (leaf) certificate which is signed by the self-signed root certificate.
 
 The `endpoint`, `nodes`, `preparePairing` and `cancelPreparePairing` operations can be called before the pairing has happened. For these operations the client **must** accept the self-signed certificates, even though it cannot trust the root certificate.
@@ -1256,12 +1256,12 @@ Also when attempting pairing (the `requestPairing` operation) the client **must*
 
 When performing session initiation and unpairing the communication client **must** validate that server certificate and check that the certificate was signed by the self-signed root certificate that was pinned in the previous step.
 
-### Updating the certificates
+#### Updating the certificates
 A server can update its leaf certificate. When a cloud server updates its certificate, it **MUST** be signed by a CA, so a client can check its validity. A server **SHOULD** update its server certificate at least once every 6 months.
 
 If the server is deployed in the LAN, and thus uses a self-signed root certificate, the root certificate **SHOULD** be created with a validity period which is long enough for the expected lifetime of the server (or the device that hosts the server). If the used crypto for the the CA (root) certificate is broken, or the lifetime of the server is longer than the validity of the certificate, the server **MUST** create a new self-signed CA certificate and all clients need to be paired again. Like cloud servers, a local server **SHOULD** update its leaf certificate at least once every 6 months.
 
-### Certificate validation
+#### Certificate validation
 Certificate checks are mentioned several times in this specification. The check consists of these parts:
 - Authenticity: In case of a WAN server, is the certificate issued by a trusted CA (using the chain of trust)? For a LAN server, is the root certificate pinned to the server’s domain name?
 - Domain name validation: has the certificate been issued for the (local) domain name of the server?
@@ -1271,6 +1271,6 @@ Certificate checks are mentioned several times in this specification. The check 
 
 With the exemption of some cases where the authenticity cannot be verified yet, all checks must be performed every time a TLS connection is set up.
 
-## Cipher suites
+### Cipher suites
 
 Security levels of cipher suites will change over time. To stay secure, the used cipher suites should be updates regularly and adhere to regular updates. All nodes **MUST** follow **ONLY** the accepted crypto libraries as defined in <a href="/docs/communication-layer/accepted-crypto"> Accepted crypto algorithms</a>. This list will be kept up-to-date. When changes are made to the list of accepted crypto libraries, all nodes **MUST** follow these changes within half a year.
