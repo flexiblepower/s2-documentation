@@ -144,7 +144,11 @@ const config: Config = {
             {
               label: 'Python library',
               href: 'https://pypi.org/project/s2-python/',
-            }
+            },
+            {
+              label: 'Ruby library',
+              href: 'https://github.com/stekker/s2-ruby/',
+            },
           ],
         }, 
         {
