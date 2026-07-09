@@ -5,7 +5,7 @@ sidebar_position: 2
 
 # S2 Connect - Specification
 
-Version: v1.0
+Version: v1.0.0
 
 # Introduction
 
