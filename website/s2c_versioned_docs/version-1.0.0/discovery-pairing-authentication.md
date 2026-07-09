@@ -196,7 +196,7 @@ The pairing process itself is completely based on HTTPS REST. One node behaves a
 
 The endpoint that behaves as the HTTPS server during the pairing process is defined as the *pairing server*, and the client is defined as the *pairing client*.
 
-Pairing interaction is always TLS based (i.e. HTTPS is used). For WAN deployments, normal certificates (signed by a Certificate Authority) are being used. For LAN deployments self-signed certificates are used. For more information about the use of self-signed certificates, check [Trusting a self-signed root certificate](###Trusting-a-self-signed-root-certificate)
+Pairing interaction is always TLS based (i.e. HTTPS is used). For WAN deployments, normal certificates (signed by a Certificate Authority) are being used. For LAN deployments self-signed certificates are used. For more information about the use of self-signed certificates, check [Trusting a self-signed root certificate](#trusting-a-self-signed-root-certificate)
 
 #### Communication
 
@@ -208,7 +208,7 @@ The endpoint that behaves as the HTTPS server during the communication process i
 
 It should be noted that pairing and communication are two separate HTTPS interfaces, that don't have to be used in the same way. It could be that a node is an pairing client, but then becomes a communication server. This depends on the deployment of the nodes (see [Pairing details for different deployments](#pairing-details-for-different-deployments)).
 
-Communication interaction is always TLS based (i.e. HTTPS is used). For WAN deployments, normal certificates (signed by a Certificate Authority) are being used. For LAN-LAN deployments self-signed certificates are used. For more information about the use of self-signed certificates, check [Trusting a self-signed root certificate](###Trusting-a-self-signed-root-certificate)
+Communication interaction is always TLS based (i.e. HTTPS is used). For WAN deployments, normal certificates (signed by a Certificate Authority) are being used. For LAN-LAN deployments self-signed certificates are used. For more information about the use of self-signed certificates, check [Trusting a self-signed root certificate](#trusting-a-self-signed-root-certificate)
 
 After the HTTPS interaction communication with the selected communication protocol is established (WebSocket, other transport protocols such as MQTT will be added in the future). For WebSocket communication, the communication server is always the WebSocket server. This server must use the same TLS certificate as the HTTPS server.
 
@@ -216,7 +216,7 @@ After the HTTPS interaction communication with the selected communication protoc
 
 Either node can take the initiative to unpair from the other node. This is done using the same HTTPS OpenAPI specification and the same HTTPS server and client as the communication. The details for unpairing differ depending if it is the communication server or if it is the communication client that initiates the unpairing process.
 
-Unpairing interaction is always TLS based (i.e. HTTPS is used). For WAN deployments, normal certificates (signed by a Certificate Authority) are being used. For LAN-LAN deployments self-signed certificates are used. For more information about the use of self-signed certificates, check [Trusting a self-signed root certificate](###Trusting-a-self-signed-root-certificate)
+Unpairing interaction is always TLS based (i.e. HTTPS is used). For WAN deployments, normal certificates (signed by a Certificate Authority) are being used. For LAN-LAN deployments self-signed certificates are used. For more information about the use of self-signed certificates, check [Trusting a self-signed root certificate](#trusting-a-self-signed-root-certificate)
 
 
 ### Pairing details for different deployments
@@ -401,7 +401,7 @@ S2 Connect uses the service type `s2connect` and exclusively uses tcp, since it 
 | Protocol | `_tcp` |
 | Port | No fixed port, decision is up to the implementation |
 | Subtypes | `_cem` and `_rm` |
-| Service name | Identical to the hostname (see [here](#addressing-endpoints-normative) for more details)
+| Service name | Identical to the hostname (see [here](#addressing-endpoints) for more details)
 
 An endpoint deployed in the LAN **should** publish it service through DNS-SD once it is ready for pairing, and until it shuts down.
 
@@ -593,7 +593,7 @@ The client **must** send the following information in the request. For full norm
 
 The server **should** respond with HTTP status code 204 (even when it does not recognize the `clientNodeId` or `serverNodeId`). However, if the request originated from outside the subnet the server **must** respond with status 401. 
 
-#### Long-polling for constrained endpoints in the LAN
+#### Long-polling for constrained endpoints in the LAN {#long-polling}
 
 > This section is only applicable for LAN-LAN pairing
 
