@@ -80,7 +80,7 @@ Non-repudiation is explicitly not guaranteed by this protocol.
 
 The entire trust model of S2 Connect is based on the fact that there is already a trust relation between the end user and the CEM and RM. If the CEM and RM do not use adequate security mechanisms, it might be possible to attack the system.
 
->> "Why doesn't S2 Connect use oAuth?" is a common question. oAuth is mainly designed for accessing protected resources in the cloud and since the S2 CEM and RM would also need to be able to pair on a local network (even without requiring internet access) oAuth 2.0 is simply not a good fit. There is a way to make it work, but since it is such a non-typical way the decision was made to not use oAuth 2.0 for pairing. For more details see [here](why-not-oauth.md).
+>> "Why doesn't S2 Connect use oAuth?" is a common question. oAuth is mainly designed for accessing protected resources in the cloud and since the S2 CEM and RM would also need to be able to pair on a local network (even without requiring internet access) oAuth 2.0 is simply not a good fit. There is a way to make it work, but since it is such a non-typical way the decision was made to not use oAuth 2.0 for pairing. For more details see <a rel="test" href="/docs/communication-layer/why-not-oauth/">here</a>.
 
 # Terms and definitions (normative)
 
@@ -122,7 +122,7 @@ Nodes can be deployed locally within the LAN, or somewhere on a server in the WA
 * **WAN** nodes are typically part of a large application that run on many servers and/or on some kind of cloud computing platform. A single application usually serves many users. Each user could have one or multiple nodes. This could for example be a cloud-based energy management system that can connect to many devices. It could also be a cloud environment of a device manufacturer that hosts the RM instances in the cloud. An end user could own multiple devices from this manufacturer, thus the application could host multiple RM instances for this particular user. A group of nodes that a single user can manage within one application is called an *end user environment*. It is also possible that an end user environment contains both CEM and RM instances. The user interface is typically a web interface or a smartphone app.
 * **LAN** nodes are typically part of an application that runs on an embedded computer device somewhere in the building. Such a device could be a physical energy management system, an energy flexible device such as a home battery, heat pump or EV charger, or a gateway device which connects to an energy flexible device through some kind of protocol. Often an application will only host a single node, but it is also possible that an application hosts multiple nodes. A device could function completely on its own, but it could also be connected to an internet based application of the manufacturer. The user interface could be a physical human-machine interface on the device, but also be a smartphone app that connects directly to the device (e.g. via Bluetooth), or a smartphone app or web interface that connects to an internet based application of the manufacturer. For energy flexible devices, it is assumed that they could also have no user interface at all, or that they are very constrained when it comes to computing power or memory. It is assumed that a CEM always has a user interface.
 
-![Deployment_options](@site/static/img/communication-layer/deployment_options.png)
+![Deployment_options](./img/deployment_options.png)
 
 There are three types of S2 connections between nodes possible:
 
@@ -150,7 +150,7 @@ Once a CEM is paired, the user has the possibility to command either of the node
 
 The pairing process is depicted in the figure below:
 
-![Pairing_process_user](@site/static/img/communication-layer/pairing_process_user.png)
+![Pairing_process_user](./img/pairing_process_user.png)
 
 <details>
 <summary>Image generated using the following PlantUML code:</summary>
@@ -238,7 +238,7 @@ There are however two situations where this is not possible:
   * Many modern devices or EMS systems are connected to a cloud backend managed by the OEM. If this is the case, it is possible to implement a pairing HTTPS server in the cloud, even though the node itself is in the LAN. If the pairing is performed successfully in the OEM backend, the result of the pairing must be communicated to the node via the existing connection between device/EMS and the OEM backend. This solution is only intended for WAN clients and must not be used by LAN clients. There must always be a method for purely LAN based pairing.
 * **LAN initiator RM and LAN responder RM**: Since one of the requirements is that a LAN RM instance can be implemented on restricted hardware, and a TLS enabled HTTPS server is far more memory intensive than an HTTPS client, there is an option to implement a LAN RM instance purely as an HTTPS client. A long-polling mechanism is available to indicate to the HTTPS server that the node is available for pairing. This mechanism is also used to initiate the pairing process from the HTTPS server. In other words: in this specific situation the Initiator node behaves as the HTTPS server, and the Responder node only has to be an HTTPS client.
 
-![Pairing_direction](@site/static/img/communication-layer/pairing_direction.png)
+![Pairing_direction](./img/pairing_direction.png)
 
 **Figure:** Overview of all possible ways to pair two nodes
 
@@ -279,7 +279,7 @@ As explained in the section [Versioning of OpenAPI files](#version) the pairing 
 
 The image below depicts the interactions between client and server for the process to determine the API version that will be used.
 
-![image](@site/static/img/communication-layer/api_version_selection.png)
+![image](./img/api_version_selection.png)
 
 <details>
 <summary>Image generated using the following PlantUML code:</summary>
@@ -651,13 +651,13 @@ When the server sends the `requestPairing` action, the node on the client must a
 
 The activity diagram below summarizes the complete long-polling process from the perspective of the client.
 
-![image](@site/static/img/communication-layer/long-polling_activity_diagram.png)
+![image](./img/long-polling_activity_diagram.png)
 
 ## Pairing interaction
 
 The pairing process itself consists of several HTTPS interactions between client and server. The image below depicts a successful pairing process between two nodes. 
 
-![image](@site/static/img/communication-layer/pairing_http_process.png)
+![image](./img/pairing_http_process.png)
 
 <details>
 <summary>Image generated using the following PlantUML code:</summary>
@@ -952,7 +952,7 @@ There are four scenarios for CEM and RM deployment, and applying the rules above
 
 During the pairing process an `accessToken` is generated by the node which will be the communication server and sent to the node that will be the communication client. This `accessToken` can be used by the communication client to set up a session with the communication server for exchanging S2 messages. The `accessToken` does not expire, but it can only be used (successfully) once to set up a session. Each time a new session is made, the `accessToken` will be renewed. The communication server will generate a new `accessToken` and sends it to the communication client. Since this `accessToken` is the only means to connect two nodes once they are paired, the session initiation process makes sure that both nodes confirm that they have successfully persisted the new `accessToken` before invalidating the old `accessToken`.
 
-![session initiation](@site/static/img/communication-layer/session-initiation.png)
+![session initiation](./img/session-initiation.png)
 
 <details>
 <summary>Image generated using the following PlantUML code:</summary>
@@ -1156,7 +1156,7 @@ When using S2 Connect, the `Handshake` and `HandshakeResponse` messages (as defi
 
 ### State of communication 
 
-![State of Communication](@site/static/img/communication-layer/state-of-communication.png)
+![State of Communication](./img/state-of-communication.png)
 
 <details>
 <summary>Image generated using the following PlantUML code:</summary>
@@ -1222,7 +1222,7 @@ There are two possible types of certificates for TLS communication. The first op
 
 The following image shows the difference. On the left a public root CA that is publicly known and trusted, on the right, a self-signed root certificate, that is unknown and its trustworthiness has to be achieved in another way.
 
-![image.png](@site/static/img/communication-layer/certificate-chains.png)
+![image.png](./img/certificate-chains.png)
 
 <details>
 <summary>Image generated using the following PlantUML code:</summary>
@@ -1273,4 +1273,4 @@ With the exemption of some cases where the authenticity cannot be verified yet, 
 
 ## Cipher suites
 
-Security levels of cipher suites will change over time. To stay secure, the used cipher suites should be updates regularly and adhere to regular updates. All nodes **MUST** follow **ONLY** the accepted crypto libraries as defined in [Accepted crypto algorithms](./accepted-crypto.md). This list will be kept up-to-date. When changes are made to the list of accepted crypto libraries, all nodes **MUST** follow these changes within half a year.
+Security levels of cipher suites will change over time. To stay secure, the used cipher suites should be updates regularly and adhere to regular updates. All nodes **MUST** follow **ONLY** the accepted crypto libraries as defined in <a href="/docs/communication-layer/accepted-crypto"> Accepted crypto algorithms</a>. This list will be kept up-to-date. When changes are made to the list of accepted crypto libraries, all nodes **MUST** follow these changes within half a year.
