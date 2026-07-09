@@ -17,4 +17,4 @@ The data model is also represented on this documentation website, see [Reference
 ## S2-Connect
 S2 Connect is a protocol specification enabling communication between an Energy Management System (EMS) and an Energy Smart Appliance (ESA) based on the S2 (EN50491‑12‑2) standard. It defines how devices discover, pair, communicate and unpair across local, cloud, and hybrid environments. It allows for a secure and fully interoperable solution between EMS and ESA.
 
-[The specification](/s2-connect/discovery-pairing-authentication) is published as open-access.
+[The specification](/s2-connect/1.0.0/discovery-pairing-authentication) is published as open-access.
