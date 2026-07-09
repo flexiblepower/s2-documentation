@@ -5,6 +5,8 @@ sidebar_position: 2
 
 # S2 Connect - Specification
 
+Version: v1.0
+
 # Introduction
 
 S2 Connect is a JSON-based protocol specification implementing the EN50491-12-2 "S2" standard for home and building energy management.
@@ -19,8 +21,8 @@ This version of this specification is based on the following versions of the und
 
 | Project | Files | Version | Reference |
 | --- | --- | --- | --- |
-| S2 Connect | OpenAPI files | `v1.0-beta-2` | [Github](https://github.com/flexiblepower/s2-connect) |
-| S2 JSON | JSON schemas | `v0.02-beta` | [Github](https://github.com/flexiblepower/s2-ws-json) |
+| S2 Connect | OpenAPI files | `v1.0` | [Github](https://github.com/flexiblepower/s2-connect) |
+| S2 JSON | JSON schemas | `v1.0.0` | [Github](https://github.com/flexiblepower/s2-ws-json) |
 
 > Note: S2 Connect is not directly linked to the version of S2 JSON. The exact version of S2 JSON that is being used by the CEM and RM is negotiated during session initiation.
 
