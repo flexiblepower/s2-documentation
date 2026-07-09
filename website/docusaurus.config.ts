@@ -80,7 +80,7 @@ const config: Config = {
     ['@docusaurus/plugin-client-redirects', {
       redirects: [
         {
-          to: '/s2-connect/discovery-pairing-authentication/',
+          to: '/s2-connect/1.0.0/discovery-pairing-authentication/',
           from: ['/docs/communication-layer/discovery-pairing-authentication/'],
         },
       ],
