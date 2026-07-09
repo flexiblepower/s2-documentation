@@ -26,6 +26,7 @@ const config: Config = {
   markdown: {
     hooks: {
       onBrokenMarkdownLinks: 'warn',
+      onBrokenMarkdownImages: 'warn',
     },
   },
 
@@ -44,6 +45,8 @@ const config: Config = {
         docs: {
           sidebarPath: './sidebars.ts',
           breadcrumbs: false,
+          // path: 'docs',
+          // routeBasePath: '/'
         },
         theme: {
           customCss: './src/css/custom.css',
@@ -64,15 +67,32 @@ const config: Config = {
       path: "s2-connect",
       routeBasePath: "s2-connect",
       breadcrumbs: false,
-      sidebarPath: false
+      sidebarPath: false,
+      includeCurrentVersion:false,
+      // Only the latest version should be provided here because we use that trick to have the version number of the latest version in the URL (which is non default)
+      versions: {
+        "1.0.0": {
+          path: '1.0.0',
+          badge:true
+        },
+      },
     }],
     ['@docusaurus/plugin-client-redirects', {
       redirects: [
         {
-          to: '/s2-connect/discovery-pairing-authentication/',
+          to: '/s2-connect/1.0.0/discovery-pairing-authentication/',
           from: ['/docs/communication-layer/discovery-pairing-authentication/'],
         },
       ],
+        createRedirects(existingPath: string) {
+          if (existingPath.startsWith('/docs/learn')) {
+            // Redirect from /docs/team/X to /community/X and /docs/support/X to /community/X
+            return [
+              existingPath.replace('/docs/learn', '/docs')
+            ];
+          }
+          return undefined; // Return a falsy value: no redirect created
+        }
     }]
   ],
 
@@ -94,24 +114,23 @@ const config: Config = {
           label: 'Learn',
         },
         {
-          to: 'model-reference/reading-this-documentation',
+          to: 'model-reference',
           activeBaseRegex: 'model-reference',
           position: 'left',
           label: 'Reference',
         },
-        // {
-        //   to: 's2-connect/discovery-pairing-authentication',
-        //   activeBaseRegex: 's2-connect',
-        //   position: 'left',
-        //   label: 'S2 Connect',
-        // },
+        {
+          type: 'docSidebar',
+          sidebarId: 'specsSidebar',
+          position: 'left',
+          label: 'Specifications',
+        },
         {
           type: 'docsVersionDropdown',
           position: 'right',
           // props passed to the themed navbar item component - our themed override will read `showOn`
-          versions: ['current', '1.0-beta2'],
+          versions: ['1.0.0'],
           docsPluginId: 's2c',
-          // only show the dropdown when path starts with this prefix
         },
         {
           href: 'https://github.com/flexiblepower/s2-documentation',
@@ -133,7 +152,11 @@ const config: Config = {
             {
               label: 'Python library',
               href: 'https://pypi.org/project/s2-python/',
-            }
+            },
+            {
+              label: 'Ruby library',
+              href: 'https://github.com/stekker/s2-ruby/',
+            },
           ],
         }, 
         {

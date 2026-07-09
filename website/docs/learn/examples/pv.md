@@ -3,7 +3,7 @@ title: "Example: PV Installation"
 hide_title: true
 ---
 
-![image not found](../../static/img/example-pv-header.png)
+![image not found](@site/static/img/example-pv-header.png)
 
 This page serves as a guide for implementing an S2 RM for a PV installation. It provides example S2 messages that help developers to understand how to interact with PV installations and what kind of flexibility they can offer.
 
@@ -20,7 +20,7 @@ S2 supports five different control types for flexibility (and one for no control
 
 | Control&nbsp;capability&nbsp;of&nbsp;PV&nbsp;installation | Control type | Remark |
 |--------------------|:--------------:|---------|
-| No control possible |  NOT_CONTROLABLE  | As there is no way to control this PV installation, the `NOT_CONTROLABLE` ControlType should be selected. Although nothing can be controlled, devices can still send `PowerMeasurement`s and `PowerForecast`s |
+| No control possible |  NOT_CONTROLABLE  | As there is no way to control this PV installation, the `NOT_CONTROLABLE` ControlType should be selected. Although nothing can be controlled, devices can still send `PowerMeasurement`s and `PowerForecast`s. For an example of communication with a non-controllable device, please refer to [Non controllable assets](nocontrol.md). |
 | Set maximum output power | POWER_ENVELOPE_BASED_CONTROL (PEBC) | Based on the constraints of the PV installation (e.g. the minimum and maximum power output of the inverter), the CEM can provide the Resource Manager of the PV installation a PowerEnvelope that describes the minimum (usually 0) and maximum (e.g. -2kW, negative for production) that the inverter of the PV installation should produce  |
 
 The table shows two ways to interact with a PV installation: just using the power measurements such that the CEM can optimize based on the production of the PV installation and using Power Envelope Based Control, which allows the CEM to instruct the PV installation to curtail.
@@ -32,7 +32,7 @@ Power Envelope Based Control is used for devices that can be influenced to use o
 ## Example of controlling an PV inverter using Power Envelope Based control (PEBC)
 This example describes how a PV inverter can expose its curtailment capabilities to the CEM and let the CEM control this inverter by sending it messages that will ask it to curtail itself.
 
-The following sequence diagram is an example of what a message exchange between a CEM and RM could look like, but messages could also be sent in a different order (see also [State of communication](/docs/communication-layer/discovery-pairing-authentication/#state-of-communication)). ReceptionStatus messages are omitted for readability.
+The following sequence diagram is an example of what a message exchange between a CEM and RM could look like, but messages could also be sent in a different order (see also [State of communication](/s2-connect/1.0.0/discovery-pairing-authentication/#state-of-communication)). ReceptionStatus messages are omitted for readability.
 
 First an overview of the messages is presented graphically, next sections will describe the example messages in more detail.
 
@@ -338,13 +338,13 @@ A PowerForcast can also incorporate uncertainty of the forecast in the values.
       "duration": 3600000,
       "power_values": [
         {
-          "value_upper_limit": -3500.0,
-          "value_upper_95PPR": -3460.0,
-          "value_upper_68PPR": -3455.0,
+          "value_upper_limit": -3400.0,
+          "value_upper_95PPR": -3440.0,
+          "value_upper_68PPR": -3445.0,
           "value_expected": -3450.1,
-          "value_lower_68PPR": -3445.0,
-          "value_lower_95PPR": -3440.0,
-          "value_lower_limit": -3400.0,
+          "value_lower_68PPR": -3455.0,
+          "value_lower_95PPR": -3460.0,
+          "value_lower_limit": -3500.0,
           "commodity_quantity": "ELECTRIC.POWER.L1"
         }
       ]
