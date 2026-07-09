@@ -136,7 +136,7 @@ The first step of pairing is establishing a connection from the Initiator node t
 * If the Responder node is deployed in the WAN, the URL could be retrieved through a registry. The end user would have to select the type of node from a list of known node services in its region.
 * If both nodes are deployed in the LAN however, nodes can be automatically be discovered. The end user would have to select the node from a list of automatically discovered nodes.
 
-The second step is entering the pairing code of the Responder node. This is a means for the end user to confirm that these two nodes are allowed to send control signals to each other. The pairing code can be obtained from the Responder node. The pairing code is a (seemingly) random string of characters. This pairing code is typically displayed somewhere in the user interface of the Responder node. It is recommended to use a dynamic token which expires after 5 minutes. However, if the Responder node has a physical presence in the building and doesn't have user interface, there is also the option to have a static pairing code which can be printed on the device.
+The second step is entering the pairing code of the Responder node. This is a means for the end user to confirm that these two nodes are allowed to send control signals to each other. The pairing code can be obtained from the Responder node. The pairing code is a (seemingly) random string of characters. This pairing code is typically displayed somewhere in the user interface of the Responder node. It is recommended to use a dynamic token which expires after 5 minutes. However, if the Responder node has a physical presence in the building and doesn't have user interface, there is also the option to have a static pairing code which can be printed on the device. The pairing code serves two purposes: It is both an identifier of the node, as well as a secret that carries the trust relationship from one node, through the end user, to the other node.
 
 Optionally, the Initiator node can send a signal to the Responder node to indicate that the end user has started the pairing process and has selected the Responder node. This could trigger the user interface of the Responder node to proactively show the pairing code (e.g. through a pop-up) to improve the user experience.
 
@@ -175,9 +175,9 @@ iui->e: Pairing result (success or failure)
 
 Within this protocol a clear distinction is made between two types of identities: the one of the **Endpoint** and the one of the **Node** itself.
 
-A **Node** is an instance of a CEM or a RM. It is either a specific energy management system or service, or the representative of a physical energy flexible device, such as a heat pump or a home battery. It is typically easily recognized by the end user by its brand, device type, model name or maybe even a user given name.
+A **Node** is an instance of a CEM or a RM. A CEM instance typically belongs to one end user, building or premise, and could be hosted in a dedicated energy management device. A RM instance is typically the representative of one physical energy flexible device, such as a heat pump or a home battery. A node is typically easily recognized by the end user by its brand, device type, model name or maybe even a user given name.
 
-The **Endpoint** is the application that hosts the nodes. In a LAN deployment an endpoint might only host one node, and these identities may seem very similar. But in a WAN deployment, an endpoint could host all kinds of different types of nodes. It could for example be that a certain endpoint hosts RM instances for several brands of devices. Therefore an endpoint needs its own identity, which can be recognized by the end user. 
+The **Endpoint** is the application that hosts the nodes. In a LAN deployment an endpoint might only host one node, and these identities may seem very similar. But in a WAN deployment, an endpoint could host thousands of nodes. It could host all kinds of different types of nodes. It could for example be that a certain endpoint hosts RM instances for several brands of devices. Therefore an endpoint needs its own identity, which can be recognized by the end user.
 
 ## Used technology for pairing and communication
 
@@ -388,7 +388,7 @@ In order to filter out the relevant endpoint records the API supports the follow
 
 In addition, the number of responses can be limited. An offset can also be provided in order to split the results over multiple requests.
 
->>>> **Ewoud**: Stel ik heb een WP en wil deze aan mijn cloud EMS koppelen, zeg BeNext. Dus dan zoek 'BeNext' op in de public registry via de app van de WP, hoe selecteer ik dan *mijn* EMS instantie? Filter is dan NL/Public status/CEM. 
+> Note: Since the pairing code also contains an identifier for the node within the endpoint, the combination of pairing code and endpoint URL is sufficient information to start a pairing attempt.
 
 ### DNS-SD based discovery
 DNS-SD is used to automatically discover nodes from a node that is deployed in the LAN. This method can be used in two ways.
