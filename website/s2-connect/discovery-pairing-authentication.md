@@ -238,8 +238,7 @@ There are however two situations where this is not possible:
 
 ![Pairing_direction](@site/static/img/communication-layer/pairing_direction.png)
 
->>>> **Ewoud**: Plaatje opsplitsen want dit is de veel pijltjes. Alternatief voor WAN-LAN heb ik gemaakt in powerpoitn
-
+**Figure:** Overview of all possible ways to pair two nodes
 
 # Formal specification and versioning (normative)
 
