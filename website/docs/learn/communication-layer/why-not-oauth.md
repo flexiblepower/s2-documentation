@@ -31,7 +31,7 @@ The device code flow of OAuth 2.0 ([RFC 8628](https://www.rfc-editor.org/rfc/rfc
 
 The end result is that the client has an access token (and potentially an refresh token) that would be used to authenticate when establishing a WebSocket connection.
 
-![image](../../static/img/communication-layer/oauth2-s2.png)
+![image](../../../static/img/communication-layer/oauth2-s2.png)
 <details>
 <summary>Image generated using the following PlantUML code:</summary>
 

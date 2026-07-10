@@ -5,7 +5,7 @@ Activates a Control Type for this session.
 
 This message is sent by the CEM to activate a Control Type for this session. The activated control type must be supported by the Resource Manager (as indicated in `ResourceManagerDetails` received by the CEM).
 """
-see_also = [{ name = "Guide to S2 control types", link = "https://docs.s2standard.org/docs/concepts/control-types/" }]
+see_also = [{ name = "Guide to S2 control types", link = "https://docs.s2standard.org/docs/learn/concepts/control-types/" }]
 
 [fields.control_type]
 field_name = "control_type"
