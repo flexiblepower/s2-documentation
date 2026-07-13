@@ -7,7 +7,7 @@ sidebar_position: 4
 
 The S2 Connect specification contains a description of encryption requirements. Because the security levels given by different crypto algorithms change continuously, this page contains the accepted crypto algorithms for S2 Connect. Keep in mind that this will change over time.
 
-At the moment, we refer to the Mozilla guidelines in: [Server Side TLS](https://wiki.mozilla.org/Security/Server_Side_TLS). In the future these Mozilla guidelines will change, and S2 might have it's own list of accepted algorithms.
+At the moment, we refer to the TLSRef guidelines in: [Server Side TLS](https://docs.tlsref.org/server-side-tls.html). In the future these Mozilla guidelines will change, and S2 might have it's own list of accepted algorithms.
 
 ## Accepted algorithms will change
 
@@ -17,4 +17,4 @@ Therefore, this list will continuously change, and kept up to date. However, to 
 
 ## Accepted algorithms
 
-At the moment, we consider the guidelines give by Mozilla in [Server Side TLS](https://wiki.mozilla.org/Security/Server_Side_TLS) on the level **Modern** as secure for usage in S2. 
+At the moment, we consider the guidelines give by TLSRef in [Server Side TLS](https://docs.tlsref.org/server-side-tls.html) on the level **Modern** as secure for usage in S2. 
