@@ -10,7 +10,7 @@ The official standard (EN 50491-12-2) that has been approved by European Standar
 ## S2-Json
 A json-schema definition that describes all S2 messages.
 
-The json-schema can be found here: [s2-json](https://github.com/flexiblepower/s2-ws-json/tree/main/s2-json-schema).
+The json-schema can be found here: [s2-json](https://github.com/flexiblepower/s2-json).
 
 The data model is also represented on this documentation website, see [Reference](/model-reference).
 
