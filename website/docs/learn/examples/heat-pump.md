@@ -3,7 +3,7 @@ title: "Example: Heat Pump"
 hide_title: true
 ---
 
-![image not found](../../static/img/example-heat-pumps-header.png)
+![image not found](@site/static/img/example-heat-pumps-header.png)
 
 This page serves as a guide for implementing an S2 RM for a heat pump, or to give a CEM developer a better understanding of what to expect when controlling the energy flexibility of a heat pump. It provides some example S2 messages for same (fictional) heat pumps.
 
@@ -27,7 +27,7 @@ A hybrid heat pump can temporarily reduce or stop its electricity consumption by
 
 ## Choosing the right Control Type
 
-When implementing S2, it's important to choose the right [Control Type(s)](/docs/concepts/control-types.md) to implement in the RM of the heat pump. S2 is a language for conveying energy flexibility to the CEM without making any assumptions on what the CEM is optimizing for. Although there typically are multiple Control Types that can be used for a heat pump, it is preferred to pick the one that conveys the most information and control options to the CEM, so the CEM can do the best optimization that adds the most value.
+When implementing S2, it's important to choose the right [Control Type(s)](learn/concepts/control-types.md) to implement in the RM of the heat pump. S2 is a language for conveying energy flexibility to the CEM without making any assumptions on what the CEM is optimizing for. Although there typically are multiple Control Types that can be used for a heat pump, it is preferred to pick the one that conveys the most information and control options to the CEM, so the CEM can do the best optimization that adds the most value.
 
 As a general rule, when there is some form of energy (in this case heat) buffering involved, Fill Rate Base Control (FRBC) is the best Control Type. When there is no flexibility involved, but there is an option to switch between different fuels (as is the case with the hybrid heat pump), Demand Driven Based Control (DDBC) typically is the best option. Both Control Types give the CEM relatively direct control over the heat pump.
 
@@ -54,7 +54,7 @@ The possible Control Types to implement are summarized in the table below.
 
 In this example we will work out the communication between CEM and RM for an all electric heat pump that utilizes the DHW buffer for energy flexibility using FRBC.
 
-The following sequence diagram is an example of what a message exchange between a CEM and RM could look like, but messages could also be sent in a different order (see also [State of communication](/docs/communication-layer/discovery-pairing-authentication/#state-of-communication)). `ReceptionStatus` messages are omitted for readability.
+The following sequence diagram is an example of what a message exchange between a CEM and RM could look like, but messages could also be sent in a different order (see also [State of communication](/s2-connect/1.0.0/discovery-pairing-authentication/#state-of-communication)). `ReceptionStatus` messages are omitted for readability.
 
 ![XPBVhX8n4CRl-nHz0FK1l308I2Hn4xCByNhiVe66RcUTcMBmwLqW9-bXEJcty_l-TD9Pg95O6P9pcGsUpn2_-jPyy6tpsV_2xux32UO3vunWw9sRgF_uvSQ_K-xrI2UuzZQRK3ryfcoX8sV5qxvjZXOfnN_NdYfoCd6HW8Oo7I1h6CMaTNw7X60hpYQSTfVnUNx5FGMBPxA7fasxN](https://github.com/flexiblepower/s2-ws-json/assets/851310/49422881-d6e3-4ffc-b513-74230d61875d)
 <details>

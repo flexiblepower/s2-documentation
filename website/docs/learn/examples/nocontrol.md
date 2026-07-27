@@ -3,7 +3,7 @@ title: "Example: Non controllable assets"
 hide_title: true
 ---
 
-![image not found](../../static/img/example-inflexible-header.png)
+![image not found](../../../static/img/example-inflexible-header.png)
 
 This page serves as a guide for implementing an S2 RM for a non-flexible device, or to give a CEM developer a better understanding of what to expect when taking into account information from non-flexible device. It provides some example S2 messages for same (fictional) non-flexible devices. Some examples of non-flexible devices are a TV, an electric cooking appliance, lights and a non-curtailable PV system.
 
@@ -11,9 +11,9 @@ This page serves as a guide for implementing an S2 RM for a non-flexible device,
 
 In this example we will work out the communication between CEM and RM for a non-controllable asset. The RM will provide the CEM with a power forecast and real time power measurements, but the CEM will not be able to control the asset in any way.
 
-The following sequence diagram is an example of what a message exchange between a CEM and RM could look like, but messages could also be sent in a different order (see also [State of communication](/docs/communication-layer/discovery-pairing-authentication/#state-of-communication)). `ReceptionStatus` messages are omitted for readability.
+The following sequence diagram is an example of what a message exchange between a CEM and RM could look like, but messages could also be sent in a different order (see also [State of communication](/s2-connect/1.0.0/discovery-pairing-authentication/#state-of-communication)). `ReceptionStatus` messages are omitted for readability.
 
-![XPBVhX8n4CRl-nHz0FK1l308I2Hn4xCByNhiVe66RcUTcMBmwLqW9-bXEJcty_l-TD9Pg95O6P9pcGsUpn2_-jPyy6tpsV_2xux32UO3vunWw9sRgF_uvSQ_K-xrI2UuzZQRK3ryfcoX8sV5qxvjZXOfnN_NdYfoCd6HW8Oo7I1h6CMaTNw7X60hpYQSTfVnUNx5FGMBPxA7fasxN](../../static/img/no-control-sequence-diagram.png)
+![XPBVhX8n4CRl-nHz0FK1l308I2Hn4xCByNhiVe66RcUTcMBmwLqW9-bXEJcty_l-TD9Pg95O6P9pcGsUpn2_-jPyy6tpsV_2xux32UO3vunWw9sRgF_uvSQ_K-xrI2UuzZQRK3ryfcoX8sV5qxvjZXOfnN_NdYfoCd6HW8Oo7I1h6CMaTNw7X60hpYQSTfVnUNx5FGMBPxA7fasxN](../../../static/img/no-control-sequence-diagram.png)
 <details>
 
 Image generated using the following PlantUML code:

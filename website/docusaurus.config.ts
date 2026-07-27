@@ -26,6 +26,7 @@ const config: Config = {
   markdown: {
     hooks: {
       onBrokenMarkdownLinks: 'warn',
+      onBrokenMarkdownImages: 'warn',
     },
   },
 
@@ -44,6 +45,8 @@ const config: Config = {
         docs: {
           sidebarPath: './sidebars.ts',
           breadcrumbs: false,
+          // path: 'docs',
+          // routeBasePath: '/'
         },
         theme: {
           customCss: './src/css/custom.css',
@@ -58,6 +61,38 @@ const config: Config = {
       path: "model-reference",
       routeBasePath: "model-reference",
       breadcrumbs: false,
+    }],
+    ['@docusaurus/plugin-content-docs', {
+      id: "s2c",
+      path: "s2-connect",
+      routeBasePath: "s2-connect",
+      breadcrumbs: false,
+      sidebarPath: false,
+      includeCurrentVersion:false,
+      // Only the latest version should be provided here because we use that trick to have the version number of the latest version in the URL (which is non default)
+      versions: {
+        "1.0.0": {
+          path: '1.0.0',
+          badge:true
+        },
+      },
+    }],
+    ['@docusaurus/plugin-client-redirects', {
+      redirects: [
+        {
+          to: '/s2-connect/1.0.0/discovery-pairing-authentication/',
+          from: ['/docs/communication-layer/discovery-pairing-authentication/'],
+        },
+      ],
+        createRedirects(existingPath: string) {
+          if (existingPath.startsWith('/docs/learn')) {
+            // Redirect from /docs/team/X to /community/X and /docs/support/X to /community/X
+            return [
+              existingPath.replace('/docs/learn', '/docs')
+            ];
+          }
+          return undefined; // Return a falsy value: no redirect created
+        }
     }]
   ],
 
@@ -79,10 +114,23 @@ const config: Config = {
           label: 'Learn',
         },
         {
-          to: 'model-reference/reading-this-documentation',
+          to: 'model-reference',
           activeBaseRegex: 'model-reference',
           position: 'left',
           label: 'Reference',
+        },
+        {
+          type: 'docSidebar',
+          sidebarId: 'specsSidebar',
+          position: 'left',
+          label: 'Specifications',
+        },
+        {
+          type: 'docsVersionDropdown',
+          position: 'right',
+          // props passed to the themed navbar item component - our themed override will read `showOn`
+          versions: ['1.0.0'],
+          docsPluginId: 's2c',
         },
         {
           href: 'https://github.com/flexiblepower/s2-documentation',
@@ -135,6 +183,7 @@ const config: Config = {
   } satisfies Preset.ThemeConfig,
 
   scripts: [
+    { src: '/js/pathClass.js', defer: true },
   ],
 };
 

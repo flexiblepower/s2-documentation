@@ -21,8 +21,8 @@ function HomepageHeader() {
             </Heading>
             <p className="padding-bottom--lg">{siteConfig.tagline}</p>
             <div className={styles.flexContainer}>
-                <Link to="/docs/welcome" className={clsx("button button--primary shadow--md", styles.actionButton)}>Read the documentation</Link>
-                <Link to="/model-reference/reading-this-documentation" className={clsx("button button--outline button--primary ", styles.actionButton)}>Data model reference</Link>
+                <Link to="/docs/learn/welcome" className={clsx("button button--primary shadow--md", styles.actionButton)}>Read the documentation</Link>
+                <Link to="/model-reference" className={clsx("button button--outline button--primary ", styles.actionButton)}>Data model reference</Link>
             </div>
           </div>
         <div className="col col--6">

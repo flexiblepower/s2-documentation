@@ -2,7 +2,7 @@ type_name = "EnergyManagementRole"
 description = """
 Describes whether a resource is an RM or CEM.
 """
-see_also = [{ name = "Guide to the S2 architecture", link = "https://docs.s2standard.org/docs/concepts/architecture/"}]
+see_also = [{ name = "Guide to the S2 architecture", link = "https://docs.s2standard.org/docs/learn/concepts/architecture/"}]
 
 [variants.CEM]
 variant_name = "CEM"
