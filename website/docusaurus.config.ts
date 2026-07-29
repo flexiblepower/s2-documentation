@@ -56,6 +56,7 @@ const config: Config = {
   ],
 
   plugins: [
+    "./src/plugins/tailwind-config.js",
     ['@docusaurus/plugin-content-docs', {
       id: "api",
       path: "model-reference",
