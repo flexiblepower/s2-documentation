@@ -13,28 +13,30 @@ This repository contains the source code for the documentation website of the S2
 
 ## Workflow
 
-### Generate structure documentation (one time action)
-For the initial generation of the structured documentation, the `structured-documentation-generator` has been used. This is a one time action, i.e. the structured documentation has been generated once, and should not be regenerated again. The data model for the structured documentation is contained in [`structured-documentation-generator/src/doc_types.rs`](structured-documentation-generator/src/doc_types.rs). The result has been put in the `structured-documentation` folder.
-
 ### Document the data model
-The generated structured documentation from the previous step is the starting point for the documentation of the data model. The documentation has to be extended manually.
+The documentation in `structured-documentation` is the starting point for the documentation of the data model in toml format. The documentation has to be extended manually.
 
 ### Generate Markdown for data model reference
-The data model reference is created directly from the structured-documentation. Since Docusaurus allows for Markdown-based documentation, the `website-generator` takes the structured documentation and generates Markdown files for them, which are placed in `website/model-reference`. Please note that this folder is added to `.gitignore` because the Markdown files will be freshly created during the deployment. 
+The data model reference is created directly from the structured-documentation. Since Docusaurus allows for Markdown-based documentation, the tool in `website-generator` takes the structured documentation and generates Markdown files for them, which are placed in `website/model-reference`. Please note that this folder is added to `.gitignore` because the Markdown files will be freshly created during the deployment. To run the data model markdown generation tool, you must have [installed the Rust toolchain](https://rust-lang.org/tools/install/), then run:
+
+```bash
+cd website-generator
+cargo run --release
+```
 
 ### Write documentation for S2
 The `website` directory contains the file that make up the actual documentation website. Please find in the `website/docs` directory all the Markdown files that constitute the documentation of the S2 standard. The convention is to follow pretty URL patterns (i.e. kebab-case) for the directories and filenames because Docusaurus uses those names to create URLs to the pages (and we want pretty URLs, of course).
 
 ### Running the documentation development server
-Docusaurus comes with a development server with hot-code replacement. To build the documentation website and to run the development server locally, make sure to have nodejs (v. 18 and higher) installed, and run from the `website` directory:
+Docusaurus comes with a development server with hot-code replacement. To build the documentation website and to run the development server locally, make sure to have nodejs (v22 or higher) installed, and run from the `website` directory:
 
-```
+```bash
 npm run start
 ```
 
 Sometimes it is needed to clear the build cache in case there are errors displayed on the development website:
 
-```
+```bash
 npm run clear
 ```
 
