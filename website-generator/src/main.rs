@@ -30,6 +30,18 @@ fn link_type(
     Ok(())
 }
 
+fn parse_link(
+     h: &handlebars::Helper,
+    _: &Handlebars,
+    _: &handlebars::Context,
+    _: &mut handlebars::RenderContext,
+    out: &mut dyn handlebars::Output) ->  handlebars::HelperResult{
+    let param = h.param(0).unwrap();
+    out.write(&format!("{0}", param.value().as_str().unwrap().replace("https://docs.s2standard.org", "")))?;
+    Ok(())
+}
+
+
 fn main() {
     let doc_template = include_str!("./doc_item.handlebars");
     let mut handlebars = Handlebars::new();
@@ -37,6 +49,7 @@ fn main() {
     handlebars_helper!(isdefined: |v: Value| !v.is_null());
     handlebars.register_helper("isdefined", Box::new(isdefined));
     handlebars.register_escape_fn(|x| x.to_string());
+    handlebars.register_helper("see_also_link", Box::new(parse_link));
 
     let _ = std::fs::remove_dir_all("../website/model-reference/Common");
     let _ = std::fs::remove_dir_all("../website/model-reference/DDBC");
