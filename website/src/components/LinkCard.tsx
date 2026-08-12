@@ -49,7 +49,6 @@ export default function LinkCardMD({
           <div className={styles.title}>
             {title}
           </div>
-          {linkIcon(href)}
         </div>
 
         {description && (
@@ -58,6 +57,7 @@ export default function LinkCardMD({
           </div>
         )}
       </div>
+      {linkIcon(href)}
     </Link>
   );
 }
