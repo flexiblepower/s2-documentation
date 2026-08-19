@@ -53,7 +53,7 @@ pagination_prev: null
         <div style=\{{ height: "1rem" }}></div>
         ## See also
         {{#each see_also}}
-        - [{{this.name}}]({{this.link}})
+        - [{{this.name}}]({{see_also_link this.link}})
         {{/each}}
         {{/if}}
     </div>
