@@ -1,6 +1,8 @@
 use handlebars::{handlebars_helper, Handlebars};
-use s2_documentation_generator::GenericDocumentation;
 use serde_json::Value;
+use doc_types::GenericDocumentation;
+
+mod doc_types;
 
 fn link_type(
     h: &handlebars::Helper,
