@@ -18,4 +18,4 @@ S2 Connect specifies the discovery, pairing, communication and unpairing process
 
 Refer to [specification](/s2-connect/1.0.0/discovery-pairing-authentication) to read the S2-Connect specification.
 
-If you are looking for implementations of S2 Connect, head over to the [implementation status](s2-connect-implementations) page.
+If you are looking for implementations of S2 Connect, head over to the [implementation status](s2-connect-implementations.md) page.
