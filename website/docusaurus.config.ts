@@ -68,12 +68,12 @@ const config: Config = {
       routeBasePath: "s2-connect",
       breadcrumbs: false,
       sidebarPath: false,
-      includeCurrentVersion:false,
+      includeCurrentVersion: false,
       // Only the latest version should be provided here because we use that trick to have the version number of the latest version in the URL (which is non default)
       versions: {
         "1.0.0": {
           path: '1.0.0',
-          badge:true
+          badge: true
         },
       },
     }],
@@ -84,15 +84,15 @@ const config: Config = {
           from: ['/docs/communication-layer/discovery-pairing-authentication/'],
         },
       ],
-        createRedirects(existingPath: string) {
-          if (existingPath.startsWith('/docs/learn')) {
-            // Redirect from /docs/team/X to /community/X and /docs/support/X to /community/X
-            return [
-              existingPath.replace('/docs/learn', '/docs')
-            ];
-          }
-          return undefined; // Return a falsy value: no redirect created
+      createRedirects(existingPath: string) {
+        if (existingPath.startsWith('/docs/learn')) {
+          // Redirect from /docs/team/X to /community/X and /docs/support/X to /community/X
+          return [
+            existingPath.replace('/docs/learn', '/docs')
+          ];
         }
+        return undefined; // Return a falsy value: no redirect created
+      }
     }]
   ],
 
@@ -158,7 +158,7 @@ const config: Config = {
               href: 'https://github.com/stekker/s2-ruby/',
             },
           ],
-        }, 
+        },
         {
           title: 'Community',
           items: [
@@ -183,7 +183,8 @@ const config: Config = {
   } satisfies Preset.ThemeConfig,
 
   scripts: [
-    { src: '/js/pathClass.js', defer: true },
+    { src: '/js/plausible_init.js' },
+    { src: 'https://s2docs-stats.hesi.energy/js/pa-BXyvXJICXEUYTFaPgJsOP.js', async: true },
   ],
 };
 
