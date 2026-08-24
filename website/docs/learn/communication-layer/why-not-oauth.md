@@ -1,5 +1,6 @@
 ---
 title: Why not OAuth 2.0?
+sidebar_position: 3
 ---
 
 Since OAuth 2.0 is the industry standard to authorize clients for accessing protected server resources, it is very reasonable to question why the authorization of S2 clients do not use OAuth 2.0. This chapter addresses that question.

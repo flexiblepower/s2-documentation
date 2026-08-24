@@ -5,6 +5,7 @@ import LinkCard from '@site/src/components/LinkCard';
 import ThemedImage from '@theme/ThemedImage';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import CodeJsonIcon from '@iconify-react/mdi/code-json';
+import FileCodeIcon from '@iconify-react/mdi/file-code';
 
 # Overview of specifications
 
@@ -32,7 +33,7 @@ S2 Connect is a protocol specification enabling communication between an Energy 
   title="S2 Connect specification"
   description="Read the full specification about interoperable device discovery, secure pairing, and authentication mechanisms"
   icon={<ThemedImage
-          alt="My image"
+          alt="s2 logo"
           sources={{
             light: useBaseUrl('/img/Logo-S2-no-text.svg'),
             dark: useBaseUrl('/img/s2-logo-dark.svg'),
@@ -40,3 +41,9 @@ S2 Connect is a protocol specification enabling communication between an Energy 
         />}
 />
 
+<LinkCard
+  href="/docs/learn/communication-layer/s2-connect-implementations/"
+  title="S2 Connect implementations"
+  description="Status overview of S2 Connect implementations"
+  icon={<FileCodeIcon/>}
+/>
