@@ -244,10 +244,10 @@ This document serves as an overall specification of the S2 Connect protocol. How
 
 | Part of specification | Description | Specification format | Location |
 | --- | --- | --- | --- |
-| S2 Connect pairing API | HTTPS based interaction to pair two nodes | OpenAPI file | [Github](https://github.com/flexiblepower/s2-connect/blob/main/s2-connect-pairing.yml) |
-| S2 Connect connection API | HTTPS based interaction set up a communication channel for S2 messages between two nodes | OpenAPI file | [Github](https://github.com/flexiblepower/s2-connect/blob/main/s2-connect-connection-init.yml) |
-| S2 Connect WAN pairing endpoint registry API | HTTPS based interface to query the registry  | OpenAPI file | [Github](https://github.com/flexiblepower/s2-connect/blob/main/s2-connect-wan-endpoint-registry.yml) |
-| S2 JSON message structure | The types of S2 messages that can be exchanges between nodes | JSON schema files | [Github](https://github.com/flexiblepower/s2-ws-json/tree/main/s2-json-schema) |
+| S2 Connect pairing API | HTTPS based interaction to pair two nodes | OpenAPI file | [Github](https://github.com/flexiblepower/s2-connect/blob/main/openapi/s2-connect-pairing.yml) |
+| S2 Connect connection API | HTTPS based interaction set up a communication channel for S2 messages between two nodes | OpenAPI file | [Github](https://github.com/flexiblepower/s2-connect/blob/main/openapi/s2-connect-connection-init.yml) |
+| S2 Connect WAN pairing endpoint registry API | HTTPS based interface to query the registry  | OpenAPI file | [Github](https://github.com/flexiblepower/s2-connect/blob/main/openapi/s2-connect-wan-endpoint-registry.yml) |
+| S2 JSON message structure | The types of S2 messages that can be exchanges between nodes | JSON schema files | [Github](https://github.com/flexiblepower/s2-ws-json/tree/main/openapi/s2-json-schema) |
 
 ### Versioning of OpenAPI files
 The pairing API, the session initiation API and the WAN pairing endpoint registry API are formally defined in OpenAPI files. To accommodate future changes to these APIs, the OpenAPI files are versioned. Versioning is done using a `major.minor` scheme. All S2 Connect OpenAPI files share the same version number.
