@@ -21,10 +21,10 @@ The main efforts have been put into the implementation of S2 Connect in Rust and
 | WAN discovery | ❌ | ❌ |
 | LAN discovery | ✅ | ❌ |
 | Pairing Client | ✅ | ✅ |
-| Pairing Server | ✅ | 🚧|
-| Pairing API | ✅ | ❌ |
-| Session initiation | ✅ | 🚧 |
-| Unpairing | ✅ | 🚧 |
+| Pairing Server | ✅ | ✅|
+| Pairing API | ✅ | ✅ |
+| Session initiation | ✅ | ✅ |
+| Unpairing | ✅ | ✅ |
 
 There is important note about Rust implementation: the specification says that there must be a rate limiting on the pairing process of one pairing per node_id per second. This is not yet implemented in Rust.
 
