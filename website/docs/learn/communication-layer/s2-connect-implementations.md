@@ -9,7 +9,7 @@ S2 Connect allows for full interoperability between Resource Managers and Energy
 
 ## Language overview
 - **Rust**: currently the most complete implementation. S2 Connect is implemented in the [S2-Rust library](https://github.com/flexiblepower/s2-rust).
-- **Python**: a work in progress. The implementation is currently in a private repository but if you are a Python developer and interested in contributing, please reach out on [discord](https://discord.com/invite/NyFMEPmuDw).
+- **Python**: a solid implementation covering the main S2 Connect features, though not yet as complete as Rust. The implementation is available in the [s2auth repository](https://github.com/flexiblepower/s2auth) and published on [PyPI as s2auth](https://pypi.org/project/s2auth/). If you are a Python developer and interested in contributing, please reach out on [discord](https://discord.com/invite/NyFMEPmuDw).
 - **C**: a work in progress by [Inversable](https://inversable.com/). Will be published open source soon.
 - **Go**: a work in progress.
 
@@ -21,12 +21,14 @@ The main efforts have been put into the implementation of S2 Connect in Rust and
 | WAN discovery | ❌ | ❌ |
 | LAN discovery | ✅ | ❌ |
 | Pairing Client | ✅ | ✅ |
-| Pairing Server | ✅ | 🚧|
-| Pairing API | ✅ | ❌ |
-| Session initiation | ✅ | 🚧 |
-| Unpairing | ✅ | 🚧 |
+| Pairing Server | ✅ | ✅|
+| Pairing API | ✅ | ✅ |
+| Session initiation | ✅ | ✅ |
+| Unpairing | ✅ | ✅ |
 
-There is important note about Rust implementation: the specification says that there must be a rate limiting on the pairing process of one pairing per node_id per second. This is not yet implemented in Rust.
+Implementation notes:
+- The specification says that there must be rate limiting on the pairing process of one pairing per `node_id` per second. This is not yet implemented in either the Rust or Python implementations.
+- Both the Rust and Python implementations do enforce maximum token lifetimes.
 
 ## Help wanted
 There is still a lot of work to do. So if you like to contribute, have a look at the open issues, pick one, start the implementation and open a pull request. We would also like to get in touch with you on [discord](https://discord.com/invite/NyFMEPmuDw) where we can also discuss technical decision for the implementation of S2 Connect.
