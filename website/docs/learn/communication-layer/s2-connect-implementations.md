@@ -19,7 +19,7 @@ The main efforts have been put into the implementation of S2 Connect in Rust and
 | Feature | **Rust** | **Python**|
 |---|---|---|
 | WAN discovery | ❌ | ❌ |
-| LAN discovery | ✅ | ❌ |
+| LAN discovery | ✅ | ✅ |
 | Pairing Client | ✅ | ✅ |
 | Pairing Server | ✅ | ✅|
 | Pairing API | ✅ | ✅ |
